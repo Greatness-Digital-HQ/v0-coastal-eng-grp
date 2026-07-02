@@ -1412,7 +1412,7 @@ function Footer({ theme, data }) {
             <div className="ceg-footer-mid-v">
               Submit W-9, certifications, and capability statements.
             </div>
-            <a href="#vendor-portal" className="ceg-footer-cta-link">
+            <a href="/vendor-portal" className="ceg-footer-cta-link">
               Partner with us
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
                 <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.4"/>
@@ -1424,7 +1424,7 @@ function Footer({ theme, data }) {
             <div className="ceg-footer-mid-v">
               Access timesheets, benefits, payroll, and internal resources.
             </div>
-            <a href="#employee-portal" className="ceg-footer-cta-link">
+            <a href="/employee-portal" className="ceg-footer-cta-link">
               Sign in
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
                 <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.4"/>
