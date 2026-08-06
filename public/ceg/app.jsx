@@ -19,7 +19,9 @@ function App() {
       <window.Nav theme={theme} data={data} conceptKey="drydock" onMobileOpen={() => setMobileOpen(true)} />
       <main>
         <window.Hero theme={theme} data={data} conceptKey="drydock" />
+        <window.NarrativeIntro />
         <window.Capabilities theme={theme} data={data} />
+        <window.IntegratedDelivery />
         <window.WhyCEG theme={theme} data={data} />
         <window.FeaturedProjects theme={theme} data={data} />
         <window.Careers theme={theme} data={data} />

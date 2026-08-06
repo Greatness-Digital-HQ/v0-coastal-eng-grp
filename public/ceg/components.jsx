@@ -217,7 +217,7 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
             </a>
             <div className="ceg-nav-centered-side ceg-nav-centered-side-r">
               <a href="/request-a-bid" className="ceg-nav-centered-cta">
-                Request a Bid
+                Discuss a Project
                 <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden>
                   <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
                 </svg>
@@ -240,7 +240,7 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
             </a>
             {navItems}
             {/* Request a Bid — fades in when scrolled */}
-            <Btn href="/request-a-bid" variant="primary" arrow={false} className="ceg-nav-sticky-cta">Request a Bid</Btn>
+            <Btn href="/request-a-bid" variant="primary" arrow={false} className="ceg-nav-sticky-cta">Discuss a Project</Btn>
           </div>
         </div>
       </>
@@ -269,7 +269,7 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
         <div className="ceg-container ceg-nav-row">
           {navItems}
           <div className="ceg-nav-right">
-            <Btn href="/request-a-bid" variant="primary" arrow={false}>Request a Bid</Btn>
+            <Btn href="/request-a-bid" variant="primary" arrow={false}>Discuss a Project</Btn>
             <button className="ceg-nav-burger" onClick={onMobileOpen} aria-label="Open menu">
               <span /><span /><span />
             </button>
@@ -306,7 +306,7 @@ function SimplePanel({ item, navKey, data }) {
 function MegaPanel({ navKey, item, data, shared }) {
   // Richer panel: column 1 = list, column 2 = featured, column 3 = call-out
   const featured =
-    navKey === "services" ? data.DIVISIONS.slice(0, 3) :
+    navKey === "capabilities" ? data.DIVISIONS.slice(0, 3) :
     navKey === "markets"  ? data.MARKETS.slice(0, 3) :
     null;
 
@@ -334,7 +334,7 @@ function MegaPanel({ navKey, item, data, shared }) {
             {featured.map((f) => (
               <a key={f.key || f.name}
                 href={
-                  navKey === "services"
+                  navKey === "capabilities"
                     ? `/services/${f.key}`
                     : navKey === "markets"
                       ? (f.key === "federal" ? "/markets/federal" : `/projects/featured-work#market=${encodeURIComponent(f.name)}`)
@@ -405,24 +405,28 @@ function HeroStats({ theme, data }) {
       <div className="ceg-hero-background" aria-hidden style={{backgroundImage: "url('/assets/hero-background.jpg')"}} />
       <div className="ceg-hero-video-scrim" />
       <div className="ceg-container ceg-hero-stats-center">
-        <Eyebrow accent>Engineered Solutions. Built to Last.</Eyebrow>
+        <Eyebrow accent>Marine Infrastructure | Eastern United States</Eyebrow>
         <h1 className="ceg-h1 serif">
-          Delivering Complex Marine Construction and Underwater Infrastructure Projects
+          Marine Infrastructure. Engineered, Built, and Maintained.
         </h1>
         <p className="ceg-hero-lede">
-          Coastal Engineering delivers marine construction, engineering, and underwater infrastructure solutions for transportation, waterfront, municipal, and energy projects throughout the Eastern United States.
+          Coastal Engineering Group self-performs marine construction, dredging, commercial diving, underwater inspection, and waterfront engineering for federal, state, municipal, transportation, utility, and industrial clients throughout the Eastern United States.
         </p>
         <div className="ceg-hero-ctas">
-          <Btn href="/request-a-bid" variant="hero-accent">Start a Project</Btn>
-          <Btn href="/careers" variant="ghost-onbrand" arrow={true}>Build Your Career</Btn>
+          <Btn href="#capabilities" variant="hero-accent">View Capabilities</Btn>
+          <Btn href="/request-a-bid" variant="ghost-onbrand" arrow={true}>Discuss a Project</Btn>
         </div>
       </div>
       <div className="ceg-hero-stats-bar">
-        <div className="ceg-container ceg-hero-stats-bar-row">
-          {data.STATS.map((s, i) => (
-            <div key={i} className="ceg-hero-stat">
-              <div className="ceg-hero-stat-value">{s.value}</div>
-              <div className="ceg-hero-stat-label">{s.label}</div>
+        <div className="ceg-container ceg-hero-stats-bar-row ceg-hero-proof-row">
+          {[
+            "Veteran-Owned Small Business",
+            "ADCI-Certified Commercial Diving Contractor",
+            "Professional Engineers Licensed Across Multiple States",
+            "Operations Throughout the Eastern United States",
+          ].map((p, i) => (
+            <div key={i} className="ceg-hero-stat ceg-hero-proof-item">
+              <div className="ceg-hero-proof">{p}</div>
             </div>
           ))}
         </div>
@@ -893,16 +897,16 @@ function Capabilities({ theme, data }) {
       <div className="ceg-container">
         <div className="ceg-section-head ceg-reveal-fade-up" ref={headRef}>
           <Eyebrow accent>What We Do</Eyebrow>
-          <h2 className="ceg-h2">Five Divisions. One Firm.</h2>
+          <h2 className="ceg-h2">Integrated Marine Infrastructure Capabilities</h2>
           <p className="ceg-section-lede">
-            Engineering expertise and construction capability in-house — no second firm required.
+            Engineering, construction, dredging, commercial diving, and marine support — coordinated through one accountable, self-performing team.
           </p>
         </div>
 
         <div className="ceg-capabilities-grid ceg-reveal-stagger-grid" ref={gridRef}>
           {/* CAP-01 through CAP-05 cards */}
           {data.CAPABILITIES.map((cap, i) => (
-            <a key={cap.key} href={`#capability-${cap.key}`} className={`ceg-cap-card${(cap.key === "diving" || cap.key === "dredging" || cap.key === "engineering" || cap.key === "construction" || cap.key === "marine-services") ? " ceg-cap-card-has-photo" : ""}`}>
+            <a key={cap.key} href={`/services/${cap.key}`} className={`ceg-cap-card${(cap.key === "diving" || cap.key === "dredging" || cap.key === "engineering" || cap.key === "construction" || cap.key === "marine-services") ? " ceg-cap-card-has-photo" : ""}`}>
               {cap.key === "diving" && (
                 <div className="ceg-cap-card-photo-bg" style={{backgroundImage: "url('/assets/commercial-diving.jpg')"}} />
               )}
@@ -927,10 +931,10 @@ function Capabilities({ theme, data }) {
 
           {/* CAP-06: CTA Card */}
           <a href="/request-a-bid" className="ceg-cap-card ceg-cap-card-cta">
-            <div className="ceg-cap-cta-eyebrow">Ready to Get Started?</div>
-            <h3 className="ceg-cap-cta-title">Start a Project</h3>
-            <p className="ceg-cap-cta-body">Tell us about your project. We'll respond within 24 hours.</p>
-            <button className="ceg-cap-cta-btn">Contact Our Team →</button>
+            <div className="ceg-cap-cta-eyebrow">Have a marine infrastructure challenge?</div>
+            <h3 className="ceg-cap-cta-title">Discuss a Project</h3>
+            <p className="ceg-cap-cta-body">Tell us what you're planning, pursuing, or evaluating. We'll route it to the right team.</p>
+            <button className="ceg-cap-cta-btn">Discuss a Project →</button>
           </a>
         </div>
       </div>
@@ -1345,8 +1349,11 @@ function Footer({ theme, data }) {
           <div className="ceg-footer-brand">
             <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" className="ceg-footer-logo"/>
             <p className="ceg-footer-tagline">
-              Marine construction, engineering, dredging, marine services, and commercial diving
-              for the working waterfront.
+              Coastal Engineering Group is a veteran-owned marine infrastructure contractor and
+              engineering firm serving public agencies, prime contractors, utilities, ports,
+              transportation owners, and industrial clients throughout the Eastern United States.
+              Our integrated capabilities include marine construction, dredging, commercial diving,
+              underwater inspection, waterfront engineering, and marine support.
             </p>
             <div className="ceg-footer-certs">
               {data.CERTS.slice(0, 4).map((c) => (
@@ -1494,7 +1501,7 @@ function MobileMenu({ open, onClose, data }) {
       </div>
       <div className="ceg-mobile-foot">
         <a href={`tel:${data.CONTACT.phone}`}>{data.CONTACT.phone}</a>
-        <Btn href="/request-a-bid" onClick={onClose}>Request a Bid</Btn>
+        <Btn href="/request-a-bid" onClick={onClose}>Discuss a Project</Btn>
       </div>
     </div>
     </>
@@ -1505,23 +1512,23 @@ function MobileMenu({ open, onClose, data }) {
 const WHY_ITEMS = [
   {
     num: "01",
-    title: "Engineering + Construction In-House",
-    body: "Where most firms stop at design or stop at build, we do both. Our PE engineers and construction crews work from the same playbook — which means fewer handoffs, tighter timelines, and accountability that doesn't disappear at the contract boundary.",
+    title: "Self-Perform Capability",
+    body: "Qualified field crews, commercial divers, engineers, operators, and marine equipment coordinated through one accountable team.",
   },
   {
     num: "02",
-    title: "PE Divers: Engineers Who Work Underwater",
-    body: "Our divers aren't just certified — they're licensed Professional Engineers. That means real-time structural assessment happens in the water, not after the fact on paper. Faster decisions, fewer mobilizations, better data.",
+    title: "Engineering-Led Execution",
+    body: "Constructability, documentation, risk, and field conditions are considered before work begins — not after problems arise.",
   },
   {
     num: "03",
-    title: "13-State PE Licensure",
-    body: "Licensed to practice engineering in New York, New Jersey, Pennsylvania, Connecticut, Delaware, Virginia, Maryland, Maine, North Carolina, South Carolina, Ohio, Georgia, and Florida — the full East Coast footprint your project demands.",
+    title: "Difficult-Access Experience",
+    body: "Capabilities suited to active waterways, submerged structures, limited-access facilities, and projects that cannot be evaluated from land.",
   },
   {
     num: "04",
-    title: "Veteran-Owned. Safety-Driven.",
-    body: "Coastal Engineering Group is a Veteran-Owned Small Business (VOSB). That background shapes how we operate: disciplined, methodical, and with an uncompromising safety record across every project, every team, every state.",
+    title: "Public and Federal Readiness",
+    body: "Experience with formal quality control, safety planning, submittals, daily reporting, government requirements, and multi-party coordination.",
   },
 ];
 
@@ -1607,10 +1614,10 @@ function FeaturedProjects({ theme, data }) {
         
         {/* Section header — centered */}
         <div className="ceg-featured-projects-head">
-          <Eyebrow accent>Our Work</Eyebrow>
-          <h2 className="ceg-h2">Featured Projects</h2>
+          <Eyebrow accent>Projects</Eyebrow>
+          <h2 className="ceg-h2">Selected Marine Infrastructure Projects</h2>
           <p className="ceg-featured-projects-subhead">
-            From Navy dry docks to dam inspections — work that demands precision, depth, and the full range of our capabilities.
+            Representative work across marine construction, dredging, engineering, underwater inspection, and commercial diving throughout the Eastern United States.
           </p>
         </div>
 
@@ -1724,8 +1731,8 @@ function Careers({ theme, data }) {
         
         {/* Section header */}
         <div className="ceg-careers-head">
-          <Eyebrow accent>Join the Team</Eyebrow>
-          <h2 className="ceg-h2 ceg-careers-heading">Build a Career That Goes Deep</h2>
+          <Eyebrow accent>Careers</Eyebrow>
+          <h2 className="ceg-h2 ceg-careers-heading">Build the Next Generation of Marine Infrastructure</h2>
         </div>
 
         {/* Two-column layout */}
@@ -1734,10 +1741,10 @@ function Careers({ theme, data }) {
           {/* LEFT COLUMN — Pitch + CTAs */}
           <div className="ceg-careers-left">
             <p className="ceg-careers-body">
-              Commercial diving is one of the most demanding careers in the world — and one of the most rewarding. At Coastal Engineering Group, you're not just a diver or an engineer. You're part of a veteran-led team taking on the kind of work most firms can't handle: Navy facilities, critical infrastructure, and projects that matter. We invest in the people who want to grow.
+              Coastal is growing a team of engineers, project managers, divers, operators, and field professionals who want meaningful responsibility, challenging work, and a clear path to advance. You'll take on the kind of marine infrastructure work most firms can't handle — federal facilities, critical waterfront assets, and projects that matter.
             </p>
             <p className="ceg-careers-body-short">
-              We're actively hiring experienced field divers, professional engineers, and support staff across our East Coast operations.
+              We're hiring across engineering, construction, dredging, commercial diving, and project delivery throughout the Eastern United States.
             </p>
 
             <div className="ceg-careers-ctas">
@@ -1879,23 +1886,74 @@ function FinalCTA({ data }) {
   return (
     <section className="ceg-final-cta">
       <div className="ceg-final-cta-inner">
-        <p className="ceg-final-cta-eyebrow">Let&apos;s Build Something</p>
-        <h2 className="ceg-final-cta-heading">Ready to Start Your Next Project?</h2>
+        <p className="ceg-final-cta-eyebrow">Discuss a Project</p>
+        <h2 className="ceg-final-cta-heading">Have a marine infrastructure challenge?</h2>
         <p className="ceg-final-cta-sub">
-          From underwater inspection to full marine construction — Coastal Engineering Group delivers integrated solutions across 13 licensed states. Tell us what you&apos;re working on.
+          Bring Coastal into the project early. We can help evaluate conditions, develop a practical execution plan, support a pursuit, or mobilize specialty marine capabilities.
         </p>
         <div className="ceg-final-cta-btns">
-          <a href="/request-a-bid" className="ceg-final-cta-btn ceg-final-cta-btn-primary">Start a Project →</a>
+          <a href="/request-a-bid" className="ceg-final-cta-btn ceg-final-cta-btn-primary">Discuss a Project →</a>
           <a href={`tel:${phone}`} className="ceg-final-cta-btn ceg-final-cta-btn-secondary">Call {phone}</a>
         </div>
         <div className="ceg-final-cta-trust">
-          <span>ADCI Certified</span>
+          <span>Veteran-Owned Small Business</span>
           <span className="ceg-final-cta-dot">·</span>
-          <span>100% Safety Record</span>
+          <span>ADCI-Certified</span>
           <span className="ceg-final-cta-dot">·</span>
-          <span>PE Licensed in 13 States</span>
+          <span>Multi-State PE Licensure</span>
           <span className="ceg-final-cta-dot">·</span>
-          <span>Veteran-Owned</span>
+          <span>Eastern U.S. Operations</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Homepage narrative intro (below hero) ───────────────────────────────────
+function NarrativeIntro() {
+  return (
+    <section className="ceg-section ceg-narrative-intro">
+      <div className="ceg-container">
+        <div className="ceg-narrative-inner">
+          <h2 className="ceg-h2">One Team Above and Below the Waterline</h2>
+          <p className="ceg-narrative-p">
+            Marine infrastructure problems rarely fit within a single discipline. Coastal combines engineering judgment, specialty field crews, marine equipment, dredging capability, and commercial diving so clients can move from investigation to repair with fewer gaps between design and execution.
+          </p>
+          <p className="ceg-narrative-p">
+            Our teams work in active waterways, restricted-access facilities, industrial environments, transportation corridors, and federal installations where planning, documentation, safety, and constructability are essential.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Integrated delivery — Inspect. Engineer. Build. Maintain. ────────────────
+function IntegratedDelivery() {
+  const steps = [
+    { k: "Inspect",  d: "Define existing conditions above and below the waterline." },
+    { k: "Engineer", d: "Develop practical, constructable repair and execution approaches." },
+    { k: "Build",    d: "Self-perform the work with qualified crews, divers, and marine equipment." },
+    { k: "Maintain", d: "Document the completed result and support the asset over time." },
+  ];
+  return (
+    <section className="ceg-section ceg-integrated">
+      <div className="ceg-container">
+        <div className="ceg-section-head">
+          <Eyebrow accent>How We Deliver</Eyebrow>
+          <h2 className="ceg-h2">Inspect. Engineer. Build. Maintain.</h2>
+          <p className="ceg-section-lede">
+            Coastal's integrated delivery model connects field observations with engineering decisions and construction execution — using the right combination of engineers, project managers, divers, operators, and marine crews.
+          </p>
+        </div>
+        <div className="ceg-integrated-steps">
+          {steps.map((s, i) => (
+            <div key={i} className="ceg-integrated-step">
+              <div className="ceg-integrated-step-num">0{i + 1}</div>
+              <div className="ceg-integrated-step-k">{s.k}</div>
+              <p className="ceg-integrated-step-d">{s.d}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -1906,4 +1964,5 @@ Object.assign(window, {
   applyThemeVars,
   Eyebrow, Btn, UtilityBar, Nav, Hero, PlaceholderPhoto, MarketPhoto,
   Capabilities, WhyCEG, FeaturedProjects, Careers, CertificationsBar, Locations, Divisions, Markets, Projects, VOSBBand, ClientsStrip, ContactBand, FinalCTA, Footer, MobileMenu,
+  NarrativeIntro, IntegratedDelivery,
 });

@@ -1,49 +1,50 @@
 // Shared content data for all three concepts
 // Sourced from meeting notes + coastalengineeringllc.com
 
-// Order is intentional: marine construction and engineering lead, with
-// commercial diving presented as one specialized capability among the rest
-// (not the headline identity). Badges renumber to match the display order.
+// Card copy and order per the client edit package (homepage capabilities
+// section). Marine construction and engineering lead; commercial diving is a
+// prominent differentiating capability, not the whole identity. Badges renumber
+// to match display order. Each card links to its dedicated capability page.
 const CAPABILITIES = [
   {
     key: "construction",
     badge: "CAP-01",
     title: "Marine Construction",
-    body: "Heavy marine construction including seawalls, piers, underwater concrete, welding, and structural repairs. Built to perform in demanding coastal and freshwater environments.",
-    link: "Explore Construction →",
+    body: "Waterfront construction, structural rehabilitation, pile repair, concrete and steel repairs, outfalls, intakes, scour protection, and emergency marine work.",
+    link: "Explore Marine Construction →",
     icon: "construction",
   },
   {
     key: "engineering",
     badge: "CAP-02",
-    title: "Marine Engineering",
-    body: "Professional engineering services across structures, marine systems, and waterfront infrastructure. PE-stamped drawings and QA/QC delivered in 13 licensed states.",
-    link: "Explore Engineering →",
+    title: "Marine Engineering & Inspection",
+    body: "Waterfront engineering, underwater and structural inspection, condition assessment, repair design, temporary works, construction engineering, and quality oversight.",
+    link: "Explore Engineering & Inspection →",
     icon: "engineering",
   },
   {
     key: "dredging",
     badge: "CAP-03",
-    title: "Dredging & Debris Removal",
-    body: "Precision dredging for navigation channels, lake restoration, and sediment management. Careful, methodical operations protecting sensitive aquatic environments.",
+    title: "Dredging",
+    body: "Mechanical and hydraulic dredging, sediment management, dewatering, material handling, disposal coordination, bathymetric support, and waterway maintenance.",
     link: "Explore Dredging →",
     icon: "dredging",
   },
   {
-    key: "marine-services",
+    key: "diving",
     badge: "CAP-04",
-    title: "Marine Services & Equipment",
-    body: "ROV inspection, tugboats, barges, and crane rentals supporting marine construction operations up and down the East Coast. Full capability, when and where you need it.",
-    link: "Explore Marine Services →",
-    icon: "marine",
+    title: "Commercial Diving & Underwater Construction",
+    body: "Surface-supplied diving for inspection, repair, installation, welding, burning, concrete work, NDT support, dam work, intake and outfall work, and emergency response.",
+    link: "Explore Diving & Underwater Construction →",
+    icon: "diving",
   },
   {
-    key: "diving",
+    key: "marine-services",
     badge: "CAP-05",
-    title: "Commercial Diving",
-    body: "PE-certified divers performing underwater inspections, structural repairs, and confined-space operations. Our divers aren't just certified — they're licensed engineers.",
-    link: "Explore Diving →",
-    icon: "diving",
+    title: "Fleet & Marine Support",
+    body: "Workboats, barges, cranes, marine logistics, crew support, equipment mobilization, and specialty project support for waterfront and offshore-access work.",
+    link: "Explore Fleet & Marine Support →",
+    icon: "marine",
   },
 ];
 
@@ -56,36 +57,36 @@ const DIVISIONS = [
     key: "construction",
     name: "Marine Construction",
     short: "Construction",
-    blurb: "Heavy civil construction over and below the waterline — bridges, piers, wharfs, and seawalls.",
+    blurb: "Waterfront construction, structural rehabilitation, and repair over and below the waterline — piers, bulkheads, outfalls, intakes, and scour protection.",
     services: ["Pile Driving", "Bulkheads & Seawalls", "Bridge Substructures", "Pier & Wharf Construction"],
   },
   {
     key: "engineering",
-    name: "Marine Engineering",
-    short: "Engineering",
-    blurb: "Design-build expertise for seawalls, bulkheads, piers, and coastal resilience infrastructure.",
-    services: ["Structural Design", "Condition Assessment", "Permitting Support", "Resilience Planning"],
+    name: "Marine Engineering & Inspection",
+    short: "Engineering & Inspection",
+    blurb: "Waterfront engineering, underwater and structural inspection, condition assessment, and repair design informed by field conditions.",
+    services: ["Underwater Inspection", "Condition Assessment", "Repair Design", "Construction Engineering"],
   },
   {
     key: "dredging",
     name: "Dredging",
     short: "Dredging",
-    blurb: "Mechanical and hydraulic dredging — channels, berths, and beach renourishment for federal clients.",
-    services: ["Maintenance Dredging", "Capital Dredging", "Environmental Dredging", "Beach Renourishment"],
-  },
-  {
-    key: "marine-services",
-    name: "Marine Services",
-    short: "Marine Services",
-    blurb: "Tugs, barges, and crane rentals supporting our own work and third-party marine contractors.",
-    services: ["Tugboat Services", "Deck Barges", "Crane Barges", "Equipment Rental"],
+    blurb: "Mechanical and hydraulic dredging, sediment management, dewatering, disposal coordination, and waterway maintenance.",
+    services: ["Maintenance Dredging", "Capital Dredging", "Environmental Dredging", "Sediment Management"],
   },
   {
     key: "diving",
-    name: "Commercial Diving",
-    short: "Diving",
-    blurb: "ADCI-certified inspection, repair, and salvage operations across federal and commercial waterfronts.",
-    services: ["Underwater Inspection", "Pier & Wharf Repair", "Salvage & Recovery", "Hull Cleaning", "NDT & Welding"],
+    name: "Commercial Diving & Underwater Construction",
+    short: "Diving & Underwater Construction",
+    blurb: "Surface-supplied commercial diving for underwater construction, inspection, repair, welding, concrete work, and emergency response.",
+    services: ["Underwater Construction", "Inspection & NDT", "Welding & Burning", "Salvage & Recovery"],
+  },
+  {
+    key: "marine-services",
+    name: "Fleet & Marine Support",
+    short: "Fleet & Marine Support",
+    blurb: "Workboats, barges, cranes, marine logistics, and equipment mobilization supporting our own work and prime contractors.",
+    services: ["Workboats & Crew Transport", "Deck & Crane Barges", "Lifting & Rigging", "Marine Logistics"],
   },
 ];
 
@@ -274,24 +275,25 @@ const LICENSED_STATES = [
   { abbr: "OH", name: "Ohio" },
 ];
 
-// Primary navigation. Order is meaningful — Careers sits between Projects
-// and Insights. Top-level items with no `items` array render as direct links
-// (no dropdown), keeping the menu shallow and reachable in one or two clicks.
-//
-// IA notes:
-//  · Markets = the sectors we serve (Federal has a dedicated page; the other
-//    sectors route into the portfolio pre-filtered to that market until their
-//    own landing pages exist).
-//  · Projects = the work portfolio itself (single destination, no sector
-//    mirror of Markets — that overlap was removed).
-//  · Careers = its own page (no longer buried under About).
+// Primary navigation. Per the client edit package, the top level is:
+// About | Capabilities | Markets | Projects | Safety & Quality | Careers | Contact
+// Top-level items with no `items` array render as direct links (no dropdown).
+// "Capabilities" replaces the old "Services" label; Safety & Quality is promoted
+// to the top level; Contact is a direct link (the header button is "Discuss a
+// Project"). News & Insights stays out of the primary nav until it has depth.
 const NAV = {
   about: { label: "About", items: [
-    { label: "Overview",         href: "/about#glance" },
-    { label: "Our Story",        href: "/about#story" },
-    { label: "Leadership",       href: "/about#leadership" },
-    { label: "Veteran-Owned",    href: "/about#veteran-owned" },
-    { label: "Safety & Quality", href: "/safety-quality" },
+    { label: "Overview",      href: "/about#glance" },
+    { label: "Our Story",     href: "/about#story" },
+    { label: "Leadership",    href: "/about#leadership" },
+    { label: "Veteran-Owned", href: "/about#veteran-owned" },
+  ]},
+  capabilities: { label: "Capabilities", items: [
+    { label: "Marine Construction",                        href: "/services/construction" },
+    { label: "Marine Engineering & Inspection",            href: "/services/engineering" },
+    { label: "Dredging",                                   href: "/services/dredging" },
+    { label: "Commercial Diving & Underwater Construction", href: "/services/diving" },
+    { label: "Fleet & Marine Support",                     href: "/services/marine-services" },
   ]},
   markets: { label: "Markets", items: MARKETS.map(m => ({
     label: m.name,
@@ -299,30 +301,22 @@ const NAV = {
       ? "/markets/federal"
       : `/projects/featured-work#market=${encodeURIComponent(m.name)}`,
   })) },
-  services: { label: "Services", items: [
-    { label: "Marine Construction", href: "/services/construction" },
-    { label: "Marine Engineering",  href: "/services/engineering" },
-    { label: "Dredging",            href: "/services/dredging" },
-    { label: "Marine Services",     href: "/services/marine-services" },
-    { label: "Commercial Diving",   href: "/services/diving" },
-  ]},
-  projects: { label: "Projects", href: "/projects/featured-work" },
-  careers:  { label: "Careers",  href: "/careers" },
-  insights: { label: "Insights", items: [
-    { label: "News",               href: "/insights/news" },
-    { label: "Press Releases",     href: "#" },
-    { label: "Resilience Reports", href: "#" },
-  ]},
+  projects: { label: "Projects",         href: "/projects/featured-work" },
+  safety:   { label: "Safety & Quality", href: "/safety-quality" },
+  careers:  { label: "Careers",          href: "/careers" },
+  contact:  { label: "Contact",          href: "/request-a-bid" },
 };
 
+// NOTE: general email and emergency-response line pending client verification.
+// HQ address is from the current business listing (Greenwood Lake, NY).
 const CONTACT = {
   phone: "845-328-3178",
   email: "info@coastalengineeringgroup.com",
   hq: "Coastal Engineering Group",
-  addressLine1: "Headquarters",
-  addressLine2: "United States",
+  addressLine1: "2 Seneca Hill",
+  addressLine2: "Greenwood Lake, NY 10925",
   hours: "Mon–Fri  7:00–17:00 ET",
-  emergency: "24/7 Emergency Response",
+  emergency: "Emergency Marine Response",
 };
 
 // Careers — benefits + open roles teaser (JMT-leaning, talent-as-priority).

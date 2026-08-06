@@ -5359,3 +5359,51 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   .bid-type-grid { grid-template-columns: repeat(2, 1fr); }
   .bid-h1 { font-size: 2.6rem; }
 }
+
+/* ─── Homepage credibility bar (4 qualitative proof points) ───────────────── */
+.hero-stats .ceg-hero-proof-row { grid-template-columns: repeat(4, 1fr); }
+.ceg-hero-proof {
+  font-family: var(--font-inter, "Inter", sans-serif);
+  font-size: 12px; font-weight: 600; line-height: 1.4;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9); text-align: center;
+}
+@media (max-width: 860px) {
+  .hero-stats .ceg-hero-proof-row { grid-template-columns: repeat(2, 1fr); }
+  .hero-stats .ceg-hero-proof-item:nth-child(3) { border-left: none; }
+}
+
+/* ─── Homepage narrative intro (below hero) ───────────────────────────────── */
+.ceg-narrative-intro { background: var(--bg, #fbfaf7); }
+.ceg-narrative-inner { max-width: 860px; margin: 0 auto; text-align: center; }
+.ceg-narrative-inner .ceg-h2 { margin-bottom: 24px; }
+.ceg-narrative-p {
+  font-family: var(--font-inter, "Inter", sans-serif);
+  font-size: 1.08rem; line-height: 1.75; color: var(--ink-soft, #2e3540); margin: 0 0 18px;
+}
+.ceg-narrative-p:last-child { margin-bottom: 0; }
+
+/* ─── Integrated delivery — Inspect. Engineer. Build. Maintain. ────────────── */
+.ceg-integrated {
+  background: var(--surface, #f3f1eb);
+  border-top: 1px solid var(--rule, #c9c4b5);
+  border-bottom: 1px solid var(--rule, #c9c4b5);
+}
+.ceg-integrated-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.ceg-integrated-step {
+  background: #ffffff; border: 1px solid var(--rule, #c9c4b5); border-radius: 8px; padding: 28px 24px;
+}
+.ceg-integrated-step-num {
+  font-family: var(--font-inter, "Inter", sans-serif); font-size: 12px; font-weight: 700;
+  letter-spacing: 0.12em; color: var(--accent, #a8421c); margin-bottom: 12px;
+}
+.ceg-integrated-step-k {
+  font-family: var(--font-barlow, "Barlow", sans-serif); font-weight: 800;
+  font-size: 1.3rem; color: var(--brand, #13386a); margin-bottom: 10px;
+}
+.ceg-integrated-step-d {
+  font-family: var(--font-inter, "Inter", sans-serif); font-size: 0.95rem;
+  line-height: 1.6; color: var(--ink-soft, #2e3540); margin: 0;
+}
+@media (max-width: 860px) { .ceg-integrated-steps { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .ceg-integrated-steps { grid-template-columns: 1fr; } }
