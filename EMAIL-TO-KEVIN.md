@@ -1,89 +1,46 @@
 # Draft email to Kevin Reinhard
 
-**Subject:** Website revisions complete — plus two things I need verified before we go further
+**Subject:** Re: Website review - ezmode enabled
 
 ---
 
 Kevin,
 
-Revisions are in. I worked straight through your edit package and implemented everything that falls inside design and content, which is the phase we're in. Below is the completed/outstanding breakdown you asked for, plus a short list of items only Coastal can answer.
+Revisions are done. Updated review link:
 
-Two of those need your attention before anything else, so I'm putting them first.
+https://v0-homepage-components-git-claude-websit-f40b2b-greatness-sites.vercel.app/?_vercel_share=17NFl8mIEEk0jJBId2j8PoE5xejbTKsX
 
-## 1. I need you to verify the project list and the news announcements
+That should open without a login. If it asks you to sign in, tell me — that's been the trouble with the earlier links.
 
-The current site publishes named clients and specific claims that were generated during the original prototype build, not supplied by Coastal. I have no record of where they came from, so I've flagged rather than removed them:
+I implemented everything in your package that falls inside design and content. Two things need you before I go further.
 
-**Projects** — CSX Transportation, Public Service Electric & Gas, Port of Baltimore, Port Newark Container Terminal, Mayport Naval Station, Atlantic Shores Offshore Wind, plus specific figures like "47 piles inspected," "3 miles of cable relocated," and "zero service interruptions."
+**1. Please verify the projects and news posts.** The site names CSX, PSE&G, Port of Baltimore, Port Newark, Mayport Naval Station, and Atlantic Shores as clients, with figures like "47 piles inspected." It also runs six dated announcements, including a NAVFAC Mid-Atlantic MACC award and a Jacksonville office opening. None of that came from Coastal — it was generated during the original prototype build. Tell me what's real, correct what needs correcting, and I'll delete the rest. An unverified federal award is not something I want live on a government contractor's site.
 
-**News** — six dated posts, including "Coastal Engineering Group Awarded NAVFAC Mid-Atlantic MACC Task Order" (April 14, 2025) and "CEG Opens Jacksonville Operations Hub."
+**2. I removed four executives from the About page.** It listed Michael Harrington as CEO plus a COO, VP of Engineering, and Director of Diving Operations, with bios and photos. You weren't on it. They appear to have been invented during the prototype build, so I took them down and published your card from your document. Send me the real roster and I'll build the section.
 
-Please confirm which of these are real, correct the details on the ones that are, and tell me to delete the rest. Publishing an unverified federal award or a client name you didn't work for is the kind of thing that causes real problems for a government contractor, so I'd rather ask now than after launch.
+**What's done**
 
-## 2. I removed four executives from the About page
+- Navigation, capability names and order, and "Discuss a Project" as the single CTA sitewide
+- New homepage hero, credibility bar, "One Team Above and Below the Waterline," and "Inspect. Engineer. Build. Maintain."
+- All five capability pages rewritten, with project proof moved above the long copy as you asked
+- New copy on About, Safety & Quality, Federal, Projects, Careers, News, and Contact
+- Contact form now opens with "What can we help with?" and your seven inquiry types
+- Every page has its own title and meta description; added a sitemap; `/request-a-bid` now redirects to `/contact`
+- Fixed the hero sections, which were running past the bottom of the screen on standard laptops
 
-The leadership section listed Michael Harrington (CEO), David Chen (COO), Sarah Mitchell (VP Engineering), and James Rodriguez (Director of Diving Operations), with biographies and headshots. You weren't on it. Those people appear to have been invented during the prototype build, so I've taken them down and published your card using the bio from your edit package.
+I pulled "100% Safety Record," the 13-state PE count, "over two decades," "one of the largest fleets on the East Coast," and the SDVOSB designation. Nothing is deleted permanently — each comes back when you confirm it.
 
-Send me the real roster — names, titles, credentials, responsibilities, headshots — and I'll build the rest of the section. Until then it shows your card and a note that additional profiles are being finalized.
+**What I need**
 
-## Completed
+*Contracts:* legal name and business status, UEI, CAGE, SAM expiration, NAICS, bonding capacity, VOSB vs. SDVOSB, whether DBE and ISO 9001 are current, and whether we can name NAVFAC/USACE/USCG.
 
-**Sitewide**
-- Navigation restructured to About | Capabilities | Markets | Projects | Safety & Quality | Careers | Contact, with your exact Capabilities dropdown labels and order
-- "Request a Bid" is now "Discuss a Project" everywhere, and that's the single primary CTA sitewide
-- Footer rewritten with your approved company paragraph; HQ set to the Greenwood Lake address
-- Every page now has its own title, meta description, canonical URL, and social preview — previously most pages inherited one generic title
-- Added an XML sitemap and robots.txt
-- `/request-a-bid` renamed to `/contact` with a permanent 301 that preserves campaign tracking
+*Safety and HR:* dated EMR, TRIR, DART with the reporting period — or your OK to omit the metrics panel, which your own document recommends if they aren't final. Plus verified benefits.
 
-**Homepage** — new title/meta, hero, and lede; the numeric counters are replaced with your four credibility points; added "One Team Above and Below the Waterline" and the "Inspect. Engineer. Build. Maintain." delivery band; the four differentiators, featured projects, careers teaser, and final CTA are all your copy.
+*Operations:* the general email to publish, whether there's a monitored emergency line, the Jacksonville address if that office is current, and your PE license roster. Your signature says 13 states including Ohio; our data had 12.
 
-**Capability pages** — all five rewritten. Marine Services is now Fleet & Marine Support, Diving is Commercial Diving & Underwater Construction, Engineering is Marine Engineering & Inspection. Added your full capability lists and the supporting sections (self-perform, executable repair, deliverables, the full material pathway, mechanical vs. hydraulic, environmental controls, integration). Project proof now sits directly below the capability list rather than at the bottom, as you specified.
+Two notes. The contact form doesn't send anything yet — it shows a success screen but transmits nothing. That's left over from the prototype and it's on my list. And the technical checklist at the end of your document mostly can't be completed until the site is rebuilt as server-rendered pages, which I'd rather schedule properly than rush. I did the parts achievable now, which is why the titles, sitemap, and redirect are already in.
 
-**About** — new hero, "Coastal at a Glance" proof tiles, Who We Serve, How We Work, the new Our Story, and the Veteran-Owned section.
-
-**Safety & Quality, Federal, Projects, Careers, News, Contact** — new heroes and section copy throughout, plus your safety and quality program element lists, the Careers pillars/paths/veterans sections, and the "What can we help with?" inquiry router on the contact form.
-
-**Claims removed under your editorial rule** — "100% Safety Record" (everywhere it appeared), the "13 states" PE count, "over two decades," "one of the largest fleets on the East Coast," and the specific SDVOSB designation. All are pending your verification rather than deleted permanently.
-
-## Outstanding — needs Coastal
-
-Grouped by who likely owns it. Anything here is genuinely blocked on your side.
-
-**Contracts / proposals**
-- Legal name and exact business status
-- UEI, CAGE code, SAM registration expiration
-- Primary and additional NAICS codes
-- Bonding capacity (approved single/aggregate, or "available upon request")
-- The exact veteran-owned certification designation — VOSB or SDVOSB. Your edit package flags this and the current site asserts SDVOSB, which I've pulled until you confirm.
-- Whether DBE and ISO 9001 are current certifications. They're on the site now and I've flagged them.
-- Confirmation that NAVFAC, USACE, and USCG can be named as clients
-
-**Safety / HR**
-- Dated EMR, TRIR, and DART figures with the reporting period, or confirmation to omit the metrics panel and lead with systems instead (your package recommends omitting if they aren't finalized)
-- Verified benefits: health, retirement, PTO, travel/per-diem
-- Confirmation of which safety programs Coastal actively maintains from the list on the page
-
-**Operations / contact**
-- The general email address to publish
-- Whether there's a monitored emergency response line — I have not published a number, and won't market 24/7 response unless calls are reliably answered
-- The Jacksonville address, if that office is real and current
-- Your current PE license roster. I've replaced every hard state count with "multiple states" until I have it. Your signature lists 13 including Ohio; the site data had 12.
-
-**Projects**
-- Answers on item 1 above, plus for each project you want to keep: client or client type, location, prime vs. sub role, completion year, scope, one meaningful quantity, and the outcome
-
-## Two things I want to flag honestly
-
-**The contact form doesn't send anything yet.** It shows a success screen but transmits nothing. That's from the prototype build. Wiring it up properly — server-side validation, spam protection, routing by inquiry type, and a confirmation email — is on my list, but I want you to know it's not live so nobody assumes an inquiry came through.
-
-**Parts of your package go beyond where we are.** The launch checklist at the end — structured data, WCAG 2.2, Core Web Vitals, analytics, redirects — is good and we will work through it. But most of it can't be truthfully completed until the site is rebuilt as server-rendered pages, which is a defined piece of work I'd rather schedule deliberately than bolt on now. I've done the parts that are achievable today, which is why the titles, descriptions, sitemap, and redirect are already done.
-
-## What I'd like from you
-
-The verification list above, in whatever form is easiest — a reply, a marked-up document, or a call. The provenance question on projects and leadership is the one that blocks the most, so even a quick answer on those two unblocks the project pages and the About page immediately.
-
-I'll send the updated review link separately.
+Happy to take the verification list on a call if that's faster.
 
 Regards,
 
