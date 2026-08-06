@@ -94,11 +94,12 @@ function NewsArchive() {
         <div className="ceg-container nws-hero-inner">
           <div className="ceg-eyebrow fed-eyebrow">
             <span className="ceg-eyebrow-mark" />
-            <span>Insights</span>
+            <span>News &amp; Insights</span>
           </div>
-          <h1 className="prj-archive-h1">News &amp; Updates</h1>
+          <h1 className="prj-archive-h1">Projects, People, and Marine Infrastructure Knowledge</h1>
           <p className="prj-archive-lede">
-            Project announcements, contract awards, and field perspectives from the CEG team.
+            Follow Coastal Engineering Group&apos;s project awards, completions, growth, safety
+            milestones, technical perspectives, equipment updates, and community involvement.
           </p>
         </div>
       </section>

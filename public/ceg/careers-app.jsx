@@ -34,6 +34,61 @@ function CareersHero({ data }) {
   );
 }
 
+// ─── Why build a career here (Section 16) ───────────────────────────────────
+function CareersWhy({ data }) {
+  const cards = data.CAREERS.whyCards || [];
+  if (!cards.length) return null;
+  return (
+    <section className="ceg-section careers-why-section">
+      <div className="ceg-container">
+        <div className="careers-block-head">
+          <Eyebrow mark>Why Coastal</Eyebrow>
+          <h2 className="ceg-h2">Why Build a Career at Coastal?</h2>
+        </div>
+        <div className="careers-why-grid">
+          {cards.map((c) => (
+            <div key={c.h} className="careers-benefit-card">
+              <h3 className="careers-benefit-h">{c.h}</h3>
+              <p className="careers-benefit-v">{c.v}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Career paths (Section 16) ──────────────────────────────────────────────
+function CareersPaths({ data }) {
+  const paths = data.CAREERS.paths || [];
+  const vets = data.CAREERS.veterans;
+  if (!paths.length) return null;
+  return (
+    <section className="ceg-section careers-paths-section">
+      <div className="ceg-container">
+        <div className="careers-block-head">
+          <Eyebrow mark>Career Paths</Eyebrow>
+          <h2 className="ceg-h2">Where You Could Fit</h2>
+        </div>
+        <div className="careers-paths-grid">
+          {paths.map((p) => (
+            <div key={p.h} className="careers-path-card">
+              <h3 className="careers-path-h">{p.h}</h3>
+              <p className="careers-path-v">{p.v}</p>
+            </div>
+          ))}
+        </div>
+        {vets && (
+          <div className="careers-vets">
+            <h3 className="careers-vets-h">{vets.h}</h3>
+            <p className="careers-vets-p">{vets.p}</p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 // ─── Benefits ─────────────────────────────────────────────────────────────────
 function CareersBenefits({ data }) {
   const c = data.CAREERS;
@@ -41,8 +96,8 @@ function CareersBenefits({ data }) {
     <section className="ceg-section">
       <div className="ceg-container">
         <div className="careers-block-head">
-          <Eyebrow mark>Why Coastal</Eyebrow>
-          <h2 className="ceg-h2">Real benefits. Real advancement. Real work.</h2>
+          <Eyebrow mark>Benefits</Eyebrow>
+          <h2 className="ceg-h2">Benefits and Support</h2>
         </div>
         <div className="careers-benefits-grid">
           {c.benefits.map((b) => (
@@ -65,7 +120,7 @@ function CareersRoles({ data }) {
       <div className="ceg-container">
         <div className="careers-block-head">
           <Eyebrow mark>Open Roles</Eyebrow>
-          <h2 className="ceg-h2">Now hiring across the Eastern Seaboard</h2>
+          <h2 className="ceg-h2">Now Hiring Throughout the Eastern United States</h2>
         </div>
         <div className="careers-roles">
           {c.openRoles.map((r) => (
@@ -117,6 +172,8 @@ function CareersApp() {
       <window.Nav theme={theme} data={data} conceptKey="drydock" onMobileOpen={() => setMobileOpen(true)} />
       <main>
         <CareersHero data={data} />
+        <CareersWhy data={data} />
+        <CareersPaths data={data} />
         <CareersBenefits data={data} />
         <CareersRoles data={data} />
         <window.ContactBand theme={theme} data={data} />

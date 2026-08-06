@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { Barlow, Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
+import { SITE } from "./seo"
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -15,7 +16,12 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Coastal Engineering Group | Marine Construction, Dredging & Engineering",
+  metadataBase: new URL(SITE),
+  // Each route supplies its own title; `default` only covers routes that don't.
+  title: {
+    default: "Coastal Engineering Group | Marine Construction, Dredging & Engineering",
+    template: "%s",
+  },
   description:
     "Marine construction, dredging, commercial diving, underwater inspection and waterfront engineering throughout the Eastern United States.",
   generator: "v0.app",

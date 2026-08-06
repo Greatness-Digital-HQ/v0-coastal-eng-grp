@@ -32,31 +32,32 @@ export const SERVICE_SEO: Record<string, ServiceSeo> = {
     serviceType: "Marine Construction",
     metaTitle: "Marine Construction Contractor | Eastern U.S. | Coastal Engineering Group",
     metaDescription:
-      "Veteran-owned heavy marine construction — pile driving, seawalls & bulkheads, piers, bridge substructures, and underwater concrete. Self-performed with PE oversight across the Eastern Seaboard.",
+      "Marine construction, waterfront rehabilitation, pile and concrete repair, bulkheads, outfalls, intakes, scour protection and emergency marine work.",
     schemaDescription:
-      "Heavy civil marine construction over and below the waterline — pile driving, bulkheads and seawalls, pier and wharf construction, bridge substructures, underwater concrete, and cofferdams. Self-performed with in-house Professional Engineer oversight for federal, state, energy, and commercial waterfronts on the U.S. East Coast.",
+      "Construction, rehabilitation, and repair of waterfront and submerged infrastructure — piers, docks and wharves; bulkheads, sheet-pile structures, fender and mooring systems; timber, steel, concrete and composite pile installation and repair; concrete and structural steel rehabilitation above and below water; cofferdams and engineered temporary works; outfalls, intakes and utility crossings; scour and shoreline protection; dam, lock and navigation infrastructure; and emergency marine repair throughout the Eastern United States.",
     faqs: [
-      { q: "What does a marine construction contractor do?", a: "A marine construction contractor builds and rehabilitates structures over and below the waterline — piers, wharfs, seawalls, bulkheads, bridge substructures, and underwater concrete. Coastal Engineering Group self-performs this work with its own crews and equipment, directed by licensed Professional Engineers." },
-      { q: "What areas does Coastal Engineering Group serve?", a: "Coastal Engineering Group works federal, state, energy, and commercial waterfronts from the Mid-Atlantic up the Eastern Seaboard, with Professional Engineers licensed across the East Coast from Maine to Florida." },
-      { q: "Do you self-perform marine construction or subcontract it?", a: "We self-perform our core marine construction with our own crews, equipment, and PE oversight — eliminating the handoffs, change orders, and split accountability of multi-prime delivery." },
-      { q: "What types of marine structures do you build?", a: "Pile foundations, steel and concrete bulkheads and seawalls, piers and wharfs, bridge substructures, underwater structural concrete and pile jackets, and cofferdams for dry below-waterline work." },
-      { q: "Are you qualified for federal marine construction work?", a: "Yes. Coastal Engineering Group is a Veteran-Owned Small Business with USACE CQM and EM385 compliance, and a track record on NAVFAC and USACE waterfront projects." },
+      { q: "What does a marine construction contractor do?", a: "A marine construction contractor builds, rehabilitates, and repairs structures over and below the waterline — piers, wharves, bulkheads, outfalls and intakes, scour protection, and submerged foundations. Coastal Engineering Group self-performs this work with its own crews, divers, and equipment, directed by licensed Professional Engineers." },
+      { q: "What areas does Coastal Engineering Group serve?", a: "Coastal works federal, state, municipal, utility, transportation, and industrial waterfronts throughout the Eastern United States, with Professional Engineers licensed across multiple states." },
+      { q: "Do you self-perform marine construction or subcontract it?", a: "We self-perform our core marine construction with our own crews, commercial divers, and equipment under one accountable team — reducing the handoffs and split accountability common to multi-prime delivery." },
+      { q: "What types of marine structures do you build and repair?", a: "Piers, docks, wharves, and platforms; bulkheads, sheet-pile structures, fender and mooring systems; timber, steel, concrete, and composite piles; outfalls, intakes, and utility crossings; scour and shoreline protection; and dam, lock, and navigation infrastructure." },
+      { q: "Can you support a prime contractor as a specialty marine subcontractor?", a: "Yes. Coastal frequently integrates underwater investigation, engineered temporary works, dredging, and specialty marine equipment into a prime contractor's work plan as a specialty marine subcontractor." },
     ],
   },
   engineering: {
     slug: "engineering",
-    name: "Marine Engineering",
-    serviceType: "Marine Engineering",
-    metaTitle: "Marine Engineering Firm | Waterfront PE Design | Coastal Engineering Group",
+    name: "Marine Engineering & Inspection",
+    serviceType: "Marine Engineering and Underwater Inspection",
+    metaTitle: "Marine Engineering & Underwater Inspection | Coastal Engineering Group",
     metaDescription:
-      "PE-stamped marine and coastal engineering — structural design, condition assessment, rehabilitation, permitting, and resilience planning. Licensed across the Eastern Seaboard.",
+      "Waterfront engineering, underwater and structural inspection, condition assessment, repair design, construction engineering and QA/QC support.",
     schemaDescription:
-      "Professional marine and coastal engineering — structural design of piers, wharfs, bulkheads and seawalls, above- and below-water condition assessment, rehabilitation design, permitting support, resilience planning, and dam and spillway engineering. PE-stamped deliverables backed by self-perform construction crews.",
+      "Waterfront structural engineering and rehabilitation design, underwater inspection and condition assessment, bridge, pier, bulkhead, pile, dam, intake and outfall inspection, repair recommendations and specifications, construction engineering and engineered temporary works, construction management and USACE CQM support, and hydrographic, sonar and NDT data integration throughout the Eastern United States.",
     faqs: [
-      { q: "What does a marine engineering firm do?", a: "A marine engineering firm designs and assesses waterfront structures — piers, wharfs, bulkheads, seawalls, and bridge substructures — and produces PE-stamped construction documents. Coastal Engineering Group pairs that design work with in-house self-perform construction." },
-      { q: "Are your engineering deliverables PE-stamped?", a: "Yes. Drawings and reports are signed and sealed by licensed Professional Engineers, with PE registration across the Eastern Seaboard." },
-      { q: "Can you both design and build a marine project?", a: "Yes. Because our engineers work alongside our construction crews, we can assess the structure, design the fix, and build it — a continuous chain of accountability from inspection to as-built." },
-      { q: "What engineering services do you provide?", a: "Structural design, above- and below-water condition assessment, rehabilitation design, permitting support, coastal resilience planning, and dam safety and spillway engineering." },
+      { q: "What does a marine engineering firm do?", a: "A marine engineering firm designs and assesses waterfront and submerged structures — piers, wharves, bulkheads, seawalls, dams, intakes, and bridge substructures — and produces construction documents. Coastal pairs that design work with underwater inspection and in-house self-perform construction." },
+      { q: "Are your engineering deliverables stamped?", a: "Stamped engineering drawings and calculations are provided where authorized, signed and sealed by licensed Professional Engineers. Licensure varies by discipline and responsible professional; contact Coastal for the current roster." },
+      { q: "Can you both assess and repair a marine structure?", a: "Yes. Coastal can investigate the condition, develop the repair, and self-perform the work — a continuous chain of accountability from inspection through as-built documentation." },
+      { q: "What inspection standards do you work to?", a: "Inspection scope and condition rating are set by the governing standard for the structure type and the owner's requirements. Coastal identifies the applicable standard during planning and documents findings so they remain traceable from field record to final report." },
+      { q: "Do you support prime contractors during the bid phase?", a: "Yes. Coastal provides bid-phase constructability review, scope development, risk identification, and technical proposal support for pursuits involving marine and underwater work." },
     ],
   },
   dredging: {
@@ -65,30 +66,49 @@ export const SERVICE_SEO: Record<string, ServiceSeo> = {
     serviceType: "Dredging",
     metaTitle: "Dredging Contractor | Channels & Sediment | Coastal Engineering Group",
     metaDescription:
-      "Mechanical and hydraulic dredging for navigation channels, berths, lake restoration, and beach renourishment — with environmental QC and turbidity monitoring built in. Eastern Seaboard.",
+      "Mechanical and hydraulic dredging, sediment management, dewatering, handling, disposal coordination, bathymetric support and waterway maintenance.",
     schemaDescription:
-      "Mechanical and hydraulic dredging and sediment management — maintenance and capital dredging of navigation channels and berths, environmental (contaminated-sediment) dredging, beach renourishment, debris removal, and lake and pond restoration, with turbidity monitoring and containment to protect sensitive aquatic environments.",
+      "Mechanical and hydraulic dredging for channels, basins, lagoons, waterfront facilities and environmental applications — maintenance and capital dredging, environmental and residuals dredging, sediment handling, separation and dewatering, barge, truck, pipeline and disposal coordination, debris and obstruction removal, bathymetric survey coordination and quantity tracking, and turbidity, containment and water-treatment controls throughout the Eastern United States.",
     faqs: [
-      { q: "What kinds of dredging does Coastal Engineering Group perform?", a: "Maintenance and capital dredging of channels and berths, environmental dredging of contaminated sediment, beach renourishment, debris removal, and lake and pond restoration — using mechanical or hydraulic methods matched to the site." },
-      { q: "How do you protect the environment during dredging?", a: "Our operations use turbidity monitoring, silt curtains, and controlled dredge-and-place methods, with disposal coordinated to permitted facilities, to keep impact on habitat and water quality to a minimum." },
-      { q: "Do you handle federal navigation-channel dredging?", a: "Yes — we have federal navigation and USACE channel experience, with hydrographic pre- and post-surveys documenting authorized depths and quantities." },
-      { q: "What areas does your dredging service cover?", a: "Federal, state, and commercial waterways across the Eastern Seaboard, from the Mid-Atlantic to the Southeast." },
+      { q: "What kinds of dredging does Coastal Engineering Group perform?", a: "Mechanical and hydraulic dredging for maintenance and capital work, environmental and residuals dredging, channels, slips, marinas, basins, lagoons and intake areas, and debris and obstruction removal — with the method matched to sediment, access, and the disposal pathway." },
+      { q: "How do you protect water quality during dredging?", a: "Depending on permit conditions, Coastal integrates turbidity controls, containment, water-quality monitoring, dewatering, treatment, and disposal documentation directly into the dredging plan, with daily production reporting and survey reconciliation." },
+      { q: "Why does the material pathway matter so much?", a: "Excavation is rarely what controls a dredging schedule. Transport, offloading, dewatering, water management, staging, and disposal capacity usually govern production, so Coastal plans the full pathway before mobilization rather than solving it in the field." },
+      { q: "How are dredged quantities verified?", a: "Bathymetric pre- and post-survey coordination and quantity tracking reconcile in-place volumes against the design template and paid quantities throughout the project." },
+      { q: "What areas does your dredging service cover?", a: "Federal, state, municipal, and industrial waterways throughout the Eastern United States." },
     ],
   },
   "marine-services": {
     slug: "marine-services",
-    name: "Marine Services",
-    serviceType: "Marine Equipment and Vessel Support",
-    metaTitle: "Marine Services & Equipment | Tugs, Barges, Cranes | Coastal Engineering Group",
+    name: "Fleet & Marine Support",
+    serviceType: "Marine Equipment and Logistics Support",
+    metaTitle: "Fleet & Marine Support | Workboats, Barges & Equipment | Coastal",
     metaDescription:
-      "Owned tugs, deck and crane barges, equipment rental, and marine logistics supporting our projects and third-party contractors up and down the East Coast.",
+      "Workboats, barges, cranes, marine logistics, crew support, equipment mobilization and specialty support for waterfront construction and diving projects.",
     schemaDescription:
-      "Marine equipment and vessel support — tugboat services, deck barges, crane barges, marine equipment rental, marine logistics and port coordination, and vessel-based ROV support. An owned fleet that supports both Coastal Engineering Group projects and third-party marine contractors along the U.S. East Coast.",
+      "Marine equipment and logistics support for construction, dredging, inspection and commercial diving — workboats and crew transport, material, equipment and crane barges, lifting, rigging and placement support, diving platforms, survey, inspection and ROV support, towing and repositioning coordination, temporary access and floating work platforms, and emergency mobilization throughout the Eastern United States.",
     faqs: [
-      { q: "What marine services and equipment do you provide?", a: "Tugboat services, deck barges, crane barges, marine equipment rental, marine logistics and port coordination, and vessel-based ROV support along the East Coast." },
-      { q: "Can other contractors charter your marine equipment?", a: "Yes. Contractors without their own marine assets can charter our tugs, barges, and crane platforms — with experienced, licensed captains and crews available." },
-      { q: "Do you own your marine fleet?", a: "Yes. Owning and operating the fleet means our marine support moves on our schedule rather than waiting on third-party charter availability." },
-      { q: "Where do you provide marine support?", a: "Up and down the U.S. East Coast, with mobilization across the Eastern Seaboard." },
+      { q: "What marine support does Coastal provide?", a: "Workboats and crew transport, material and crane barges, lifting and rigging support, diving platforms, survey and ROV support, towing and repositioning coordination, temporary access platforms, and emergency mobilization." },
+      { q: "Does Coastal own the equipment it provides?", a: "Marine assets are provided as Coastal-owned, leased, subcontracted, or partner-provided depending on the project. Coastal identifies the ownership and control status of each major asset during planning, along with its capacities and operating limitations." },
+      { q: "Can a prime contractor use Coastal's marine support on its own project?", a: "Yes. Coastal can provide a complete support package or integrate selected assets and crews into a prime contractor's work plan as a specialty marine subcontractor." },
+      { q: "How is marine equipment selected for a project?", a: "Selection is driven by access, draft, deck or payload capacity, lifting requirements, operating conditions, tides and access windows, and the construction sequence — coordinated with engineering, diving, dredging, and permit constraints." },
+      { q: "Where does Coastal mobilize marine support?", a: "Throughout the Eastern United States, sequenced around port operations, marine traffic, and weather windows." },
+    ],
+  },
+  diving: {
+    slug: "diving",
+    name: "Commercial Diving & Underwater Construction",
+    serviceType: "Commercial Diving and Underwater Construction",
+    metaTitle: "Commercial Diving & Underwater Construction | Coastal Engineering",
+    metaDescription:
+      "Surface-supplied commercial diving for underwater construction, inspection, repair, welding, concrete work, NDT support, dams, intakes and outfalls.",
+    schemaDescription:
+      "Surface-supplied commercial diving for underwater construction and structural repair, underwater inspection and condition documentation, welding, burning, cutting, drilling and installation, concrete placement, formwork, pile repair and jacket installation, dam, lock, gate, bulkhead, intake, outfall and pipeline work, NDT and ultrasonic thickness support, and debris removal, salvage and emergency response throughout the Eastern United States.",
+    faqs: [
+      { q: "What is surface-supplied commercial diving?", a: "Surface-supplied diving delivers breathing gas to the diver from the surface through an umbilical that also carries communications and, where required, hot water and video. It is the standard configuration for commercial underwater construction and inspection because it supports longer bottom times, direct topside communication, and a tended, task-specific work plan." },
+      { q: "What underwater construction work can Coastal self-perform?", a: "Underwater structural repair, welding, burning, cutting, drilling, bolting and installation, concrete placement and formwork, pile repair and jacket installation, and dam, lock, gate, bulkhead, intake, outfall and pipeline work." },
+      { q: "How is a dive operation planned?", a: "Every diving operation is supported by a task-specific dive plan, hazard analysis, equipment and personnel verification, emergency procedures, communications, and qualified supervision. Applicable ADCI, OSHA, USACE, owner, and project requirements are identified before mobilization." },
+      { q: "Can Coastal document underwater conditions for an engineer?", a: "Yes. Coastal documents submerged conditions through video, photography, measurements, sketches, sonar, and NDT support under engineer direction, distinguishing observed conditions, measured data, limitations, urgent findings, and recommended follow-up." },
+      { q: "Do you perform contaminated-water diving?", a: "Contaminated-water and other specialized diving is performed only when Coastal is properly equipped and qualified for the specific exposure. The hazard, decontamination approach, and equipment are identified during dive planning." },
     ],
   },
 }

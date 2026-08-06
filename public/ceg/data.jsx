@@ -247,12 +247,15 @@ const CLIENTS = [
   "DRJTBC", "Atlantic Shores OW", "Equinor",
 ];
 
+// Qualitative proof points, not counters. The previous values ("20+ Years",
+// "500+ Projects", "100% Safety Record") were never verified by Coastal, and
+// the edit package forbids publishing unverified performance claims or
+// animated counters that nobody owns and maintains.
 const STATS = [
-  { value: "20+", label: "Years of Experience" },
-  { value: "500+", label: "Projects Completed" },
-  { value: "100%", label: "Safety Record" },
-  { value: "ADCI", label: "Certified" },
-  { value: "VOSB", label: "Verified" },
+  { value: "Veteran-Owned", label: "Small Business" },
+  { value: "ADCI-Certified", label: "Commercial Diving Contractor" },
+  { value: "Multi-State PE", label: "Professional Engineering Licensure" },
+  { value: "Eastern U.S.", label: "Operations" },
 ];
 
 // States where Coastal Engineering's Professional Engineers are licensed.
@@ -304,7 +307,7 @@ const NAV = {
   projects: { label: "Projects",         href: "/projects/featured-work" },
   safety:   { label: "Safety & Quality", href: "/safety-quality" },
   careers:  { label: "Careers",          href: "/careers" },
-  contact:  { label: "Contact",          href: "/request-a-bid" },
+  contact:  { label: "Contact",          href: "/contact" },
 };
 
 // NOTE: general email and emergency-response line pending client verification.
@@ -321,8 +324,27 @@ const CONTACT = {
 
 // Careers — benefits + open roles teaser (JMT-leaning, talent-as-priority).
 const CAREERS = {
-  pitch: "Build the structures that hold the coast in place.",
-  lede: "We're a veteran-owned marine contractor scaling fast across the Eastern Seaboard. We hire experienced field personnel and engineers who want ownership over their projects — and we keep them with real benefits, real advancement, and real work.",
+  pitch: "Build Your Career on the Water",
+  lede: "Coastal Engineering Group is building a team for complex marine infrastructure work throughout the Eastern United States. We are looking for engineers, project managers, commercial divers, dredging professionals, operators, field leaders, and shared-services professionals who want meaningful responsibility and the opportunity to grow with the company.",
+  // Section 16: the "Why Build a Career at Coastal?" pillars.
+  whyCards: [
+    { h: "Meaningful Work", v: "Contribute to bridges, dams, ports, utilities, federal facilities, and waterfront infrastructure that communities and industries rely on." },
+    { h: "Room to Advance", v: "Join a growing organization where capable employees can take responsibility, lead teams, and help shape a division." },
+    { h: "Technical Variety", v: "Work across engineering, construction, dredging, diving, inspection, equipment, project controls, and client coordination." },
+    { h: "Safety and Accountability", v: "Operate within a culture that expects planning, communication, documentation, and responsibility for the team." },
+    { h: "One Company", v: "Field and office teams are expected to work toward the same project outcome — not as disconnected departments." },
+  ],
+  // Section 16: career paths, by function.
+  paths: [
+    { h: "Field Operations", v: "Commercial divers, dive supervisors, tenders, superintendents, operators, deckhands, welders, carpenters, mechanics, dredging personnel, and field engineers." },
+    { h: "Project Delivery", v: "Project managers, project engineers, estimators, schedulers, quality-control managers, safety professionals, and project accountants." },
+    { h: "Engineering", v: "Professional Engineers, Engineers-in-Training, inspectors, designers, and technical report writers." },
+    { h: "Shared Services", v: "Accounting, recruiting, proposal management, administration, business development, and operational support." },
+  ],
+  veterans: {
+    h: "Veterans at Coastal",
+    p: "Coastal values military experience that translates into leadership, planning, technical discipline, field readiness, equipment responsibility, and team accountability. Veterans are encouraged to apply across field, project, engineering, and corporate roles.",
+  },
   benefits: [
     { h: "Health & wellness", v: "Medical, dental, vision · 100% employer-paid options for divers and field crew." },
     { h: "Financial", v: "401(k) with company match · paid life and disability insurance." },

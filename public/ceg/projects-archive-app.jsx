@@ -109,9 +109,9 @@ function ProjectsArchive() {
               <span className="ceg-eyebrow-mark" />
               <span>Projects</span>
             </div>
-            <h1 className="prj-archive-h1">Featured Work</h1>
+            <h1 className="prj-archive-h1">Selected Marine Infrastructure Projects</h1>
             <p className="prj-archive-lede">
-              A selection of completed and active projects across commercial, federal, state, and energy markets — each self-performed under a single prime.
+              Coastal Engineering Group supports critical waterfront infrastructure from initial investigation through construction and closeout. Explore representative projects across marine construction, dredging, engineering, underwater inspection, and commercial diving.
             </p>
           </div>
         </div>

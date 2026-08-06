@@ -5,9 +5,9 @@ const { useState: useFS, useEffect: useFE } = React;
 // ─── Page Data ────────────────────────────────────────────────────────────────
 const FED_DATA = {
   hero: {
-    eyebrow: "Markets / Federal",
-    headline: "Marine Construction & Engineering for NAVFAC, USACE, and Federal Agencies",
-    lede: "Veteran-Owned. ADCI Certified. EM385 Compliant. Coastal Engineering Group delivers integrated diving, engineering, and construction services built for the demands of federal contracting.",
+    eyebrow: "Federal Market",
+    headline: "Federal Marine Infrastructure Delivery",
+    lede: "Coastal Engineering Group supports federal agencies and prime contractors with marine construction, dredging, commercial diving, underwater inspection, engineering, quality control, and marine support. Our teams are structured for high-documentation environments where safety planning, schedule coordination, technical compliance, and responsive field execution are essential.",
   },
   credentials: [
     { value: "VOSB Certified", desc: "Veteran-Owned Small Business" },
@@ -120,7 +120,7 @@ function FedHero() {
           <h1 className="fed-hero-h1">{FED_DATA.hero.headline}</h1>
           <p className="fed-hero-lede">{FED_DATA.hero.lede}</p>
           <div className="fed-hero-btns">
-            <a href="/request-a-bid" className="fed-btn fed-btn-primary">Request Capabilities Statement →</a>
+            <a href="/contact" className="fed-btn fed-btn-primary">Request Capabilities Statement →</a>
             <a href="#projects" className="fed-btn fed-btn-secondary">View Federal Projects</a>
           </div>
         </div>
@@ -206,7 +206,7 @@ function FedAdvantage() {
                 VOSB status lets CEG compete on contracts reserved exclusively for veteran-owned
                 firms — and to team as a preferred partner on large NAVFAC procurements where
                 agencies have active small-business participation goals.
-                <a href="/request-a-bid"> Request our SAM profile and certifications →</a>
+                <a href="/contact"> Request our SAM profile and certifications →</a>
               </p>
             </div>
           </div>
@@ -301,7 +301,7 @@ function FedProjects() {
           <p className="fed-callout-band-body">
             We can provide a formatted CPARs summary, project data sheets, and agency
             references for any active procurement.
-            <a href="/request-a-bid"> Contact our opportunity team →</a>
+            <a href="/contact"> Contact our opportunity team →</a>
           </p>
         </div>
       </div>
@@ -334,14 +334,14 @@ function FedTeaming() {
               <p className="fed-teaming-card-body">
                 Looking for a VOSB sub with real marine capability? Let's discuss teaming on your next NAVFAC or USACE pursuit.
               </p>
-              <a href="/request-a-bid" className="fed-btn fed-btn-primary fed-btn-sm">Contact Our Team →</a>
+              <a href="/contact" className="fed-btn fed-btn-primary fed-btn-sm">Discuss a Project →</a>
             </div>
             <div className="fed-teaming-card fed-teaming-card-outline">
               <h3 className="fed-teaming-card-title">Capabilities Statement</h3>
               <p className="fed-teaming-card-body">
                 Download our full Capabilities Statement for SAM.gov registration, NAICS codes, bonding capacity, and past performance references.
               </p>
-              <a href="/request-a-bid" className="fed-btn fed-btn-outline-blue fed-btn-sm">Request Capabilities Statement →</a>
+              <a href="/contact" className="fed-btn fed-btn-outline-blue fed-btn-sm">Request Capabilities Statement →</a>
             </div>
           </div>
         </div>
@@ -361,7 +361,7 @@ function FedCTA() {
             CEG is available for NAVFAC task orders, USACE projects, and federal teaming arrangements across the East Coast. Let's talk scope.
           </p>
           <div className="fed-cta-btns">
-            <a href="/request-a-bid" className="fed-btn fed-btn-white">Start a Conversation →</a>
+            <a href="/contact" className="fed-btn fed-btn-white">Discuss a Project →</a>
             <a href="tel:8453283178" className="fed-btn fed-btn-outline-white">Call 845-328-3178</a>
           </div>
           <div className="fed-cta-trust">
@@ -369,7 +369,7 @@ function FedCTA() {
             <span>EM385</span><span className="fed-dot">·</span>
             <span>ADCI</span><span className="fed-dot">·</span>
             <span>13 Licensed States</span><span className="fed-dot">·</span>
-            <span>100% Safety Record</span>
+            <span>Veteran-Owned Small Business</span>
           </div>
         </div>
       </div>

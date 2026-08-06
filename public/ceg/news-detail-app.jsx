@@ -117,7 +117,7 @@ function NewsDetailApp() {
   useNDE(() => {
     document.body.dataset.concept = "drydock";
     document.body.dataset.page = "news-detail";
-    if (article) document.title = `${article.title} — Coastal Engineering Group`;
+    if (article) document.title = `${article.title} | Coastal Engineering Group`;
   }, []);
 
   return (

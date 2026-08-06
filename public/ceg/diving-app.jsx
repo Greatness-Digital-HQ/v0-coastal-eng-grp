@@ -158,15 +158,17 @@ function DivHero() {
         <div className="div-hero-inner">
           <div className="ceg-eyebrow fed-eyebrow">
             <span className="ceg-eyebrow-mark" />
-            <span>Services / Commercial Diving</span>
+            <span>Commercial Diving &amp; Underwater Construction</span>
           </div>
-          <h1 className="div-hero-h1">ADCI Certified Divers.<br />PE-Led Operations.</h1>
+          <h1 className="div-hero-h1">Construction Capability<br />Below the Waterline.</h1>
           <p className="div-hero-lede">
-            Coastal Engineering Group fields commercial dive teams led by licensed Professional
-            Engineers — combining underwater certification with engineering authority to assess,
-            design, and repair in a single mobilization.
+            Coastal Engineering Group provides surface-supplied commercial diving for underwater
+            construction, inspection, repair, installation, demolition, and emergency response.
+            Our dive teams operate as part of an integrated marine construction and engineering
+            organization — bringing construction experience, technical documentation, and field
+            accountability below the waterline.
           </p>
-          <a href="/request-a-bid" className="fed-btn fed-btn-primary">Request a Dive Team →</a>
+          <a href="/contact" className="fed-btn fed-btn-primary">Discuss a Project →</a>
         </div>
       </div>
     </section>
@@ -178,7 +180,7 @@ function DivStatBand() {
   const stats = [
     { value: "PE Divers On Staff",  sub: "Licensed engineers certified to dive" },
     { value: "ADCI Certified",      sub: "All commercial dive teams" },
-    { value: "100% Safety Record",  sub: "Every dive operation, every project" },
+    { value: "Surface-Supplied",    sub: "Commercial diving systems and qualified supervision" },
   ];
   return (
     <div className="div-stat-band">
@@ -329,13 +331,13 @@ function DivCTA() {
             ADCI certified. PE-led. Deployed across 13 states. Tell us your project and we'll respond within 24 hours.
           </p>
           <div className="fed-cta-btns">
-            <a href="/request-a-bid" className="fed-btn fed-btn-white">Start a Project →</a>
+            <a href="/contact" className="fed-btn fed-btn-white">Discuss a Project →</a>
             <a href="tel:8453283178" className="fed-btn fed-btn-outline-white">Call 845-328-3178</a>
           </div>
           <div className="fed-cta-trust">
             <span>ADCI</span><span className="fed-dot">·</span>
             <span>PE Divers</span><span className="fed-dot">·</span>
-            <span>100% Safety Record</span><span className="fed-dot">·</span>
+            <span>Veteran-Owned Small Business</span><span className="fed-dot">·</span>
             <span>EM385</span><span className="fed-dot">·</span>
             <span>OSHA 10/30/40</span>
           </div>

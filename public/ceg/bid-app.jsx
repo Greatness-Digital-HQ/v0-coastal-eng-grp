@@ -12,6 +12,19 @@ const PROJECT_TYPES = [
   { key: "federal",         title: "Federal Contract",    desc: "NAVFAC / USACE task order" },
 ];
 
+// "What can we help with?" — the inquiry router from Section 18 of the edit
+// package. This governs which internal contact receives the submission, so it
+// is asked before the discipline breakdown.
+const INQUIRY_TYPES = [
+  "Project opportunity",
+  "Prime contractor / teaming inquiry",
+  "Engineering or inspection need",
+  "Emergency marine or underwater response",
+  "Vendor / subcontractor inquiry",
+  "Employment",
+  "Media / general question",
+];
+
 const MARKETS   = ["Federal", "State & Local", "Commercial", "Energy", "Industrial"];
 const TIMELINES = ["Immediate (ASAP)", "1–3 months", "3–6 months", "6–12 months", "Planning phase only"];
 const REFERRALS = ["NAVFAC / USACE contractor list", "Referral", "Web search", "LinkedIn", "Conference / trade show", "Returning client", "Other"];
@@ -142,10 +155,30 @@ function BidSidebar() {
 }
 
 // ─── Step 1: Project type ─────────────────────────────────────────────────────
-function Step1({ selected, onToggle, onNext }) {
+function Step1({ selected, onToggle, onNext, inquiryType, onInquiryType }) {
   return (
     <div className="bid-step-panel">
-      <h2 className="bid-step-h2">What type of project?</h2>
+      <h2 className="bid-step-h2">What can we help with?</h2>
+      <p className="bid-step-sub">This tells us who should pick up the inquiry.</p>
+      <div className="bid-fields bid-inquiry-field">
+        <div className="bid-field">
+          <label className="bid-label" htmlFor="bid-inquiry-type">
+            Inquiry type <span className="bid-req">*</span>
+          </label>
+          <select
+            id="bid-inquiry-type"
+            className="bid-select"
+            value={inquiryType}
+            required
+            onChange={(e) => onInquiryType(e.target.value)}
+          >
+            <option value="">Select the type of inquiry</option>
+            {INQUIRY_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </div>
+      </div>
+
+      <h3 className="bid-step-h3">Which capabilities are involved?</h3>
       <p className="bid-step-sub">Select all that apply — most projects span multiple disciplines.</p>
       <div className="bid-type-grid">
         {PROJECT_TYPES.map(pt => (
@@ -166,7 +199,7 @@ function Step1({ selected, onToggle, onNext }) {
         ))}
       </div>
       <div className="bid-nav bid-nav-end">
-        <button className="bid-btn-next" onClick={onNext} disabled={selected.length === 0}>
+        <button className="bid-btn-next" onClick={onNext} disabled={!inquiryType || selected.length === 0}>
           Continue — Project Details →
         </button>
       </div>
@@ -302,10 +335,11 @@ function BidSuccess({ refNum }) {
         </svg>
       </div>
       <div className="bid-success-ref">Request #{refNum}</div>
-      <h2 className="bid-success-h2">Bid request received.</h2>
+      <h2 className="bid-success-h2">Thank you. Your inquiry has been received.</h2>
       <p className="bid-success-body">
-        A qualified PE will review your project brief and respond within one business day —
-        often within hours. We'll contact you at the email provided.
+        Your inquiry has been routed to the appropriate Coastal team member, who will follow up
+        at the email address provided. {/* TODO(client): add the verified time-sensitive
+        response number here once Coastal confirms it — see Section 18 of the edit package. */}
       </p>
       <div className="bid-success-next-label">In the meantime</div>
       <div className="bid-success-links">
@@ -328,6 +362,7 @@ function BidRequestApp() {
   const [submitting,   setSubmitting]   = useB(false);
   const [refNum]                        = useB(() => Math.random().toString(36).slice(2, 8).toUpperCase());
   const [form, setForm] = useB({
+    inquiryType: "",
     market: "", state: "", timeline: "", description: "",
     name: "", title: "", org: "", email: "", phone: "", referral: "",
   });
@@ -338,6 +373,11 @@ function BidRequestApp() {
   function updateForm(key, val) {
     setForm(prev => ({ ...prev, [key]: val }));
   }
+  // ⚠ PROTOTYPE STUB — this does not transmit the submission anywhere. It fakes
+  // a network round-trip and shows the success screen. A real handler (server
+  // endpoint, validation, spam protection, routing by inquiry type, and a
+  // confirmation email) is required before launch — see Section 18 and the
+  // launch checklist, Section 19-E.
   function handleSubmit() {
     setSubmitting(true);
     setTimeout(() => { setSubmitting(false); setSubmitted(true); }, 1600);
@@ -345,8 +385,8 @@ function BidRequestApp() {
 
   useBE(() => {
     document.body.dataset.concept = "drydock";
-    document.body.dataset.page    = "bid-request";
-    document.title = "Request a Bid — Coastal Engineering Group";
+    document.body.dataset.page    = "contact";
+    document.title = "Contact Coastal Engineering Group | Discuss a Marine Project";
   }, []);
 
   return (
@@ -360,12 +400,13 @@ function BidRequestApp() {
           <div className="ceg-container">
             <div className="bid-eyebrow">
               <span className="bid-eyebrow-mark" />
-              Request a Bid
+              Contact
             </div>
-            <h1 className="bid-h1">Let's scope<br />your project.</h1>
+            <h1 className="bid-h1">Discuss a Marine<br />Infrastructure Project.</h1>
             <p className="bid-lead">
-              Submit a project brief and receive a detailed bid from a PE-qualified team
-              within 24–48 hours.
+              Tell us what you are planning, pursuing, evaluating, or responding to. Coastal
+              will route the inquiry to the appropriate construction, engineering, dredging,
+              diving, marine operations, federal, or corporate contact.
             </p>
           </div>
         </section>
@@ -381,7 +422,8 @@ function BidRequestApp() {
                 <div className="bid-form-col">
                   <BidProgress step={step} />
                   {step === 1 && (
-                    <Step1 selected={projectTypes} onToggle={toggleType} onNext={() => setStep(2)} />
+                    <Step1 selected={projectTypes} onToggle={toggleType} onNext={() => setStep(2)}
+                      inquiryType={form.inquiryType} onInquiryType={(v) => updateForm("inquiryType", v)} />
                   )}
                   {step === 2 && (
                     <Step2 form={form} onChange={updateForm} onNext={() => setStep(3)} onBack={() => setStep(1)} />

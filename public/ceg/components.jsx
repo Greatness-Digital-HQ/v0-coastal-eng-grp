@@ -216,7 +216,7 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
               <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" />
             </a>
             <div className="ceg-nav-centered-side ceg-nav-centered-side-r">
-              <a href="/request-a-bid" className="ceg-nav-centered-cta">
+              <a href="/contact" className="ceg-nav-centered-cta">
                 Discuss a Project
                 <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden>
                   <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
@@ -240,7 +240,7 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
             </a>
             {navItems}
             {/* Request a Bid — fades in when scrolled */}
-            <Btn href="/request-a-bid" variant="primary" arrow={false} className="ceg-nav-sticky-cta">Discuss a Project</Btn>
+            <Btn href="/contact" variant="primary" arrow={false} className="ceg-nav-sticky-cta">Discuss a Project</Btn>
           </div>
         </div>
       </>
@@ -269,7 +269,7 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
         <div className="ceg-container ceg-nav-row">
           {navItems}
           <div className="ceg-nav-right">
-            <Btn href="/request-a-bid" variant="primary" arrow={false}>Discuss a Project</Btn>
+            <Btn href="/contact" variant="primary" arrow={false}>Discuss a Project</Btn>
             <button className="ceg-nav-burger" onClick={onMobileOpen} aria-label="Open menu">
               <span /><span /><span />
             </button>
@@ -353,7 +353,7 @@ function MegaPanel({ navKey, item, data, shared }) {
           <div className="ceg-mega-cta-text">
             Have a project on the drawing board? Our opportunity team responds within one business day.
           </div>
-          <Btn href="/request-a-bid" arrow>Request a bid</Btn>
+          <Btn href="/contact" arrow>Discuss a Project</Btn>
         </div>
       </div>
     </div>
@@ -389,7 +389,7 @@ function HeroPhoto({ theme, data }) {
         </p>
         <div className="ceg-hero-ctas">
           <Btn href="#projects" variant="primary">View our work</Btn>
-          <Btn href="/request-a-bid" variant="ghost">Request a bid</Btn>
+          <Btn href="/contact" variant="ghost">Discuss a Project</Btn>
         </div>
         </div>
       </div>
@@ -414,7 +414,7 @@ function HeroStats({ theme, data }) {
         </p>
         <div className="ceg-hero-ctas">
           <Btn href="#capabilities" variant="hero-accent">View Capabilities</Btn>
-          <Btn href="/request-a-bid" variant="ghost-onbrand" arrow={true}>Discuss a Project</Btn>
+          <Btn href="/contact" variant="ghost-onbrand" arrow={true}>Discuss a Project</Btn>
         </div>
       </div>
       <div className="ceg-hero-stats-bar">
@@ -475,7 +475,7 @@ function HeroType({ theme, data }) {
             </p>
             <div className="ceg-hero-ctas">
               <Btn href="#projects" variant="primary">View projects</Btn>
-              <Btn href="/request-a-bid" variant="ghost">Request a bid</Btn>
+              <Btn href="/contact" variant="ghost">Discuss a Project</Btn>
             </div>
           </div>
 
@@ -930,7 +930,7 @@ function Capabilities({ theme, data }) {
           ))}
 
           {/* CAP-06: CTA Card */}
-          <a href="/request-a-bid" className="ceg-cap-card ceg-cap-card-cta">
+          <a href="/contact" className="ceg-cap-card ceg-cap-card-cta">
             <div className="ceg-cap-cta-eyebrow">Have a marine infrastructure challenge?</div>
             <h3 className="ceg-cap-cta-title">Discuss a Project</h3>
             <p className="ceg-cap-cta-body">Tell us what you're planning, pursuing, or evaluating. We'll route it to the right team.</p>
@@ -1501,7 +1501,7 @@ function MobileMenu({ open, onClose, data }) {
       </div>
       <div className="ceg-mobile-foot">
         <a href={`tel:${data.CONTACT.phone}`}>{data.CONTACT.phone}</a>
-        <Btn href="/request-a-bid" onClick={onClose}>Discuss a Project</Btn>
+        <Btn href="/contact" onClick={onClose}>Discuss a Project</Btn>
       </div>
     </div>
     </>
@@ -1564,7 +1564,7 @@ function WhyCEG({ theme, data }) {
               <p className="ceg-why-subhead">
                 Most projects require separate contracts for engineering and construction. Coastal Engineering Group delivers both — under one roof, on one timeline.
               </p>
-              <a href="/request-a-bid" className="ceg-btn ceg-btn-primary ceg-why-cta">Start a Project →</a>
+              <a href="/contact" className="ceg-btn ceg-btn-primary ceg-why-cta">Discuss a Project →</a>
             </div>
             <img
               src="/assets/why-ceg-photo.jpg"
@@ -1794,7 +1794,7 @@ const CERT_PILLS = [
   "ASDSO Dam Safety",
   "OSHA 10 / 30 / 40",
   "ASCE Waterfront",
-  "PE Licensed · 13 States",
+  "PE Licensed · Multi-State",
 ];
 
 function CertificationsBar() {
@@ -1892,7 +1892,7 @@ function FinalCTA({ data }) {
           Bring Coastal into the project early. We can help evaluate conditions, develop a practical execution plan, support a pursuit, or mobilize specialty marine capabilities.
         </p>
         <div className="ceg-final-cta-btns">
-          <a href="/request-a-bid" className="ceg-final-cta-btn ceg-final-cta-btn-primary">Discuss a Project →</a>
+          <a href="/contact" className="ceg-final-cta-btn ceg-final-cta-btn-primary">Discuss a Project →</a>
           <a href={`tel:${phone}`} className="ceg-final-cta-btn ceg-final-cta-btn-secondary">Call {phone}</a>
         </div>
         <div className="ceg-final-cta-trust">
