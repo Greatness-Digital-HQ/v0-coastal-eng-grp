@@ -5559,3 +5559,16 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   .ceg-nav-sticky-bar .ceg-nav-trigger { padding: 18px 4px; font-size: 12px; letter-spacing: 0; }
   .ceg-nav-sticky-bar .ceg-nav-item.is-open .ceg-nav-trigger::after { left: 4px; right: 4px; }
 }
+
+/* Leadership grid with a single published card: the four-column track left a
+   large empty gap once the placeholder executives were removed. Centre the
+   lone card until Coastal supplies the rest of the roster. */
+.ceg-leadership-grid:has(> .ceg-leader-card:only-child) {
+  display: flex;
+  justify-content: center;
+}
+.ceg-leadership-grid:has(> .ceg-leader-card:only-child) .ceg-leader-card {
+  max-width: 560px;
+  width: 100%;
+}
+.ceg-leader-card:not(:has(.ceg-leader-photo)) .ceg-leader-info { padding-top: 28px; }

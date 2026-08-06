@@ -232,6 +232,11 @@ const PROJECTS = [
 // Derived: states where we've actually performed work — drives projects filter.
 const STATES_WORKED = Array.from(new Set(PROJECTS.map(p => p.state))).sort();
 
+// TODO(client): confirm the exact certification terminology and current status
+// of every badge below before launch (edit package, Section 01 — "Confirm the
+// exact certification terminology before publication"). "DBE" and "ISO 9001"
+// in particular are specific third-party certifications that Coastal has not
+// yet verified; remove any Coastal does not actively hold.
 const CERTS = [
   { abbr: "VOSB", full: "Veteran-Owned Small Business" },
   { abbr: "ADCI", full: "Association of Diving Contractors Intl." },
@@ -241,6 +246,9 @@ const CERTS = [
   { abbr: "OSHA 30", full: "Construction Safety Trained" },
 ];
 
+// TODO(client): CLIENTS below names federal agencies as Coastal customers.
+// Verify each relationship — and confirm logo/name usage is permitted — before
+// launch. The edit package forbids using owner logos without permission.
 const CLIENTS = [
   "NAVFAC", "U.S. Army Corps of Engineers", "U.S. Coast Guard",
   "Port Authority NY/NJ", "Maryland Port Admin.", "NJDOT",
