@@ -8,9 +8,11 @@ Kevin,
 
 Revisions are done. Updated review link:
 
-https://v0-homepage-components-git-claude-websit-f40b2b-greatness-sites.vercel.app/?_vercel_share=17NFl8mIEEk0jJBId2j8PoE5xejbTKsX
+https://v0-homepage-components-git-claude-vercel-73ce4c-greatness-sites.vercel.app/?_vercel_share=xsiEDzEYpSR8ioP07ReJcF7T8QQLovmf
 
 That should open without a login. If it asks you to sign in, tell me — that's been the trouble with the earlier links.
+
+**You can now mark up the site directly.** A feedback sidebar loads on every page. Click the tab at the edge of the screen, then click whatever you want changed — the pin sticks to that exact element, and your note comes through to me with the page, the browser, and a screenshot attached. No account or software needed. Type your note, hit send, keep going. That's a lot easier for both of us than describing locations in an email, but email is still fine if you prefer it.
 
 I implemented everything in your package that falls inside design and content. Two things need you before I go further.
 
