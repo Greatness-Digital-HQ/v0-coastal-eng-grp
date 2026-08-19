@@ -309,6 +309,7 @@ function MegaPanel({ navKey, item, data, shared }) {
     navKey === "capabilities" ? data.DIVISIONS.slice(0, 3) :
     navKey === "markets"  ? data.MARKETS.slice(0, 3) :
     null;
+  const showAboutPhoto = navKey === "about";
 
   return (
     <div className={`ceg-mega ${shared ? "ceg-mega-shared" : ""}`}>
@@ -355,6 +356,13 @@ function MegaPanel({ navKey, item, data, shared }) {
           </div>
           <Btn href="/contact" arrow>Discuss a Project</Btn>
         </div>
+
+        {showAboutPhoto && (
+          <div className="ceg-mega-col ceg-mega-photo">
+            <PlaceholderPhoto kind="construction" tall />
+            <div className="ceg-mega-photo-caption">Veteran-owned marine infrastructure contractor</div>
+          </div>
+        )}
       </div>
     </div>
   );
