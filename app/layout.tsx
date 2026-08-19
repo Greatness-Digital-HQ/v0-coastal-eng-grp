@@ -62,7 +62,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="/ceg/styles.css" />
         <link rel="stylesheet" href="/ceg/drydock-body.css" />
         {/* BugHerd client review sidebar. Remove before launch. */}
-        <script src="https://www.bugherd.com/sidebarv2.js?apikey=s3bq72thfrkqk9qxdprdgw" async />
+        <script type="text/javascript" src="https://www.bugherd.com/sidebarv2.js?apikey=gd9t2ubzg644xnpiiv3w4w" async />
       </head>
       <body className="antialiased" data-concept="drydock">
         {children}
