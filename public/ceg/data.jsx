@@ -57,7 +57,8 @@ const DIVISIONS = [
     key: "construction",
     name: "Marine Construction",
     short: "Construction",
-    blurb: "Waterfront construction, structural rehabilitation, and repair over and below the waterline — piers, bulkheads, outfalls, intakes, and scour protection.",
+    blurb: "Waterfront construction, structural rehabilitation, and repair over and below the waterline: piers, bulkheads, outfalls, intakes, and scour protection.",
+    menuBlurb: "Waterfront construction and repair, above and below the waterline.",
     services: ["Pile Driving", "Bulkheads & Seawalls", "Bridge Substructures", "Pier & Wharf Construction"],
   },
   {
@@ -65,6 +66,7 @@ const DIVISIONS = [
     name: "Marine Engineering & Inspection",
     short: "Engineering & Inspection",
     blurb: "Waterfront engineering, underwater and structural inspection, condition assessment, and repair design informed by field conditions.",
+    menuBlurb: "Underwater inspection, condition assessment, and repair design.",
     services: ["Underwater Inspection", "Condition Assessment", "Repair Design", "Construction Engineering"],
   },
   {
@@ -72,6 +74,7 @@ const DIVISIONS = [
     name: "Dredging",
     short: "Dredging",
     blurb: "Mechanical and hydraulic dredging, sediment management, dewatering, disposal coordination, and waterway maintenance.",
+    menuBlurb: "Mechanical and hydraulic dredging and sediment management.",
     services: ["Maintenance Dredging", "Capital Dredging", "Environmental Dredging", "Sediment Management"],
   },
   {
@@ -79,6 +82,7 @@ const DIVISIONS = [
     name: "Commercial Diving & Underwater Construction",
     short: "Diving & Underwater Construction",
     blurb: "Surface-supplied commercial diving for underwater construction, inspection, repair, welding, concrete work, and emergency response.",
+    menuBlurb: "Surface-supplied diving for underwater construction and repair.",
     services: ["Underwater Construction", "Inspection & NDT", "Welding & Burning", "Salvage & Recovery"],
   },
   {
@@ -86,6 +90,7 @@ const DIVISIONS = [
     name: "Fleet & Marine Support",
     short: "Fleet & Marine Support",
     blurb: "Workboats, barges, cranes, marine logistics, and equipment mobilization supporting our own work and prime contractors.",
+    menuBlurb: "Workboats, barges, cranes, and marine logistics support.",
     services: ["Workboats & Crew Transport", "Deck & Crane Barges", "Lifting & Rigging", "Marine Logistics"],
   },
 ];

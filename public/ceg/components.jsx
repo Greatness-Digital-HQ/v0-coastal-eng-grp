@@ -343,7 +343,7 @@ function MegaPanel({ navKey, item, data, shared }) {
                 }
                 className="ceg-mega-feature-card">
                 <div className="ceg-mega-feature-title">{f.name}</div>
-                <div className="ceg-mega-feature-blurb">{f.blurb || f.detail}</div>
+                <div className="ceg-mega-feature-blurb">{f.menuBlurb || f.blurb || f.detail}</div>
               </a>
             ))}
           </div>
@@ -359,7 +359,7 @@ function MegaPanel({ navKey, item, data, shared }) {
 
         {showAboutPhoto && (
           <div className="ceg-mega-col ceg-mega-photo">
-            <PlaceholderPhoto kind="construction" tall />
+            <PlaceholderPhoto kind="construction" />
             <div className="ceg-mega-photo-caption">Veteran-owned marine infrastructure contractor</div>
           </div>
         )}
