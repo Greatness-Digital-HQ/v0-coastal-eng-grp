@@ -293,34 +293,23 @@ const LICENSED_STATES = [
 
 // Primary navigation. Per the client edit package, the top level is:
 // About | Capabilities | Markets | Projects | Safety & Quality | Careers | Contact
-// Top-level items with no `items` array render as direct links (no dropdown).
-// "Capabilities" replaces the old "Services" label; Safety & Quality is promoted
-// to the top level; Contact is a direct link (the header button is "Discuss a
-// Project"). News & Insights stays out of the primary nav until it has depth.
+// Flat nav only — no mega-menus, no dropdowns. Kevin's review flagged the old
+// mega-menu structure (About/Capabilities/Markets each opening a multi-column
+// panel) as cumbersome and hard to audit, on top of too many thin, single-
+// purpose pages. Every item below is a single click straight to its page:
+// - About and Capabilities lost their dropdowns; Capabilities now points at
+//   one consolidated /services overview (see services-overview-app.jsx) that
+//   surfaces the same five divisions and links into the existing per-division
+//   pages for anyone who wants to go deeper.
+// - Markets is gone from the nav entirely; MARKETS still feeds the homepage.
+// - Safety & Quality dropped from the top level — linked from About and the
+//   footer instead — so the primary bar stays short.
 const NAV = {
-  about: { label: "About", items: [
-    { label: "Overview",      href: "/about#glance" },
-    { label: "Our Story",     href: "/about#story" },
-    { label: "Leadership",    href: "/about#leadership" },
-    { label: "Veteran-Owned", href: "/about#veteran-owned" },
-  ]},
-  capabilities: { label: "Capabilities", items: [
-    { label: "Marine Construction",                        href: "/services/construction" },
-    { label: "Marine Engineering & Inspection",            href: "/services/engineering" },
-    { label: "Dredging",                                   href: "/services/dredging" },
-    { label: "Commercial Diving & Underwater Construction", href: "/services/diving" },
-    { label: "Fleet & Marine Support",                     href: "/services/marine-services" },
-  ]},
-  markets: { label: "Markets", items: MARKETS.map(m => ({
-    label: m.name,
-    href: m.key === "federal"
-      ? "/markets/federal"
-      : `/projects/featured-work#market=${encodeURIComponent(m.name)}`,
-  })) },
-  projects: { label: "Projects",         href: "/projects/featured-work" },
-  safety:   { label: "Safety & Quality", href: "/safety-quality" },
-  careers:  { label: "Careers",          href: "/careers" },
-  contact:  { label: "Contact",          href: "/contact" },
+  about:        { label: "About",       href: "/about" },
+  capabilities: { label: "Capabilities", href: "/services" },
+  projects:     { label: "Projects",     href: "/projects/featured-work" },
+  careers:      { label: "Careers",      href: "/careers" },
+  contact:      { label: "Contact",      href: "/contact" },
 };
 
 // NOTE: general email and emergency-response line pending client verification.

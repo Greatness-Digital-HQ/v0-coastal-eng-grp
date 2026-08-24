@@ -267,6 +267,9 @@ function AboutCTA() {
               <path d="M3.333 8h9.334M9 4.667L12.667 8 9 11.333" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </a>
+          <a href="/safety-quality" className="ceg-about-cta-secondary">
+            Read about our safety &amp; quality program →
+          </a>
         </div>
       </div>
     </section>

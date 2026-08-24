@@ -3443,6 +3443,17 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   color: var(--ink-soft);
   margin: 20px 0 32px;
 }
+.ceg-about-cta-secondary {
+  display: block;
+  margin-top: 18px;
+  font-size: 0.95rem;
+  color: var(--ink-mute);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.ceg-about-cta-secondary:hover {
+  color: var(--brand);
+}
 .ceg-btn-lg {
   padding: 16px 32px;
   font-size: 1rem;

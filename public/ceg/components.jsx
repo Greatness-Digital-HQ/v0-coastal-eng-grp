@@ -1451,6 +1451,7 @@ function Footer({ theme, data }) {
         <div className="ceg-footer-bottom">
           <div>© 2026 Coastal Engineering Group. All rights reserved.</div>
           <div className="ceg-footer-legal">
+            <a href="/safety-quality">Safety &amp; Quality</a>
             <a href="#">Privacy</a>
             <a href="#">Accessibility</a>
             <a href="#">SAM.gov UEI</a>
