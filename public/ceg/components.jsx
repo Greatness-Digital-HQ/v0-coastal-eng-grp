@@ -196,9 +196,10 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
           </div>
         );
       })}
-      {/* Shared, nav-anchored mega panel for click-nav (Drydock) */}
+      {/* Shared, nav-anchored dropdown for click-nav (Drydock). Plain list only
+          — no featured column, no CTA card — per Kevin's review. */}
       {isClickNav && openKey && data.NAV[openKey] && data.NAV[openKey].items && (
-        <MegaPanel navKey={openKey} item={data.NAV[openKey]} data={data} shared />
+        <SimplePanel navKey={openKey} item={data.NAV[openKey]} data={data} shared />
       )}
     </nav>
   );
@@ -280,9 +281,9 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
   );
 }
 
-function SimplePanel({ item, navKey, data }) {
+function SimplePanel({ item, navKey, data, shared }) {
   return (
-    <div className="ceg-dropdown">
+    <div className={`ceg-dropdown${shared ? " ceg-dropdown-shared" : ""}`}>
       <ul>
         {item.items.map((entry) => {
           const label = typeof entry === "string" ? entry : entry.label;

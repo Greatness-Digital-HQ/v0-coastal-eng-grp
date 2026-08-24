@@ -1004,6 +1004,31 @@ ul { list-style: none; padding: 0; margin: 0; }
   .ceg-market-card { border-right: none; }
 }
 
+/* ─── Markets overview page: per-market detail blocks below the grid ───── */
+.ceg-markets-detail-section { background: var(--surface); }
+.ceg-markets-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 48px 64px;
+}
+.ceg-market-detail-card { scroll-margin-top: 140px; }
+.ceg-market-detail-name {
+  font-family: var(--font-display);
+  font-size: 22px; font-weight: 500; color: var(--ink);
+  margin-bottom: 6px;
+}
+.ceg-market-detail-tag {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em;
+  color: var(--ink-mute); margin-bottom: 14px;
+}
+.ceg-market-detail-body {
+  font-family: var(--font-body); font-size: 15px; line-height: 1.65;
+  color: var(--ink-soft); margin-bottom: 20px;
+}
+@media (max-width: 780px) {
+  .ceg-markets-detail-grid { grid-template-columns: 1fr; }
+}
+
 /* ─── Projects ────────────────────────────────────────────────── */
 .ceg-projects { background: var(--bg); }
 .ceg-projects-filters { display: flex; flex-direction: column; gap: 14px; align-items: flex-end; }
@@ -1912,9 +1937,11 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 }
 
 /* DRYDOCK — denser, editorial */
-.concept-drydock .ceg-section { padding: 88px 0; }
+/* Bumped from 88px/48px per Kevin's review — wants more white space and a
+   more minimal feel overall, closer to ballardmc.com. */
+.concept-drydock .ceg-section { padding: 120px 0; }
 .concept-drydock .ceg-h1, .concept-drydock .ceg-h2 { font-feature-settings: "ss01"; }
-.concept-drydock .ceg-section-head { margin-bottom: 48px; }
+.concept-drydock .ceg-section-head { margin-bottom: 64px; }
 
 /* Drydock click-nav: shared mega panel anchored to the nav bar so every item drops at the same spot */
 .ceg-nav-main.is-click-nav { position: relative; }
@@ -1926,6 +1953,18 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   transform: translateX(-50%);
   width: min(1180px, calc(100vw - 48px));
   max-width: 1180px;
+  margin-top: 0;
+  z-index: 60;
+  animation: ceg-mega-in 140ms ease-out;
+}
+/* Same shared-panel anchoring as .ceg-mega-shared, sized for a plain list
+   instead of a full-width grid (Capabilities dropdown — no featured column,
+   no CTA card, per Kevin's review). */
+.ceg-dropdown.ceg-dropdown-shared {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
   margin-top: 0;
   z-index: 60;
   animation: ceg-mega-in 140ms ease-out;

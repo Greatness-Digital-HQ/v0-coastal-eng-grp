@@ -18,15 +18,18 @@ function App() {
       <window.UtilityBar theme={theme} data={data} />
       <window.Nav theme={theme} data={data} conceptKey="drydock" onMobileOpen={() => setMobileOpen(true)} />
       <main>
+        {/* Trimmed per Kevin's review — wants the homepage closer to
+            ballardmc.com: shorter, more white space, less stacked content.
+            Dropped IntegratedDelivery (overlapped Capabilities/WhyCEG),
+            Careers (already one click away via the utility bar and nav),
+            CertificationsBar and Locations (real info, but better suited to
+            About than a homepage scroll). Nothing here was deleted from the
+            site — just off the homepage. */}
         <window.Hero theme={theme} data={data} conceptKey="drydock" />
         <window.NarrativeIntro />
         <window.Capabilities theme={theme} data={data} />
-        <window.IntegratedDelivery />
         <window.WhyCEG theme={theme} data={data} />
         <window.FeaturedProjects theme={theme} data={data} />
-        <window.Careers theme={theme} data={data} />
-        <window.CertificationsBar />
-        <window.Locations />
         <window.FinalCTA data={data} />
       </main>
       <window.Footer theme={theme} data={data} />

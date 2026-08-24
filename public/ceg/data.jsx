@@ -293,23 +293,30 @@ const LICENSED_STATES = [
 
 // Primary navigation. Per the client edit package, the top level is:
 // About | Capabilities | Markets | Projects | Safety & Quality | Careers | Contact
-// Flat nav only — no mega-menus, no dropdowns. Kevin's review flagged the old
-// mega-menu structure (About/Capabilities/Markets each opening a multi-column
-// panel) as cumbersome and hard to audit, on top of too many thin, single-
-// purpose pages. Every item below is a single click straight to its page:
-// - About and Capabilities lost their dropdowns; Capabilities now points at
-//   one consolidated /services overview (see services-overview-app.jsx) that
-//   surfaces the same five divisions and links into the existing per-division
-//   pages for anyone who wants to go deeper.
-// - Markets is gone from the nav entirely; MARKETS still feeds the homepage.
-// - Safety & Quality dropped from the top level — linked from About and the
-//   footer instead — so the primary bar stays short.
+// Second pass per Kevin's follow-up review: the first pass flattened
+// everything, and that went further than he wanted for Capabilities.
+// - About: stays a flat link — no dropdown.
+// - Capabilities: keeps its dropdown (he wants the five divisions one click
+//   away), but the panel itself is now a plain list — no featured column, no
+//   "Discuss a Project" call-out card. See SimplePanel in components.jsx.
+// - Markets: no dropdown at all. Instead of five separate market links, it's
+//   one consolidated /markets overview page (see markets-overview-app.jsx);
+//   Federal keeps its own deep-dive page, linked from within that overview.
+// - Safety & Quality stays off the top level — linked from About and the
+//   footer instead.
 const NAV = {
   about:        { label: "About",       href: "/about" },
-  capabilities: { label: "Capabilities", href: "/services" },
-  projects:     { label: "Projects",     href: "/projects/featured-work" },
-  careers:      { label: "Careers",      href: "/careers" },
-  contact:      { label: "Contact",      href: "/contact" },
+  capabilities: { label: "Capabilities", items: [
+    { label: "Marine Construction",                        href: "/services/construction" },
+    { label: "Marine Engineering & Inspection",            href: "/services/engineering" },
+    { label: "Dredging",                                   href: "/services/dredging" },
+    { label: "Commercial Diving & Underwater Construction", href: "/services/diving" },
+    { label: "Fleet & Marine Support",                     href: "/services/marine-services" },
+  ]},
+  markets:      { label: "Markets",     href: "/markets" },
+  projects:     { label: "Projects",    href: "/projects/featured-work" },
+  careers:      { label: "Careers",     href: "/careers" },
+  contact:      { label: "Contact",     href: "/contact" },
 };
 
 // NOTE: general email and emergency-response line pending client verification.
