@@ -104,7 +104,9 @@ function UtilityBar({ theme, data }) {
           <span>NAVFAC · USACE · USCG</span>
         </div>
         <div className="ceg-util-right">
-          <a href="#contact">{data.CONTACT.emergency}</a>
+          {/* Was a dead "#contact" anchor — points at the real Safety &
+              Quality page now, since emergency response is a safety topic. */}
+          <a href="/safety-quality">{data.CONTACT.emergency}</a>
           <span className="ceg-util-sep">·</span>
           <a href="/careers">Careers</a>
           <a href="#partners">Partner Portal</a>
@@ -118,7 +120,9 @@ function UtilityBar({ theme, data }) {
 function Nav({ theme, data, conceptKey, onMobileOpen }) {
   const [openKey, setOpenKey] = useState(null);
   const [scrolled, setScrolled] = useState(false);
+  const [panelLeft, setPanelLeft] = useState(null);
   const navRef = useRef(null);
+  const triggerRefs = useRef({});
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -147,11 +151,36 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
     };
   }, [isClickNav, openKey]);
 
-  const handleTrigger = (key) => {
-    if (isClickNav) {
-      setOpenKey((cur) => (cur === key ? null : key));
+  // The shared panel is rendered once at the end of <nav>, not nested under
+  // whichever item is open, so it needs its own left offset — otherwise it
+  // just centers under the whole nav row instead of under the open trigger.
+  const positionPanel = (key) => {
+    const btn = triggerRefs.current[key];
+    const navEl = navRef.current;
+    if (btn && navEl) {
+      const btnRect = btn.getBoundingClientRect();
+      const navRect = navEl.getBoundingClientRect();
+      setPanelLeft(btnRect.left - navRect.left + btnRect.width / 2);
     }
   };
+
+  const handleTrigger = (key) => {
+    if (isClickNav) {
+      setOpenKey((cur) => {
+        const next = cur === key ? null : key;
+        if (next) positionPanel(next);
+        return next;
+      });
+    }
+  };
+
+  // Keep it aligned if the viewport resizes while open.
+  useEffect(() => {
+    if (!isClickNav || !openKey) return;
+    const onResize = () => positionPanel(openKey);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [isClickNav, openKey]);
 
   const navItems = (
     <nav
@@ -183,6 +212,7 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
               aria-expanded={openKey === key}
               aria-haspopup="true"
               onClick={() => handleTrigger(key)}
+              ref={(el) => { triggerRefs.current[key] = el; }}
             >
               <span>{item.label}</span>
               <svg width="9" height="9" viewBox="0 0 10 10" fill="none" aria-hidden>
@@ -199,7 +229,13 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
       {/* Shared, nav-anchored dropdown for click-nav (Drydock). Plain list only
           — no featured column, no CTA card — per Kevin's review. */}
       {isClickNav && openKey && data.NAV[openKey] && data.NAV[openKey].items && (
-        <SimplePanel navKey={openKey} item={data.NAV[openKey]} data={data} shared />
+        <SimplePanel
+          navKey={openKey}
+          item={data.NAV[openKey]}
+          data={data}
+          shared
+          style={panelLeft != null ? { left: `${panelLeft}px` } : undefined}
+        />
       )}
     </nav>
   );
@@ -281,9 +317,9 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
   );
 }
 
-function SimplePanel({ item, navKey, data, shared }) {
+function SimplePanel({ item, navKey, data, shared, style }) {
   return (
-    <div className={`ceg-dropdown${shared ? " ceg-dropdown-shared" : ""}`}>
+    <div className={`ceg-dropdown${shared ? " ceg-dropdown-shared" : ""}`} style={style}>
       <ul>
         {item.items.map((entry) => {
           const label = typeof entry === "string" ? entry : entry.label;
@@ -1897,7 +1933,7 @@ function FinalCTA({ data }) {
     <section className="ceg-final-cta">
       <div className="ceg-final-cta-inner">
         <p className="ceg-final-cta-eyebrow">Discuss a Project</p>
-        <h2 className="ceg-final-cta-heading">Have a marine infrastructure challenge?</h2>
+        <h2 className="ceg-final-cta-heading">Have a Marine Infrastructure Challenge?</h2>
         <p className="ceg-final-cta-sub">
           Bring Coastal into the project early. We can help evaluate conditions, develop a practical execution plan, support a pursuit, or mobilize specialty marine capabilities.
         </p>

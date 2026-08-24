@@ -302,8 +302,11 @@ const LICENSED_STATES = [
 // - Markets: no dropdown at all. Instead of five separate market links, it's
 //   one consolidated /markets overview page (see markets-overview-app.jsx);
 //   Federal keeps its own deep-dive page, linked from within that overview.
-// - Safety & Quality stays off the top level — linked from About and the
-//   footer instead.
+// - Safety & Quality stays off the top level — linked from About, the
+//   footer, and (per the third round) the utility bar's Emergency Marine
+//   Response link.
+// - Careers dropped from this primary nav in the third round — it already
+//   has its own link in the utility bar up top, so this was a duplicate.
 const NAV = {
   about:        { label: "About",       href: "/about" },
   capabilities: { label: "Capabilities", items: [
@@ -315,7 +318,6 @@ const NAV = {
   ]},
   markets:      { label: "Markets",     href: "/markets" },
   projects:     { label: "Projects",    href: "/projects/featured-work" },
-  careers:      { label: "Careers",     href: "/careers" },
   contact:      { label: "Contact",     href: "/contact" },
 };
 

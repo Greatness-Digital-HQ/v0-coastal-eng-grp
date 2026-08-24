@@ -3886,7 +3886,10 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   margin: 0 0 20px;
 }
 .ceg-final-cta-heading {
-  font-family: var(--font-display, "Barlow", system-ui, sans-serif);
+  /* Match the sans-serif used by every other section heading (.ceg-h2) —
+     this was pulling --font-display (the serif used only for hero copy),
+     which read as an unrelated typeface at the bottom of the page. */
+  font-family: var(--font-barlow, "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
   font-weight: 900;
   font-size: clamp(2.25rem, 5vw, 3.25rem);
   line-height: 1.1;
