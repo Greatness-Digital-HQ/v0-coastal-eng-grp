@@ -826,6 +826,10 @@ ul { list-style: none; padding: 0; margin: 0; }
 .ceg-divisions-display .ceg-photo.is-tall { aspect-ratio: auto; }
 .ceg-division-card {
   background: var(--bg);
+  /* Explicit — .ceg-capabilities sets color:white for its old dark card
+     grid, which this light card silently inherited (white text on a
+     near-white card) once reused for the accordion's detail panel. */
+  color: var(--ink);
   padding: 44px 44px;
   display: flex; flex-direction: column;
   border-top: none;

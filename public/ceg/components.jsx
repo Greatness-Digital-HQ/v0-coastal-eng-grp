@@ -934,9 +934,26 @@ function MarketPhoto({ marketKey }) {
 }
 
 // ─── Capabilities section ─────────────────────���─────────────────────────────────
+// Accordion layout per Kevin's reference (tab list + photo + detail panel),
+// replacing the old 6-card grid. Reuses the .ceg-division-* CSS already
+// built for this exact shape (tabs | photo | white card) — see the Divisions
+// section below — since nothing else used it after the /services overview
+// page was removed. Real photos (not the Unsplash PlaceholderPhoto
+// placeholders) for the same five divisions, matching what the grid used.
+const CAP_PHOTOS = {
+  construction: "/assets/marine-construction.jpg",
+  engineering: "/assets/marine-engineering.jpg",
+  dredging: "/assets/dredging.jpg",
+  diving: "/assets/commercial-diving.jpg",
+  "marine-services": "/assets/marine-services.jpg",
+};
+
 function Capabilities({ theme, data }) {
   const headRef = useReveal(0.2);
-  const gridRef = useReveal(0.1);
+  const [active, setActive] = useState(0);
+  const cap = data.CAPABILITIES[active];
+  const div = data.DIVISIONS.find((d) => d.key === cap.key);
+
   return (
     <section id="capabilities" className="ceg-section ceg-capabilities">
       <div className="ceg-container">
@@ -948,39 +965,55 @@ function Capabilities({ theme, data }) {
           </p>
         </div>
 
-        <div className="ceg-capabilities-grid ceg-reveal-stagger-grid" ref={gridRef}>
-          {/* CAP-01 through CAP-05 cards */}
-          {data.CAPABILITIES.map((cap, i) => (
-            <a key={cap.key} href={`/services/${cap.key}`} className={`ceg-cap-card${(cap.key === "diving" || cap.key === "dredging" || cap.key === "engineering" || cap.key === "construction" || cap.key === "marine-services") ? " ceg-cap-card-has-photo" : ""}`}>
-              {cap.key === "diving" && (
-                <div className="ceg-cap-card-photo-bg" style={{backgroundImage: "url('/assets/commercial-diving.jpg')"}} />
-              )}
-              {cap.key === "dredging" && (
-                <div className="ceg-cap-card-photo-bg" style={{backgroundImage: "url('/assets/dredging.jpg')"}} />
-              )}
-              {cap.key === "engineering" && (
-                <div className="ceg-cap-card-photo-bg" style={{backgroundImage: "url('/assets/marine-engineering.jpg')"}} />
-              )}
-              {cap.key === "construction" && (
-                <div className="ceg-cap-card-photo-bg" style={{backgroundImage: "url('/assets/marine-construction.jpg')"}} />
-              )}
-              {cap.key === "marine-services" && (
-                <div className="ceg-cap-card-photo-bg" style={{backgroundImage: "url('/assets/marine-services.jpg')"}} />
-              )}
-              <div className="ceg-cap-badge">{cap.badge}</div>
-              <h3 className="ceg-cap-title">{cap.title}</h3>
-              <p className="ceg-cap-body">{cap.body}</p>
-              <span className="ceg-cap-link">{cap.link}</span>
-            </a>
-          ))}
+        <div className="ceg-divisions-grid">
+          <div className="ceg-divisions-tabs">
+            {data.CAPABILITIES.map((c, i) => (
+              <button
+                key={c.key}
+                className={`ceg-division-tab ${i === active ? "is-active" : ""}`}
+                type="button"
+                onClick={() => setActive(i)}
+              >
+                <span className="ceg-division-tab-num">0{i + 1}</span>
+                <span className="ceg-division-tab-name">{c.title}</span>
+                <svg className="ceg-division-tab-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.4" />
+                </svg>
+              </button>
+            ))}
+          </div>
 
-          {/* CAP-06: CTA Card */}
-          <a href="/contact" className="ceg-cap-card ceg-cap-card-cta">
-            <div className="ceg-cap-cta-eyebrow">Have a marine infrastructure challenge?</div>
-            <h3 className="ceg-cap-cta-title">Discuss a Project</h3>
-            <p className="ceg-cap-cta-body">Tell us what you're planning, pursuing, or evaluating. We'll route it to the right team.</p>
-            <button className="ceg-cap-cta-btn">Discuss a Project →</button>
-          </a>
+          <div className="ceg-divisions-display">
+            <div
+              className="ceg-photo is-tall"
+              style={{ backgroundImage: `url('${CAP_PHOTOS[cap.key]}')`, backgroundSize: "cover", backgroundPosition: "center" }}
+            />
+            <div className="ceg-division-card">
+              <div className="ceg-division-card-num">0{active + 1}</div>
+              <div className="ceg-division-card-name">{cap.title}</div>
+              <p className="ceg-division-card-blurb">{cap.body}</p>
+              {div && (
+                <ul className="ceg-division-card-svc">
+                  {div.services.map((s) => (
+                    <li key={s}>
+                      <svg className="ceg-division-svc-tick" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+                        <path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="miter"/>
+                      </svg>
+                      <span>{s}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <a href={`/services/${cap.key}`} className="ceg-division-card-cta">
+                <span className="ceg-division-card-cta-label">Explore {cap.title}</span>
+                <span className="ceg-division-card-cta-arrow">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square"/>
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
