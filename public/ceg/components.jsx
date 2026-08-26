@@ -1674,13 +1674,17 @@ function WhyCEG({ theme, data }) {
 // ─── Featured Projects section ──────────────────────────────────────────────────
 // Photo-only masonry gallery, replacing the old filterable card grid — per
 // Kevin's reference, no titles/blurbs/filters, just proof-of-work photos and
-// one link out to the real projects page. Laid out as a fixed 8-tile bento
-// (one tall tile + a regular grid) since that's exactly how many real project
-// photos exist in PROJECTS today; revisit the tile map if that count grows.
+// one link out to the real projects page. Fixed 9-tile bento (3 columns x 3
+// rows worth of tiles, some spanning) — 9 divides evenly into 3 columns with
+// no leftover row, which 8 didn't. PROJECTS only has 8 real project photos
+// today, so the 9th tile is a standalone decorative photo (not a fabricated
+// project record — there's no real client/scope info behind this one).
+const GALLERY_EXTRA_PHOTO = { image: "/assets/cta-diver-crane.jpg", title: "Marine construction fieldwork", slug: null };
+
 function FeaturedProjects({ theme, data }) {
   const headRef = useReveal(0.2);
   const galleryRef = useReveal(0.1);
-  const photos = data.PROJECTS.slice(0, 8);
+  const photos = [...data.PROJECTS.slice(0, 8), GALLERY_EXTRA_PHOTO];
 
   return (
     <section id="featured-projects" className="ceg-section ceg-featured-projects">

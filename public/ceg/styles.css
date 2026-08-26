@@ -91,6 +91,12 @@ ul { list-style: none; padding: 0; margin: 0; }
 .ceg-reveal-stagger-grid.is-revealed > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.29s; }
 .ceg-reveal-stagger-grid.is-revealed > *:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 0.37s; }
 .ceg-reveal-stagger-grid.is-revealed > *:nth-child(6) { opacity: 1; transform: translateY(0); transition-delay: 0.45s; }
+/* Extended for the 9-tile projects gallery — this used to cap at 6 children,
+   which left any 7th+ item stuck at opacity:0 forever (never assigned a
+   transition-delay, so .is-revealed never applied to it). */
+.ceg-reveal-stagger-grid.is-revealed > *:nth-child(7) { opacity: 1; transform: translateY(0); transition-delay: 0.53s; }
+.ceg-reveal-stagger-grid.is-revealed > *:nth-child(8) { opacity: 1; transform: translateY(0); transition-delay: 0.61s; }
+.ceg-reveal-stagger-grid.is-revealed > *:nth-child(9) { opacity: 1; transform: translateY(0); transition-delay: 0.69s; }
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -2463,16 +2469,17 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 
 /* Photo-only masonry/bento gallery — replaces the old filterable 3-card
    grid above (.ceg-featured-projects-grid, .ceg-project-card*, and the
-   filter-pill rules are now unused but left in place). Fixed 8-tile layout,
-   sized for exactly the 8 real project photos in PROJECTS today.
-   Mirrored composition: tall bookend columns (1 and 6) frame two stacked
-   pairs (2/3 and 4/5), then two wide tiles (7 and 8) split the row below —
-   every row fully balanced left-to-right at every breakpoint, no tile ever
-   left sitting alone in a row by itself. */
+   filter-pill rules are now unused but left in place). Fixed 9-tile layout:
+   9 divides evenly across 3 columns with no leftover row, which 8 didn't —
+   the previous version left a lone half-filled row at the bottom.
+   Desktop composition mirrors the reference: tall bookends (1, 4) frame a
+   stacked pair (2/3), a plain trio (5/6/7), then a wide tile + normal tile
+   (8/9) closing it out flush. Below ~1100px that collapses to a plain,
+   perfectly even 3x3 grid — simpler, but still edge-to-edge with no gaps. */
 .ceg-project-gallery {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 200px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 220px;
   gap: 14px;
   margin-bottom: 56px;
 }
@@ -2489,25 +2496,27 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   transition: transform 0.5s ease;
 }
 .ceg-gallery-tile:hover img { transform: scale(1.045); }
-.ceg-gallery-tile-1 { grid-column: 1; grid-row: 1 / span 2; }
-.ceg-gallery-tile-2 { grid-column: 2; grid-row: 1; }
-.ceg-gallery-tile-3 { grid-column: 2; grid-row: 2; }
-.ceg-gallery-tile-4 { grid-column: 3; grid-row: 1; }
-.ceg-gallery-tile-5 { grid-column: 3; grid-row: 2; }
-.ceg-gallery-tile-6 { grid-column: 4; grid-row: 1 / span 2; }
-.ceg-gallery-tile-7 { grid-column: 1 / span 2; grid-row: 3; }
-.ceg-gallery-tile-8 { grid-column: 3 / span 2; grid-row: 3; }
-@media (max-width: 900px) {
-  /* Same rhythm, two columns: tall+stack, pair, tall+stack. */
-  .ceg-project-gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
+@media (min-width: 1101px) {
   .ceg-gallery-tile-1 { grid-column: 1; grid-row: 1 / span 2; }
   .ceg-gallery-tile-2 { grid-column: 2; grid-row: 1; }
   .ceg-gallery-tile-3 { grid-column: 2; grid-row: 2; }
-  .ceg-gallery-tile-4 { grid-column: 1; grid-row: 3; }
-  .ceg-gallery-tile-5 { grid-column: 2; grid-row: 3; }
-  .ceg-gallery-tile-6 { grid-column: 1; grid-row: 4 / span 2; }
-  .ceg-gallery-tile-7 { grid-column: 2; grid-row: 4; }
-  .ceg-gallery-tile-8 { grid-column: 2; grid-row: 5; }
+  .ceg-gallery-tile-4 { grid-column: 3; grid-row: 1 / span 2; }
+  .ceg-gallery-tile-5 { grid-column: 1; grid-row: 3; }
+  .ceg-gallery-tile-6 { grid-column: 2; grid-row: 3; }
+  .ceg-gallery-tile-7 { grid-column: 3; grid-row: 3; }
+  .ceg-gallery-tile-8 { grid-column: 1 / span 2; grid-row: 4; }
+  .ceg-gallery-tile-9 { grid-column: 3; grid-row: 4; }
+}
+@media (max-width: 1100px) and (min-width: 561px) {
+  .ceg-gallery-tile-1 { grid-column: 1; grid-row: 1; }
+  .ceg-gallery-tile-2 { grid-column: 2; grid-row: 1; }
+  .ceg-gallery-tile-3 { grid-column: 3; grid-row: 1; }
+  .ceg-gallery-tile-4 { grid-column: 1; grid-row: 2; }
+  .ceg-gallery-tile-5 { grid-column: 2; grid-row: 2; }
+  .ceg-gallery-tile-6 { grid-column: 3; grid-row: 2; }
+  .ceg-gallery-tile-7 { grid-column: 1; grid-row: 3; }
+  .ceg-gallery-tile-8 { grid-column: 2; grid-row: 3; }
+  .ceg-gallery-tile-9 { grid-column: 3; grid-row: 3; }
 }
 @media (max-width: 560px) {
   .ceg-project-gallery { grid-template-columns: 1fr; grid-auto-rows: 220px; }
