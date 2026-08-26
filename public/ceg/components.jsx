@@ -1672,27 +1672,22 @@ function WhyCEG({ theme, data }) {
 }
 
 // ─── Featured Projects section ──────────────────────────────────────────────────
+// Photo-only masonry gallery, replacing the old filterable card grid — per
+// Kevin's reference, no titles/blurbs/filters, just proof-of-work photos and
+// one link out to the real projects page. Laid out as a fixed 8-tile bento
+// (one tall tile + a regular grid) since that's exactly how many real project
+// photos exist in PROJECTS today; revisit the tile map if that count grows.
 function FeaturedProjects({ theme, data }) {
-  const [expertiseFilter, setExpertiseFilter] = useState("All");
-
-  // Extract unique expertise tags from projects
-  const expertiseOptions = ["All", ...Array.from(new Set(data.PROJECTS.map(p => p.tag))).sort()];
-
-  // Filter projects by expertise only
-  const filteredProjects = data.PROJECTS.filter(p =>
-    expertiseFilter === "All" || p.tag === expertiseFilter
-  );
-
-  // Use first 3 filtered projects, or show all if less than 3
-  const displayProjects = filteredProjects.slice(0, 3);
-  const hasNoResults = filteredProjects.length === 0;
+  const headRef = useReveal(0.2);
+  const galleryRef = useReveal(0.1);
+  const photos = data.PROJECTS.slice(0, 8);
 
   return (
     <section id="featured-projects" className="ceg-section ceg-featured-projects">
       <div className="ceg-container">
-        
+
         {/* Section header — centered */}
-        <div className="ceg-featured-projects-head">
+        <div className="ceg-featured-projects-head ceg-reveal-fade-up" ref={headRef}>
           <Eyebrow accent>Projects</Eyebrow>
           <h2 className="ceg-h2">Selected Marine Infrastructure Projects</h2>
           <p className="ceg-featured-projects-subhead">
@@ -1700,69 +1695,19 @@ function FeaturedProjects({ theme, data }) {
           </p>
         </div>
 
-        {/* Filter bar — expertise only */}
-        <div className="ceg-featured-projects-filters">
-          <div className="ceg-filter-group">
-            <div className="ceg-filter-label">Filter by Expertise</div>
-            <div className="ceg-filter-pills">
-              {expertiseOptions.map(opt => (
-                <button
-                  key={opt}
-                  className={`ceg-filter-pill ${expertiseFilter === opt ? "is-active" : ""}`}
-                  onClick={() => setExpertiseFilter(opt)}
-                >
-                  {opt}
-                </button>
-              ))}
+        {/* Pure photo showcase, not links to individual project pages — the
+            one way out of this section is "View All Projects" below. */}
+        <div className="ceg-project-gallery ceg-reveal-stagger-grid" ref={galleryRef}>
+          {photos.map((project, i) => (
+            <div key={project.slug || i} className={`ceg-gallery-tile ceg-gallery-tile-${i + 1}`}>
+              <img src={project.image} alt={project.title} loading="lazy" />
             </div>
-          </div>
+          ))}
         </div>
-
-        {/* Cards grid or no-results message */}
-        {hasNoResults ? (
-          <div className="ceg-featured-projects-empty">
-            <p>No projects match this filter — check back as we add more.</p>
-          </div>
-        ) : (
-          <div className="ceg-featured-projects-grid">
-            {displayProjects.map((project, i) => (
-              <article
-                key={i}
-                className="ceg-project-card"
-                data-expertise={project.tag}
-                data-state={project.state}
-              >
-                {/* Image area — 16:9 */}
-                <div className="ceg-project-card-image">
-                  {project.image ? (
-                    <img src={project.image} alt={project.title} className="ceg-project-card-img" />
-                  ) : (
-                    <div className="ceg-project-card-placeholder">Photo Coming</div>
-                  )}
-                </div>
-
-                {/* Badges */}
-                <div className="ceg-project-card-badges">
-                  <span className="ceg-project-badge ceg-project-badge-expertise">{project.tag}</span>
-                  <span className="ceg-project-badge ceg-project-badge-state">{project.state}</span>
-                </div>
-
-                {/* Title */}
-                <h3 className="ceg-project-card-title">{project.title}</h3>
-
-                {/* Description */}
-                <p className="ceg-project-card-description">{project.blurb}</p>
-
-                {/* View link */}
-                <a href="#" className="ceg-project-card-link">View Project →</a>
-              </article>
-            ))}
-          </div>
-        )}
 
         {/* View All Projects link */}
         <div className="ceg-featured-projects-footer">
-          <a href="#projects" className="ceg-featured-projects-all">View All Projects →</a>
+          <a href="/projects/featured-work" className="ceg-featured-projects-all">View All Projects →</a>
         </div>
 
       </div>
