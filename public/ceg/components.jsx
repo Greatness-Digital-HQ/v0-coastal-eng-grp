@@ -104,9 +104,13 @@ function UtilityBar({ theme, data }) {
           <span>NAVFAC · USACE · USCG</span>
         </div>
         <div className="ceg-util-right">
-          {/* Was a dead "#contact" anchor — points at the real Safety &
-              Quality page now, since emergency response is a safety topic. */}
-          <a href="/safety-quality">{data.CONTACT.emergency}</a>
+          {/* Was "Emergency Marine Response" (a dead "#contact" anchor before
+              that) — shortened to "Safety" per Kevin's review, still points
+              at the real Safety & Quality page. data.CONTACT.emergency
+              itself is untouched — it's still used, correctly, elsewhere
+              (footer hours, contact page) to describe the actual 24/7
+              emergency-response line. */}
+          <a href="/safety-quality">Safety</a>
           <span className="ceg-util-sep">·</span>
           <a href="/careers">Careers</a>
           <a href="#partners">Partner Portal</a>
