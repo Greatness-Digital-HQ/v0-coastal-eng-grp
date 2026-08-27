@@ -497,7 +497,12 @@ function SvcCerts({ certs }) {
   );
 }
 
-// Pulls real projects out of shared data so cards link to genuine case studies.
+// Photo-only version of the old project-card grid — per Kevin's ask, applied
+// sitewide alongside the homepage gallery: real photos instead of cards with
+// project titles/blurbs, ending in a button to the real projects page. Still
+// pulls from shared PROJECTS data (via slugs) so every photo is a genuine
+// project; keeps the same faded background photo and section header as
+// before.
 function SvcProjects({ head, slugs, photo }) {
   const all = (window.CEG_DATA && window.CEG_DATA.PROJECTS) || [];
   const projects = slugs.map((s) => all.find((p) => p.slug === s)).filter(Boolean);
@@ -513,26 +518,15 @@ function SvcProjects({ head, slugs, photo }) {
           </div>
           <h2 className="fed-h2 fed-light">{head.h2}</h2>
         </div>
-        <div className="fed-projects-grid">
+        <div className="svc-project-photos">
           {projects.map((p) => (
-            <a key={p.slug} href={`/projects/${p.slug}`} className="fed-project-card div-project-card">
-              <div className="fed-project-media">
-                <img src={p.image} alt={p.title} loading="lazy" />
-              </div>
-              <span className="fed-project-badge">{p.client} · {p.state}</span>
-              <h3 className="fed-project-title">{p.title}</h3>
-              <p className="fed-project-body">{p.blurb}</p>
-              <div className="fed-project-footer">
-                <div className="fed-project-tags">
-                  <span className="div-project-tag">{p.market}</span>
-                  <span className="div-project-tag">{p.tag}</span>
-                </div>
-              </div>
-            </a>
+            <div key={p.slug} className="svc-project-photo">
+              <img src={p.image} alt={p.title} loading="lazy" />
+            </div>
           ))}
         </div>
         <div style={{ textAlign: "center", marginTop: 40 }}>
-          <a href="/projects/featured-work" className="div-view-all">View All Projects →</a>
+          <a href="/projects/featured-work" className="fed-btn fed-btn-primary">View All Projects →</a>
         </div>
       </div>
     </section>

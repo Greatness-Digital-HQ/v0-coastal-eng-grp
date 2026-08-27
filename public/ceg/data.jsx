@@ -309,7 +309,7 @@ const LICENSED_STATES = [
 //   has its own link in the utility bar up top, so this was a duplicate.
 const NAV = {
   about:        { label: "About",       href: "/about" },
-  capabilities: { label: "Capabilities", items: [
+  capabilities: { label: "Services", items: [
     { label: "Marine Construction",                        href: "/services/construction" },
     { label: "Marine Engineering & Inspection",            href: "/services/engineering" },
     { label: "Dredging",                                   href: "/services/dredging" },

@@ -4733,6 +4733,28 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 }
 .div-view-all:hover { color: #ffffff; border-color: #ffffff; }
 
+/* Photo-only projects section (service pages + diving) — replaces the old
+   .fed-projects-grid card grid with plain real photos, per Kevin's ask. */
+.svc-project-photos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.svc-project-photo {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: rgba(255,255,255,0.04);
+}
+.svc-project-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform 0.5s ease;
+}
+.svc-project-photo:hover img { transform: scale(1.045); }
+@media (max-width: 700px) {
+  .svc-project-photos { grid-template-columns: 1fr; }
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    PROJECTS — ARCHIVE & DETAIL
    ═══════════════════════════════════════════════════════════════════════════ */

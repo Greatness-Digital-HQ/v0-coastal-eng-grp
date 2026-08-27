@@ -293,27 +293,17 @@ function DivProjects() {
           </div>
           <h2 className="fed-h2 fed-light">Projects That Required More Than a Diver</h2>
         </div>
-        <div className="fed-projects-grid">
+        {/* Photo-only, matching the other service pages and the homepage
+            gallery — real photos instead of cards, one button out. */}
+        <div className="svc-project-photos">
           {PROJECTS.map((p, i) => (
-            <div key={i} className="fed-project-card div-project-card">
-              <div className="fed-project-media">
-                <img src={p.img} alt={p.imgAlt} loading="lazy" />
-              </div>
-              <span className="fed-project-badge">{p.badge}</span>
-              <h3 className="fed-project-title">{p.title}</h3>
-              <p className="fed-project-body">{p.body}</p>
-              <div className="fed-project-footer">
-                <div className="fed-project-tags">
-                  {p.tags.map((t, j) => (
-                    <span key={j} className="div-project-tag">{t}</span>
-                  ))}
-                </div>
-              </div>
+            <div key={i} className="svc-project-photo">
+              <img src={p.img} alt={p.imgAlt} loading="lazy" />
             </div>
           ))}
         </div>
         <div style={{ textAlign: "center", marginTop: 40 }}>
-          <a href="/projects/featured-work" className="div-view-all">View All Projects →</a>
+          <a href="/projects/featured-work" className="fed-btn fed-btn-primary">View All Projects →</a>
         </div>
       </div>
     </section>
