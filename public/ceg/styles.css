@@ -4804,6 +4804,21 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   .page-service .div-stat-band-item:first-child { padding: 0; }
 }
 
+/* Icon-led stat band (service pages only — diving/federal keep the plain
+   text-only band). A small badge above each value, plus more breathing
+   room and a bigger value, so the band reads as a designed proof strip
+   instead of a stray line of fine print under the hero. */
+.page-service .div-stat-band { padding: 36px 0; }
+.page-service .div-stat-band-icon {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.14);
+  color: #ffffff;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 4px;
+}
+.page-service .div-stat-band-value { font-size: 17px; font-weight: 700; }
+.page-service .div-stat-band-sub { font-size: 13px; }
+
 /* ─── Projects ───────────────────────────────────────────────────────────── */
 .div-projects { background: #0b1929; }
 .div-project-card { background: #0f2236; border-color: rgba(255,255,255,0.07); }

@@ -51,9 +51,9 @@ const SERVICE_PAGES = {
     lede: "Coastal Engineering Group performs construction, rehabilitation, and repair work on waterfront and submerged infrastructure throughout the Eastern United States. Our project teams combine marine access, commercial diving, engineering support, equipment coordination, and disciplined project controls for work that cannot be executed effectively from land alone.",
     heroCta: "Discuss a Project →",
     stats: [
-      { value: "Self-Performed", sub: "Field crews, divers, operators, and marine equipment under one team" },
-      { value: "Engineering-Led", sub: "Constructability and field conditions addressed before work begins" },
-      { value: "Eastern U.S.", sub: "Operations throughout the Eastern United States" },
+      { value: "Self-Performed", sub: "Field crews, divers, operators, and marine equipment under one team", icon: ICON.structure },
+      { value: "Engineering-Led", sub: "Constructability and field conditions addressed before work begins", icon: ICON.doc },
+      { value: "Eastern U.S.", sub: "Operations throughout the Eastern United States", icon: ICON.map },
     ],
     servicesHead: { h2: "Marine Construction Capabilities", sub: "Hover any capability to see typical scope and applications." },
     services: [
@@ -101,9 +101,9 @@ const SERVICE_PAGES = {
     lede: "Coastal Engineering Group provides marine engineering, underwater inspection, condition assessment, repair development, and construction support for bridges, waterfront structures, dams, utilities, industrial facilities, and submerged infrastructure. Our engineering teams work closely with field personnel so recommendations reflect actual access, equipment, sequencing, and constructability.",
     heroCta: "Discuss a Project →",
     stats: [
-      { value: "Multi-State PE", sub: "Professional Engineering licensure across the Eastern United States" },
-      { value: "Field-Verified", sub: "Inspection and analysis grounded in observed conditions" },
-      { value: "Design to Build", sub: "Engineering paired with self-performed construction" },
+      { value: "Multi-State PE", sub: "Professional Engineering licensure across the Eastern United States", icon: ICON.doc },
+      { value: "Field-Verified", sub: "Inspection and analysis grounded in observed conditions", icon: ICON.map },
+      { value: "Design to Build", sub: "Engineering paired with self-performed construction", icon: ICON.structure },
     ],
     servicesHead: { h2: "Marine Engineering & Inspection Capabilities", sub: "Hover any capability to see typical scope and applications." },
     services: [
@@ -163,9 +163,9 @@ const SERVICE_PAGES = {
     lede: "Coastal Engineering Group performs mechanical and hydraulic dredging for channels, basins, lagoons, waterfront facilities, waterways, and environmental applications. We plan the work around production, access, sediment characteristics, water management, dewatering, transportation, disposal, environmental controls, and the operational needs of the facility.",
     heroCta: "Discuss a Project →",
     stats: [
-      { value: "Mechanical & Hydraulic", sub: "Method matched to sediment, access, and disposal pathway" },
-      { value: "Full Material Pathway", sub: "Excavation through dewatering, transport, and disposal" },
-      { value: "Documented Production", sub: "Survey reconciliation and daily production reporting" },
+      { value: "Mechanical & Hydraulic", sub: "Method matched to sediment, access, and disposal pathway", icon: ICON.wrench },
+      { value: "Full Material Pathway", sub: "Excavation through dewatering, transport, and disposal", icon: ICON.truck },
+      { value: "Documented Production", sub: "Survey reconciliation and daily production reporting", icon: ICON.doc },
     ],
     servicesHead: { h2: "Dredging Capabilities", sub: "Hover any capability to see typical scope and applications." },
     services: [
@@ -221,9 +221,9 @@ const SERVICE_PAGES = {
     lede: "Coastal Engineering Group provides workboats, barges, lifting support, equipment mobilization, crew logistics, and specialty marine support for construction, dredging, inspection, and commercial diving projects. Equipment is selected around access, draft, capacity, operating conditions, and the work sequence — not simply availability.",
     heroCta: "Discuss a Project →",
     stats: [
-      { value: "Access-Driven", sub: "Equipment selected for draft, capacity, and operating conditions" },
-      { value: "Integrated Planning", sub: "Coordinated with engineering, diving, dredging, and permits" },
-      { value: "Eastern U.S.", sub: "Mobilization throughout the Eastern United States" },
+      { value: "Access-Driven", sub: "Equipment selected for draft, capacity, and operating conditions", icon: ICON.anchor },
+      { value: "Integrated Planning", sub: "Coordinated with engineering, diving, dredging, and permits", icon: ICON.layers },
+      { value: "Eastern U.S.", sub: "Mobilization throughout the Eastern United States", icon: ICON.map },
     ],
     servicesHead: { h2: "Fleet & Marine Support Capabilities", sub: "Hover any capability to see typical scope and applications." },
     services: [
@@ -333,6 +333,13 @@ function SvcStatBand({ stats }) {
             <React.Fragment key={i}>
               {i > 0 && <div className="div-stat-band-divider" aria-hidden="true" />}
               <div className="div-stat-band-item">
+                {s.icon && (
+                  <span className="div-stat-band-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d={s.icon} />
+                    </svg>
+                  </span>
+                )}
                 <span className="div-stat-band-value">{s.value}</span>
                 <span className="div-stat-band-sub">{s.sub}</span>
               </div>
