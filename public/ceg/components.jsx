@@ -1024,17 +1024,22 @@ function Capabilities({ theme, data }) {
   );
 }
 
-// ─── Divisions section ──────────────────────────────────────────────────────────
-// The all-services hub page's centerpiece: same tab-accordion shape as the
-// homepage's Capabilities section (real photos, one open division at a time),
-// but showing every division's short services list and linking each CTA to
-// its real page — this is the "expandable, one place to see everything"
-// structure Kevin wants, without repeating a full service list on every
-// individual service page too.
-function Divisions({ theme, data }) {
-  const [active, setActive] = useState(0);
-  const div = data.DIVISIONS[active];
+// Simple line-icon per division, used only as a small badge on each tile —
+// not the full ICON set from service-app.jsx (that file isn't loaded here).
+const DIV_ICON = {
+  construction: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+  engineering: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
+  dredging: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M3 12h.01M3 8h.01M3 16h.01",
+  diving: "M12 8a2 2 0 100-4 2 2 0 000 4zm0 0v13m0 0a8 8 0 01-8-8h2m6 8a8 8 0 008-8h-2",
+  "marine-services": "M3 13l1.5 5.5a2 2 0 001.92 1.5h11.16a2 2 0 001.92-1.5L21 13M3 13l9-4 9 4M3 13h18M12 3v6",
+};
 
+// ─── Divisions section ──────────────────────────────────────────────────────────
+// The all-services hub page's centerpiece: a grid of large, clickable photo
+// tiles — one per division, straight to its real page. Per Kevin's direction
+// this hub page should read as clickable tiles, not another accordion (the
+// homepage's Capabilities section above keeps the tab-accordion shape).
+function Divisions({ theme, data }) {
   return (
     <section id="services" className="ceg-section ceg-divisions">
       <div className="ceg-container">
@@ -1052,52 +1057,32 @@ function Divisions({ theme, data }) {
           </p>
         </div>
 
-        <div className="ceg-divisions-grid">
-          <div className="ceg-divisions-tabs">
-            {data.DIVISIONS.map((d, i) => (
-              <button
-                key={d.key}
-                className={`ceg-division-tab ${i === active ? "is-active" : ""}`}
-                onClick={() => setActive(i)}
+        <div className="ceg-division-tiles">
+          {data.DIVISIONS.map((d, i) => (
+            <a key={d.key} href={`/services/${d.key}`} className="ceg-division-tile">
+              <div
+                className="ceg-division-tile-media"
+                style={{ backgroundImage: `url('${CAP_PHOTOS[d.key]}')` }}
               >
-                <span className="ceg-division-tab-num">0{i + 1}</span>
-                <span className="ceg-division-tab-name">{d.short}</span>
-                <svg className="ceg-division-tab-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.4" />
-                </svg>
-              </button>
-            ))}
-          </div>
-
-          <div className="ceg-divisions-display">
-            <div
-              className="ceg-photo is-tall"
-              style={{ backgroundImage: `url('${CAP_PHOTOS[div.key]}')`, backgroundSize: "cover", backgroundPosition: "center" }}
-            />
-            <div className="ceg-division-card">
-              <div className="ceg-division-card-num">0{active + 1}</div>
-              <div className="ceg-division-card-name">{div.name}</div>
-              <p className="ceg-division-card-blurb">{div.blurb}</p>
-              <ul className="ceg-division-card-svc">
-                {div.services.map((s) => (
-                  <li key={s}>
-                    <svg className="ceg-division-svc-tick" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-                      <path d="M2 6.5l2.5 2.5L10 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="miter"/>
-                    </svg>
-                    <span>{s}</span>
-                  </li>
-                ))}
-              </ul>
-              <a href={`/services/${div.key}`} className="ceg-division-card-cta">
-                <span className="ceg-division-card-cta-label">Explore {div.short}</span>
-                <span className="ceg-division-card-cta-arrow">
+                <span className="ceg-division-tile-icon" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d={DIV_ICON[d.key]} />
+                  </svg>
+                </span>
+                <span className="ceg-division-tile-num">0{i + 1}</span>
+              </div>
+              <div className="ceg-division-tile-body">
+                <div className="ceg-division-tile-name">{d.name}</div>
+                <p className="ceg-division-tile-blurb">{d.blurb}</p>
+                <span className="ceg-division-tile-cta">
+                  <span>Explore {d.short}</span>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
                     <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square"/>
                   </svg>
                 </span>
-              </a>
-            </div>
-          </div>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
     </section>

@@ -1,32 +1,35 @@
 // CEG — All Services hub page.
 //
 // Kevin asked us to look at how Ballard structures theirs: lean at the top,
-// a full list of services with expandable categories in ONE place, then
-// photos. He was explicit that he does NOT want that full expandable list
-// repeated on every individual service page — just here, once, as the map
-// of everything Coastal does. This page reuses window.Divisions (the
-// tab-accordion already built for the homepage's Capabilities section) as
-// that single expandable list, with a lean hero above it and nothing else
-// competing for attention below.
+// a full list of services in ONE place, then photos. He was explicit that
+// he does NOT want a full list repeated on every individual service page —
+// just here, once, as the map of everything Coastal does. He later asked
+// for two more changes to this page specifically: (1) the same brightened
+// hero-photo treatment as the individual service pages, applied here too,
+// and (2) window.Divisions changed from a tab-accordion into a grid of
+// large clickable tiles — the accordion shape stays on the homepage's
+// Capabilities section, not here.
 
 const { useState: useSOMobile } = React;
 
 function ServicesOverviewHero() {
   return (
-    <section className="prj-archive-hero">
+    <section className="div-hero svc-hero">
+      <div className="svc-hero-photo" aria-hidden="true" style={{ backgroundImage: "url('/assets/hero-background.jpg')" }} />
       <div className="ceg-container">
-        <div className="prj-archive-hero-inner">
+        <div className="div-hero-inner">
           <div className="ceg-eyebrow fed-eyebrow">
             <span className="ceg-eyebrow-mark" />
             <span>Services</span>
           </div>
-          <h1 className="prj-archive-h1">Five Divisions. One Accountable Team.</h1>
-          <p className="prj-archive-lede">
+          <h1 className="div-hero-h1">Five Divisions.<br />One Accountable Team.</h1>
+          <p className="div-hero-lede">
             Marine construction, engineering and inspection, dredging, commercial
             diving and underwater construction, and fleet and marine support —
             self-performed by one company so nothing gets lost between design,
             equipment, and the water.
           </p>
+          <a href="/contact" className="fed-btn fed-btn-primary">Discuss a Project →</a>
         </div>
       </div>
     </section>
