@@ -27,6 +27,12 @@ export const PAGE_SEO = {
       "Veteran-owned marine infrastructure contractor and engineering firm integrating marine construction, dredging, commercial diving, underwater inspection and waterfront engineering across the Eastern United States.",
     path: "/about",
   },
+  services: {
+    title: "Marine Construction, Engineering, Dredging & Diving Services | Coastal",
+    description:
+      "Marine construction, engineering and inspection, dredging, commercial diving and underwater construction, and fleet and marine support — five self-performed divisions, one accountable team.",
+    path: "/services",
+  },
   markets: {
     title: "Markets We Serve | Coastal Engineering Group",
     description:

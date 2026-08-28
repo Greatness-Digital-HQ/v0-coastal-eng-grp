@@ -1,15 +1,17 @@
 // CEG — Markets overview.
 //
-// Kevin's review: Markets shouldn't be a dropdown of five separate market
-// pages — condense it into one page. This reuses window.Markets (the card
-// grid already built in components.jsx, previously unused) as the top
-// section, then gives each market a short anchor block below. Federal is
-// the one market with real depth already built (public/ceg/federal-app.jsx,
-// with its own SEO/FAQ schema) — that page stays live and this overview
-// links into it — the other four markets don't have dedicated pages, so
-// their anchor block below is the whole story for now.
+// Kevin's review, round 1: Markets shouldn't be a dropdown of five separate
+// market pages — condense it into one page. Round 2 (after seeing it live):
+// "the markets page has redundant sections" — the original build paired a
+// card grid (window.Markets) with a second block below restating the same
+// name/detail for each market, linked by an anchor jump. That's gone now:
+// this page uses the same single tab-accordion pattern as the new Services
+// hub (public/ceg/services-overview-app.jsx) — one place to see every
+// market, nothing repeated. Federal is the one market with real depth
+// already built (public/ceg/federal-app.jsx, with its own SEO/FAQ schema);
+// that page stays live and the accordion's Federal tab links into it.
 
-const { useState: useMOMobile } = React;
+const { useState: useMOMobile, useState: useMOActive } = React;
 
 const MARKET_COPY = {
   federal: {
@@ -56,31 +58,52 @@ function MarketsOverviewHero() {
   );
 }
 
-function MarketDetail({ m }) {
+// Single expandable section — same tab-accordion shape as the Services hub's
+// Divisions component (photo | name, detail tag, one paragraph, CTA), so a
+// market's name and description each appear exactly once on the page.
+function MarketsAccordion({ data }) {
+  const [active, setActive] = useMOActive(0);
+  const m = data.MARKETS[active];
   const copy = MARKET_COPY[m.key];
-  return (
-    <div id={`market-${m.key}`} className="ceg-market-detail-card">
-      <h3 className="ceg-market-detail-name">{m.name}</h3>
-      <p className="ceg-market-detail-tag">{m.detail}</p>
-      <p className="ceg-market-detail-body">{copy.body}</p>
-      <a href={copy.cta.href} className="ceg-division-card-cta">
-        <span className="ceg-division-card-cta-label">{copy.cta.label}</span>
-        <span className="ceg-division-card-cta-arrow">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square"/>
-          </svg>
-        </span>
-      </a>
-    </div>
-  );
-}
 
-function MarketsDetailSection({ data }) {
   return (
-    <section className="ceg-section ceg-markets-detail-section">
+    <section className="ceg-section ceg-divisions">
       <div className="ceg-container">
-        <div className="ceg-markets-detail-grid">
-          {data.MARKETS.map((m) => <MarketDetail key={m.key} m={m} />)}
+        <div className="ceg-divisions-grid">
+          <div className="ceg-divisions-tabs">
+            {data.MARKETS.map((mk, i) => (
+              <button
+                key={mk.key}
+                className={`ceg-division-tab ${i === active ? "is-active" : ""}`}
+                type="button"
+                onClick={() => setActive(i)}
+              >
+                <span className="ceg-division-tab-num">0{i + 1}</span>
+                <span className="ceg-division-tab-name">{mk.name}</span>
+                <svg className="ceg-division-tab-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.4" />
+                </svg>
+              </button>
+            ))}
+          </div>
+
+          <div className="ceg-divisions-display">
+            <window.MarketPhoto marketKey={m.key} />
+            <div className="ceg-division-card">
+              <div className="ceg-division-card-num">0{active + 1}</div>
+              <div className="ceg-division-card-name">{m.name}</div>
+              <p className="ceg-market-detail-tag">{m.detail}</p>
+              <p className="ceg-division-card-blurb">{copy.body}</p>
+              <a href={copy.cta.href} className="ceg-division-card-cta">
+                <span className="ceg-division-card-cta-label">{copy.cta.label}</span>
+                <span className="ceg-division-card-cta-arrow">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square"/>
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -105,8 +128,7 @@ function MarketsOverviewApp() {
       <window.Nav theme={theme} data={data} conceptKey="drydock" onMobileOpen={() => setMobileOpen(true)} />
       <main>
         <MarketsOverviewHero />
-        <window.Markets theme={theme} data={data} />
-        <MarketsDetailSection data={data} />
+        <MarketsAccordion data={data} />
         <window.FinalCTA data={data} />
       </main>
       <window.Footer theme={theme} data={data} />

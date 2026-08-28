@@ -4088,7 +4088,10 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   position: relative;
   overflow: hidden;
 }
-/* Background photo */
+/* Background photo — per Kevin's reference (Ballard's service-page heroes are
+   essentially undarkened photo banners): the photo now reads at near-full
+   brightness, with just enough left-side scrim + text-shadow to keep the
+   headline legible instead of the old heavy overlay that hid the photo. */
 .fed-hero::before {
   content: "";
   position: absolute;
@@ -4096,20 +4099,20 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   background-image: url('/assets/federal-hero-bg.jpg');
   background-size: cover;
   background-position: center 40%;
-  opacity: 0.28;
+  opacity: 0.9;
   pointer-events: none;
   z-index: 0;
 }
-/* Dark vignette — protects left-side text */
+/* Light left-side scrim — protects text without hiding the photo */
 .fed-hero::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(11, 25, 41, 0.92) 0%,
-    rgba(11, 25, 41, 0.72) 50%,
-    rgba(11, 25, 41, 0.35) 100%
+    rgba(11, 25, 41, 0.8) 0%,
+    rgba(11, 25, 41, 0.48) 45%,
+    rgba(11, 25, 41, 0.16) 100%
   ), repeating-linear-gradient(
     0deg, transparent, transparent 60px,
     rgba(255,255,255,0.012) 60px, rgba(255,255,255,0.012) 61px
@@ -4126,10 +4129,12 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   color: #ffffff;
   margin: 20px 0 24px;
   letter-spacing: -0.01em;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.55);
 }
 .fed-hero-lede {
   font-family: var(--font-inter, "Inter", system-ui, sans-serif);
-  font-size: 17px; line-height: 1.7; color: #a8bdd0; max-width: 660px; margin-bottom: 40px;
+  font-size: 17px; line-height: 1.7; color: #eef3f8; max-width: 660px; margin-bottom: 40px;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.6);
 }
 .fed-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
 
@@ -4428,16 +4433,19 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   position: absolute; inset: 0;
   background-image: url('/assets/commercial-diving.jpg');
   background-size: cover; background-position: center 30%;
-  opacity: 0.25; pointer-events: none; z-index: 0;
+  opacity: 0.9; pointer-events: none; z-index: 0;
 }
+/* Per Kevin's reference (Ballard's service heroes read as near-undarkened
+   photo banners): light left-side scrim only, with text-shadow below doing
+   the rest of the legibility work so the photo itself stays visible. */
 .div-hero::after {
   content: "";
   position: absolute; inset: 0;
   background: linear-gradient(
     to right,
-    rgba(11,25,41,0.94) 0%,
-    rgba(11,25,41,0.72) 55%,
-    rgba(11,25,41,0.3) 100%
+    rgba(11,25,41,0.8) 0%,
+    rgba(11,25,41,0.48) 55%,
+    rgba(11,25,41,0.16) 100%
   );
   pointer-events: none; z-index: 0;
 }
@@ -4447,29 +4455,32 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   font-weight: 900; font-size: clamp(2rem, 5vw, 3.4rem);
   line-height: 1.08; color: #ffffff;
   margin: 20px 0 24px; letter-spacing: -0.01em;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.55);
 }
 .div-hero-lede {
   font-family: var(--font-inter, "Inter", sans-serif);
-  font-size: 16px; line-height: 1.7; color: #a8bdd0;
+  font-size: 16px; line-height: 1.7; color: #eef3f8;
   max-width: 680px; margin-bottom: 40px;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.6);
 }
 
 /* Shared service-page hero — per-service photo via an inline-styled child,
-   suppressing the diving page's hardcoded ::before image. The photo sits more
-   visible than the diving hero, and the scrim is left-weighted so the headline
-   stays legible while the image (crane, equipment, etc.) reads on the right. */
+   suppressing the diving page's hardcoded ::before image. The photo now
+   reads at near-full brightness (Kevin's note: he wants the photo actually
+   visible, like Ballard's service-page heroes), with just a light left-side
+   scrim plus text-shadow keeping the headline legible. */
 .svc-hero::before { display: none; }
 .svc-hero-photo {
   position: absolute; inset: 0;
   background-size: cover; background-position: center 35%;
-  opacity: 0.55; z-index: 0; pointer-events: none;
+  opacity: 0.95; z-index: 0; pointer-events: none;
 }
 .svc-hero::after {
   background: linear-gradient(
     to right,
-    rgba(11,25,41,0.88) 0%,
-    rgba(11,25,41,0.62) 48%,
-    rgba(11,25,41,0.22) 100%
+    rgba(11,25,41,0.76) 0%,
+    rgba(11,25,41,0.44) 48%,
+    rgba(11,25,41,0.14) 100%
   );
 }
 

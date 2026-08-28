@@ -1025,6 +1025,12 @@ function Capabilities({ theme, data }) {
 }
 
 // ─── Divisions section ──────────────────────────────────────────────────────────
+// The all-services hub page's centerpiece: same tab-accordion shape as the
+// homepage's Capabilities section (real photos, one open division at a time),
+// but showing every division's short services list and linking each CTA to
+// its real page — this is the "expandable, one place to see everything"
+// structure Kevin wants, without repeating a full service list on every
+// individual service page too.
 function Divisions({ theme, data }) {
   const [active, setActive] = useState(0);
   const div = data.DIVISIONS[active];
@@ -1064,14 +1070,11 @@ function Divisions({ theme, data }) {
           </div>
 
           <div className="ceg-divisions-display">
-            <PlaceholderPhoto kind={div.key === "engineering" ? "bridge" : div.key === "marine-services" ? "barge" : div.key} tall />
             <div
-              className="ceg-division-card"
-              data-has-photo={div.key === "diving" ? "true" : undefined}
-            >
-              {div.key === "diving" && (
-                <div className="ceg-division-card-photo-bg" style={{backgroundImage: "url('/assets/commercial-diving.jpg')"}} />
-              )}
+              className="ceg-photo is-tall"
+              style={{ backgroundImage: `url('${CAP_PHOTOS[div.key]}')`, backgroundSize: "cover", backgroundPosition: "center" }}
+            />
+            <div className="ceg-division-card">
               <div className="ceg-division-card-num">0{active + 1}</div>
               <div className="ceg-division-card-name">{div.name}</div>
               <p className="ceg-division-card-blurb">{div.blurb}</p>
@@ -1085,7 +1088,7 @@ function Divisions({ theme, data }) {
                   </li>
                 ))}
               </ul>
-              <a href={`#service-${div.key}`} className="ceg-division-card-cta">
+              <a href={`/services/${div.key}`} className="ceg-division-card-cta">
                 <span className="ceg-division-card-cta-label">Explore {div.short}</span>
                 <span className="ceg-division-card-cta-arrow">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
@@ -1095,49 +1098,6 @@ function Divisions({ theme, data }) {
               </a>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Markets ────────────────────────────────────────────────────────────────
-function Markets({ theme, data }) {
-  const headRef = useReveal(0.2);
-  const gridRef = useReveal(0.1);
-  return (
-    <section id="markets" className="ceg-section ceg-markets">
-      <div className="ceg-container">
-        <div className="ceg-section-head ceg-section-head-row ceg-reveal-fade-up" ref={headRef}>
-          <div>
-            <Eyebrow mark>Markets we serve</Eyebrow>
-            <h2 className="ceg-h2">Federal contracts.<br/>Commercial accountability.</h2>
-          </div>
-          <p className="ceg-section-lede">
-            The bulk of our work supports federal coastal-resilience programs.
-            Our veteran-owned status enables direct teaming on NAVFAC and USACE
-            set-aside opportunities.
-          </p>
-        </div>
-
-        <div className="ceg-markets-grid ceg-reveal-stagger-grid" ref={gridRef}>
-          {data.MARKETS.map((m, i) => (
-            <a key={m.key} href={`#market-${m.key}`} className="ceg-market-card">
-              <div className="ceg-market-bg" aria-hidden>
-                <MarketPhoto marketKey={m.key} />
-              </div>
-              <div className="ceg-market-body">
-                <div className="ceg-market-name">{m.name}</div>
-                <div className="ceg-market-detail">{m.detail}</div>
-                <div className="ceg-market-foot">
-                  <span className="ceg-market-projects">{m.projects} projects</span>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.4" />
-                  </svg>
-                </div>
-              </div>
-            </a>
-          ))}
         </div>
       </div>
     </section>
@@ -1995,6 +1955,6 @@ function IntegratedDelivery() {
 Object.assign(window, {
   applyThemeVars,
   Eyebrow, Btn, UtilityBar, Nav, Hero, PlaceholderPhoto, MarketPhoto,
-  Capabilities, WhyCEG, FeaturedProjects, Careers, CertificationsBar, Locations, Divisions, Markets, Projects, VOSBBand, ClientsStrip, ContactBand, FinalCTA, Footer, MobileMenu,
+  Capabilities, WhyCEG, FeaturedProjects, Careers, CertificationsBar, Locations, Divisions, Projects, VOSBBand, ClientsStrip, ContactBand, FinalCTA, Footer, MobileMenu,
   NarrativeIntro, IntegratedDelivery,
 });
