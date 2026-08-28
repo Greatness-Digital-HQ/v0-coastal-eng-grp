@@ -155,7 +155,7 @@ ul { list-style: none; padding: 0; margin: 0; }
   display: inline-flex; align-items: center; gap: 12px;
   padding: 14px 22px;
   font-family: var(--font-inter, "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
-  font-size: 14px; font-weight: 600;
+  font-size: 16px; font-weight: 600;
   letter-spacing: 0.02em;
   border: 1px solid transparent;
   transition: background .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
@@ -4040,7 +4040,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   justify-content: center;
   font-family: var(--font-inter, "Inter", system-ui, sans-serif);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.02em;
   padding: 16px 36px;
   border-radius: 0;
@@ -4115,12 +4115,12 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .fed-btn {
   display: inline-flex; align-items: center; justify-content: center;
   font-family: var(--font-inter, "Inter", system-ui, sans-serif);
-  font-weight: 600; font-size: 14px; letter-spacing: 0.02em;
+  font-weight: 600; font-size: 16px; letter-spacing: 0.02em;
   padding: 14px 28px; border-radius: 0; border: 1.5px solid transparent;
   text-decoration: none; cursor: pointer; white-space: nowrap;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
-.fed-btn-sm { padding: 12px 22px; font-size: 13px; }
+.fed-btn-sm { padding: 12px 22px; font-size: 15px; }
 .fed-btn-primary { background: #1c6fbf; color: #ffffff; border-color: #1c6fbf; }
 .fed-btn-primary:hover { background: #155fa0; border-color: #155fa0; }
 .fed-btn-secondary { background: transparent; color: #ffffff; border-color: #5b9bd5; }
@@ -4503,7 +4503,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   );
   pointer-events: none; z-index: 0;
 }
-.div-hero-inner { position: relative; z-index: 1; max-width: 75%; }
+.div-hero-inner { position: relative; z-index: 1; max-width: 65%; }
 .div-hero-h1 {
   font-family: var(--font-barlow, "Barlow", sans-serif);
   font-weight: 900; font-size: clamp(2rem, 5vw, 3.4rem);
@@ -4516,7 +4516,10 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   /* Matches .svc-prose-p (the Overview body copy) so the hero subtext and
      the overview paragraph below it read as the same size — Kevin's note. */
   font-size: 1.05rem; line-height: 1.7; color: #eef3f8;
-  max-width: 680px; margin-bottom: 40px;
+  /* No max-width of its own — fills .div-hero-inner's width (65% of the
+     container) instead of independently narrowing to a fixed 680px, which
+     was making the hero content look ~50% wide instead of the intended 65%. */
+  max-width: 100%; margin-bottom: 40px;
   text-shadow: 0 1px 10px rgba(0,0,0,0.6);
 }
 
@@ -4623,9 +4626,10 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 }
 .div-service-card {
   background: #0f2236;
-  padding: 32px 20px 28px;
+  /* Condensed from 32px/28px top/bottom — same card, less vertical air. */
+  padding: 20px 18px 18px;
   display: flex; flex-direction: column; align-items: center;
-  text-align: center; gap: 10px;
+  text-align: center; gap: 7px;
   position: relative;
   cursor: default;
   transition: background 0.2s;
@@ -4637,7 +4641,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .div-service-card:hover .div-service-icon { color: #5b9bd5; }
 .div-service-title {
   font-family: var(--font-barlow, "Barlow", sans-serif);
-  font-weight: 700; font-size: 14px; color: #ffffff;
+  font-weight: 700; font-size: 17px; color: #ffffff;
   line-height: 1.25; margin: 0;
 }
 .div-service-desc {
