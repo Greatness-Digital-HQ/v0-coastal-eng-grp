@@ -928,6 +928,60 @@ ul { list-style: none; padding: 0; margin: 0; }
   background: var(--on-brand); color: var(--brand);
   transform: translateX(4px);
 }
+
+/* ─── Division tiles (Services hub page) ────────────────────────────────── */
+.ceg-division-tiles {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+}
+.ceg-division-tile {
+  display: flex; flex-direction: column;
+  background: var(--bg); border: 1px solid var(--rule);
+  text-decoration: none; color: inherit;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.ceg-division-tile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -18px rgba(11,25,41,0.35);
+  border-color: var(--ink);
+}
+.ceg-division-tile-media {
+  position: relative; aspect-ratio: 4/3;
+  background-size: cover; background-position: center;
+}
+.ceg-division-tile-icon {
+  position: absolute; top: 16px; left: 16px;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(11,25,41,0.72); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .25s ease, transform .25s ease;
+}
+.ceg-division-tile:hover .ceg-division-tile-icon {
+  background: var(--brand); transform: scale(1.06);
+}
+.ceg-division-tile-num {
+  position: absolute; bottom: 14px; right: 16px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em;
+  color: #fff; background: rgba(11,25,41,0.55); padding: 3px 10px;
+}
+.ceg-division-tile-body {
+  padding: 26px 26px 28px; display: flex; flex-direction: column; flex: 1;
+}
+.ceg-division-tile-name {
+  font-family: var(--font-display); font-size: 20px; font-weight: 600;
+  letter-spacing: -0.015em; line-height: 1.2; margin-bottom: 10px; color: var(--ink);
+}
+.ceg-division-tile-blurb {
+  font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin: 0 0 22px; flex: 1;
+}
+.ceg-division-tile-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--brand); letter-spacing: 0.02em;
+}
+.ceg-division-tile-cta svg { transition: transform .25s ease; }
+.ceg-division-tile:hover .ceg-division-tile-cta svg { transform: translateX(4px); }
+@media (max-width: 900px) { .ceg-division-tiles { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .ceg-division-tiles { grid-template-columns: 1fr; } }
+
 @media (max-width: 1080px) {
   .ceg-divisions-display { grid-template-columns: 1fr; grid-template-rows: auto auto; }
   .ceg-divisions-display .ceg-photo { border-right: none; border-bottom: 1px solid var(--ink); min-height: 320px; }
