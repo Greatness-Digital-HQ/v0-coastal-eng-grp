@@ -547,8 +547,10 @@ function ServiceApp() {
         <SvcStatBand stats={d.stats} />
         <SvcOverview intro={d.intro} />
         <SvcServices head={d.servicesHead} services={d.services} />
-        <SvcProjects head={d.projectsHead} slugs={d.projectSlugs} photo={d.heroImg} />
+        {/* Certs sits between the two dark sections (capabilities, projects)
+            to break them up, per Kevin's note. */}
         <SvcCerts certs={d.certs} />
+        <SvcProjects head={d.projectsHead} slugs={d.projectSlugs} photo={d.heroImg} />
         <SvcFaq faqs={d.faqs} />
         <SvcCTA cta={d.cta} />
       </main>
