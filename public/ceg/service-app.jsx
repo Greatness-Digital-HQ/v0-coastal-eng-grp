@@ -6,6 +6,17 @@
 // The active service is chosen by window.__CEG_SERVICE, set by each route
 // (app/services/<key>/page.tsx) before this file runs — the same pattern the
 // project-detail page uses with window.__CEG_SLUG.
+//
+// Per Kevin's review against the Ballard reference pages: these pages carried
+// too much — a "Why/The Difference" section and two "narrative" prose bands
+// that mostly restated the Overview, plus a full Professional-Engineering
+// state grid — on top of an already-solid Overview, capability grid, and
+// project gallery. Cut to match Ballard's lean shape (hero, short overview,
+// capabilities, projects, then Full Services List) while keeping certs and
+// FAQ, which Kevin specifically wanted kept. One genuinely useful, non-
+// redundant bit from the old narratives per division (a deliverables list,
+// a method comparison, an asset-disclosure note) now lives as a compact
+// addendum inside Overview itself instead of its own section.
 
 const { useState: useSS, useEffect: useSE, useRef: useSR } = React;
 
@@ -44,18 +55,6 @@ const SERVICE_PAGES = {
       { value: "Engineering-Led", sub: "Constructability and field conditions addressed before work begins" },
       { value: "Eastern U.S.", sub: "Operations throughout the Eastern United States" },
     ],
-    why: {
-      eyebrow: "The Difference",
-      h2: "We Build What We Engineer.",
-      body: [
-        "Most marine builders hand structural questions back to a separate design firm. We don't. Our construction crews work alongside in-house Professional Engineers, so design intent carries straight through to the field.",
-        "That integration removes the handoffs, change orders, and split accountability that drive marine projects over budget. One company owns the work from drawing to as-built.",
-      ],
-      cards: [
-        { title: "Single Accountability", body: "Engineering and construction under one roof means no finger-pointing between designer and builder — one team owns the outcome." },
-        { title: "Built to the Drawing", body: "PE oversight in the field ensures what gets built matches what was engineered, with QA/QC documented at every milestone." },
-      ],
-    },
     servicesHead: { h2: "Marine Construction Capabilities", sub: "Hover any capability to see typical scope and applications." },
     services: [
       { title: "Piers, Docks & Wharves", desc: "Waterfront facilities", icon: ICON.grid, tooltip: "Construction and rehabilitation of piers, docks, wharves, platforms, and waterfront facilities — deck framing, pile caps, fender systems, and utility supports for commercial, municipal, and federal berthing." },
@@ -68,20 +67,6 @@ const SERVICE_PAGES = {
       { title: "Dam, Lock & Navigation Work", desc: "Gates & bulkheads", icon: ICON.beaker, tooltip: "Dam, lock, gate, bulkhead, and navigation infrastructure work — including repairs performed under differential-pressure and restricted-access conditions." },
       { title: "Demolition & Emergency Repair", desc: "Debris, salvage, response", icon: ICON.bolt, tooltip: "Demolition, debris removal, salvage, and emergency marine repairs where damage assessment and time-sensitive mobilization are required." },
     ],
-    narratives: [
-      {
-        h2: "Built Around Self-Performed Marine Work",
-        body: [
-          "Coastal plans construction around the realities of marine access, limited visibility, changing water conditions, rigging, lifting, vessel positioning, environmental controls, and active facility operations. Commercial divers, field crews, operators, engineers, and project managers work from a coordinated execution plan so that underwater conditions and constructability are addressed early.",
-        ],
-      },
-      {
-        h2: "Integrated Support When the Scope Demands It",
-        body: [
-          "Marine construction projects often require underwater investigation, engineered temporary works, dredging, survey support, specialty inspection, or equipment that is not part of a conventional land-based construction approach. Coastal can integrate those capabilities into one project plan or support a prime contractor as a specialty marine subcontractor.",
-        ],
-      },
-    ],
     certs: ["VOSB", "USACE CQM", "EM 385-1-1", "OSHA 10/30", "ADCI", "AWS Welding", "PE-Stamped"],
     projectSlugs: ["mayport-naval-station-wharf-repair", "port-newark-container-terminal", "greenwood-lake-dam-rehabilitation"],
     projectsHead: { eyebrow: "Projects", h2: "Related Marine Construction Projects" },
@@ -93,7 +78,6 @@ const SERVICE_PAGES = {
         "What sets our marine construction apart is integration. Field crews work alongside licensed Professional Engineers and commercial divers, and we self-perform the core work rather than subcontracting it out. Design intent carries straight through to the field, and one accountable team owns the project from planning to closeout.",
       ],
     },
-    whereCopy: "Coastal Engineering Group self-performs marine construction for federal, state, municipal, utility, and industrial clients throughout the Eastern United States. Our Professional Engineers maintain licensure in:",
     faqs: [
       { q: "What does a marine construction contractor do?", a: "A marine construction contractor builds, rehabilitates, and repairs structures over and below the waterline — piers, wharves, bulkheads, outfalls and intakes, scour protection, and submerged foundations. Coastal Engineering Group self-performs this work with its own crews, divers, and equipment, directed by licensed Professional Engineers." },
       { q: "What areas does Coastal Engineering Group serve?", a: "Coastal works federal, state, municipal, utility, transportation, and industrial waterfronts throughout the Eastern United States, with Professional Engineers licensed across multiple states." },
@@ -121,18 +105,6 @@ const SERVICE_PAGES = {
       { value: "Field-Verified", sub: "Inspection and analysis grounded in observed conditions" },
       { value: "Design to Build", sub: "Engineering paired with self-performed construction" },
     ],
-    why: {
-      eyebrow: "The Difference",
-      h2: "Engineering That Knows How It Gets Built.",
-      body: [
-        "Design that ignores constructability creates change orders. Because our engineers work alongside the crews who execute the work, our drawings reflect what can actually be built in the water column — not just what is theoretically sound.",
-        "From condition assessment through stamped construction documents, we deliver design that is grounded in field reality and ready to procure.",
-      ],
-      cards: [
-        { title: "Constructable Design", body: "Drawings informed by self-perform construction experience — fewer RFIs, fewer change orders, faster procurement." },
-        { title: "Assessment to As-Built", body: "We can assess the structure, design the fix, and build it — a continuous chain of accountability from inspection to completion." },
-      ],
-    },
     servicesHead: { h2: "Marine Engineering & Inspection Capabilities", sub: "Hover any capability to see typical scope and applications." },
     services: [
       { title: "Waterfront Structural Engineering", desc: "Rehabilitation design", icon: ICON.doc, tooltip: "Structural engineering and rehabilitation design for piers, wharves, bulkheads, seawalls, and submerged foundations — load analysis, material selection, and construction documents ready for procurement." },
@@ -145,33 +117,6 @@ const SERVICE_PAGES = {
       { title: "Specialty Data Integration", desc: "Hydrographic, sonar, NDT", icon: ICON.beaker, tooltip: "Hydrographic, sonar, NDT, and specialty data integration where applicable, indexed to structure and elevation so findings remain traceable." },
       { title: "Bid-Phase Support", desc: "Constructability review", icon: ICON.bolt, tooltip: "Bid-phase constructability and technical proposal support — scope development, risk identification, and execution strategy for pursuits." },
     ],
-    narratives: [
-      {
-        h2: "From Existing Condition to Executable Repair",
-        body: [
-          "Submerged and waterfront structures often contain unknown conditions that cannot be resolved from record drawings alone. Coastal can combine field investigation, engineering analysis, repair development, and construction input to reduce assumptions and produce solutions that can be installed safely and efficiently.",
-        ],
-      },
-      {
-        h2: "Typical Deliverables",
-        items: [
-          "Stamped engineering drawings and calculations where authorized",
-          "Underwater inspection reports and condition ratings",
-          "Photographic, video, sonar, and measurement records",
-          "Repair concepts and prioritized recommendations",
-          "Technical specifications and bid documents",
-          "Construction submittals, temporary-works packages, and work plans",
-          "Quality-control documentation and as-built records",
-        ],
-      },
-      {
-        h2: "Professional Engineering Coverage",
-        body: [
-          "Coastal maintains Professional Engineering licensure in multiple states to support projects throughout the Eastern United States. Contact Coastal for the current license roster and discipline-specific availability.",
-          "Licensure varies by discipline and responsible professional.",
-        ],
-      },
-    ],
     certs: ["VOSB", "Multi-State PE", "USACE CQM", "NBIS", "ASCE", "ASDSO", "QA/QC"],
     projectSlugs: ["port-newark-container-terminal", "greenwood-lake-dam-rehabilitation", "delaware-river-bridge-inspection"],
     projectsHead: { eyebrow: "Projects", h2: "Related Engineering & Inspection Projects" },
@@ -182,8 +127,19 @@ const SERVICE_PAGES = {
         "Coastal Engineering Group provides marine engineering, underwater inspection, and repair development for bridges, waterfront structures, dams, utilities, industrial facilities, and submerged infrastructure throughout the Eastern United States.",
         "Because our engineers work alongside the crews and divers who execute the work, our recommendations reflect actual access, equipment, sequencing, and constructability. From underwater condition assessment through stamped construction documents, we deliver design grounded in field reality and ready to procure.",
       ],
+      extra: {
+        label: "Typical Deliverables",
+        items: [
+          "Stamped engineering drawings and calculations where authorized",
+          "Underwater inspection reports and condition ratings",
+          "Photographic, video, sonar, and measurement records",
+          "Repair concepts and prioritized recommendations",
+          "Technical specifications and bid documents",
+          "Construction submittals, temporary-works packages, and work plans",
+          "Quality-control documentation and as-built records",
+        ],
+      },
     },
-    whereCopy: "Coastal Engineering Group delivers marine engineering and inspection throughout the Eastern United States. Our Professional Engineers maintain licensure in:",
     faqs: [
       { q: "What does a marine engineering firm do?", a: "A marine engineering firm designs and assesses waterfront and submerged structures — piers, wharves, bulkheads, seawalls, dams, intakes, and bridge substructures — and produces construction documents. Coastal pairs that design work with underwater inspection and in-house self-perform construction." },
       { q: "Are your engineering deliverables stamped?", a: "Stamped engineering drawings and calculations are provided where authorized, signed and sealed by licensed Professional Engineers. Licensure varies by discipline and responsible professional; contact Coastal for the current roster." },
@@ -211,18 +167,6 @@ const SERVICE_PAGES = {
       { value: "Full Material Pathway", sub: "Excavation through dewatering, transport, and disposal" },
       { value: "Documented Production", sub: "Survey reconciliation and daily production reporting" },
     ],
-    why: {
-      eyebrow: "The Approach",
-      h2: "Move the Sediment. Protect the Water.",
-      body: [
-        "Dredging done carelessly damages the very environment it is meant to maintain. Operations are planned around the aquatic ecosystem — controlled placement, turbidity monitoring, and containment that keep impact to a minimum.",
-        "Whether it is a maintenance cut on a navigation channel or restoration of a recreational lake, we match the method to the site and document conditions throughout.",
-      ],
-      cards: [
-        { title: "Method-Matched", body: "Mechanical for confined or debris-laden sites, hydraulic for pumpable material and distance — selected to fit the project, not the equipment on hand." },
-        { title: "Environmentally Careful", body: "Turbidity controls, containment, and controlled dredge-and-place methods protect sensitive habitat and satisfy permit conditions." },
-      ],
-    },
     servicesHead: { h2: "Dredging Capabilities", sub: "Hover any capability to see typical scope and applications." },
     services: [
       { title: "Mechanical Dredging", desc: "Precise, debris-tolerant", icon: ICON.wrench, tooltip: "Excavator, crane, and bucket dredging with barge or scow transport — suited to precise excavation, debris handling, confined access, and controlled removal." },
@@ -236,27 +180,6 @@ const SERVICE_PAGES = {
       { title: "Survey & Quantity Tracking", desc: "Bathymetric coordination", icon: ICON.grid, tooltip: "Bathymetric survey coordination and quantity tracking, reconciling in-place volumes against paid quantities throughout the project." },
       { title: "Environmental Controls", desc: "Turbidity & containment", icon: ICON.bolt, tooltip: "Turbidity monitoring, containment, water treatment, and water-quality documentation integrated into the dredging plan as the permit requires." },
     ],
-    narratives: [
-      {
-        h2: "Plan the Entire Material Pathway",
-        body: [
-          "Dredging success depends on what happens after the material leaves the bottom. Coastal evaluates excavation method, production assumptions, debris, transport, offloading, dewatering, water management, staging, disposal requirements, weather, and facility constraints as one connected operation. This approach reduces downstream bottlenecks that can control the project schedule and cost.",
-        ],
-      },
-      {
-        h2: "Choosing the Method",
-        cols: [
-          { k: "Mechanical Dredging", d: "Best suited where precise excavation, debris handling, barge transport, limited pipeline access, or controlled removal is required. The excavator, crane, bucket, barge, scow, and offloading approach are selected for the specific site." },
-          { k: "Hydraulic Dredging", d: "Best suited where pumpable sediment can be transported through pipeline to a dewatering or disposal area, with cutterhead, pump, pipeline, booster, dewatering, return-water, and production controls sized to the material and the distance." },
-        ],
-      },
-      {
-        h2: "Environmental Controls and Documentation",
-        body: [
-          "Depending on the project, Coastal can integrate turbidity controls, containment, water-quality monitoring, dewatering, treatment, material characterization, disposal documentation, survey reconciliation, and daily production reporting into the dredging plan.",
-        ],
-      },
-    ],
     certs: ["VOSB", "USACE", "EM 385-1-1", "OSHA 10/30", "Environmental Compliance", "Hydrographic Survey"],
     projectSlugs: ["freshwater-utility-cable-relocation", "greenwood-lake-dam-rehabilitation", "atlantic-shores-offshore-wind"],
     projectsHead: { eyebrow: "Projects", h2: "Representative Dredging Projects" },
@@ -267,8 +190,14 @@ const SERVICE_PAGES = {
         "Coastal Engineering Group provides mechanical and hydraulic dredging and sediment management throughout the Eastern United States — restoring navigation channels and berths, removing contaminated sediment, clearing debris and obstructions, and maintaining waterways and facility intakes.",
         "Dredging success depends on what happens after the material leaves the bottom. We plan excavation, transport, dewatering, water management, and disposal as one connected operation, and document conditions throughout with bathymetric pre- and post-survey and daily production reporting.",
       ],
+      extra: {
+        label: "Choosing the Method",
+        cols: [
+          { k: "Mechanical Dredging", d: "Best suited where precise excavation, debris handling, barge transport, limited pipeline access, or controlled removal is required." },
+          { k: "Hydraulic Dredging", d: "Best suited where pumpable sediment can be transported through pipeline to a dewatering or disposal area over distance." },
+        ],
+      },
     },
-    whereCopy: "Coastal Engineering Group performs dredging and sediment work for federal, state, municipal, and industrial clients throughout the Eastern United States. Our Professional Engineers maintain licensure in:",
     faqs: [
       { q: "What kinds of dredging does Coastal Engineering Group perform?", a: "Mechanical and hydraulic dredging for maintenance and capital work, environmental and residuals dredging, channels, slips, marinas, basins, lagoons and intake areas, and debris and obstruction removal — with the method matched to sediment, access, and the disposal pathway." },
       { q: "How do you protect water quality during dredging?", a: "Depending on permit conditions, Coastal integrates turbidity controls, containment, water-quality monitoring, dewatering, treatment, and disposal documentation directly into the dredging plan, with daily production reporting and survey reconciliation." },
@@ -296,18 +225,6 @@ const SERVICE_PAGES = {
       { value: "Integrated Planning", sub: "Coordinated with engineering, diving, dredging, and permits" },
       { value: "Eastern U.S.", sub: "Mobilization throughout the Eastern United States" },
     ],
-    why: {
-      eyebrow: "The Capability",
-      h2: "The Support Behind the Work.",
-      body: [
-        "Marine construction is only as reliable as the equipment supporting it. Coastal plans marine support around the access constraints, tides, lifting requirements, and work sequence of the specific project — so the equipment on site is the equipment the job actually needs.",
-        "That support is available as a complete package on Coastal-led work, or integrated into a prime contractor's own work plan.",
-      ],
-      cards: [
-        { title: "Planned, Not Improvised", body: "Draft, capacity, access windows, and lifting requirements are resolved during planning rather than discovered at mobilization." },
-        { title: "Available to Project Teams", body: "Coastal can provide a complete marine support package or contribute selected assets and crews to a prime contractor's work plan." },
-      ],
-    },
     servicesHead: { h2: "Fleet & Marine Support Capabilities", sub: "Hover any capability to see typical scope and applications." },
     services: [
       { title: "Workboats & Crew Transport", desc: "Personnel and access", icon: ICON.ship, tooltip: "Workboats and crew transport for personnel movement, site access, and support of over-water operations in active waterways." },
@@ -319,21 +236,6 @@ const SERVICE_PAGES = {
       { title: "Temporary Access & Platforms", desc: "Floating work surfaces", icon: ICON.grid, tooltip: "Temporary access and floating work platforms enabling construction and inspection at structures without land-side access." },
       { title: "Emergency Mobilization", desc: "Specialty logistics", icon: ICON.bolt, tooltip: "Emergency mobilization and specialty logistics for time-sensitive marine work, damage assessment, and obstruction response." },
     ],
-    narratives: [
-      {
-        h2: "Integrated With the Project Team",
-        body: [
-          "Marine support is most effective when equipment planning is coordinated with engineering, construction, diving, dredging, permits, tides, access windows, and lifting requirements. Coastal can provide a complete support package or integrate selected assets into a prime contractor's work plan.",
-        ],
-      },
-      {
-        h2: "Asset Availability and Disclosure",
-        body: [
-          "Marine assets are provided as Coastal-owned, leased, subcontracted, or partner-provided depending on the project. Coastal identifies the ownership and control status of each major asset during planning, along with dimensions, draft, deck or payload capacity, lifting capacity, operating region, and mobilization limitations.",
-          "A detailed asset schedule with current capacities and certificates is available on request for a specific scope.",
-        ],
-      },
-    ],
     certs: ["VOSB", "USCG-Compliant Operations", "EM 385-1-1", "OSHA 10/30", "Marine Insurance"],
     projectSlugs: ["atlantic-shores-offshore-wind", "freshwater-utility-cable-relocation", "mayport-naval-station-wharf-repair"],
     projectsHead: { eyebrow: "Projects", h2: "Related Marine Support Projects" },
@@ -344,12 +246,13 @@ const SERVICE_PAGES = {
         "Coastal Engineering Group provides the workboats, barges, lifting support, logistics, and crew support that waterfront construction, dredging, inspection, and commercial diving projects depend on throughout the Eastern United States.",
         "Equipment is selected around access, draft, capacity, operating conditions, and the work sequence rather than simple availability. Coastal identifies the ownership and control status of each major asset during planning, so project teams know exactly what is committed to the work.",
       ],
+      extra: {
+        note: "Marine assets are provided as Coastal-owned, leased, subcontracted, or partner-provided depending on the project. A detailed asset schedule with current capacities and certificates is available on request for a specific scope.",
+      },
     },
-    // No whereCopy: Fleet & Marine Support is equipment and logistics, not an
-    // engineering discipline — it has no PE-licensure roster to show, unlike
-    // the other four divisions. SvcWhere renders nothing when whereCopy is
-    // absent, so this page correctly skips the "Professional Engineering
-    // Coverage" section entirely instead of showing it by mistake.
+    // No PE-licensure section: Fleet & Marine Support is equipment and
+    // logistics, not an engineering discipline, unlike the other four
+    // divisions.
     faqs: [
       { q: "What marine support does Coastal provide?", a: "Workboats and crew transport, material and crane barges, lifting and rigging support, diving platforms, survey and ROV support, towing and repositioning coordination, temporary access platforms, and emergency mobilization." },
       { q: "Does Coastal own the equipment it provides?", a: "Marine assets are provided as Coastal-owned, leased, subcontracted, or partner-provided depending on the project. Coastal identifies the ownership and control status of each major asset during planning, along with its capacities and operating limitations." },
@@ -438,33 +341,6 @@ function SvcStatBand({ stats }) {
         </div>
       </div>
     </div>
-  );
-}
-
-function SvcWhy({ why }) {
-  return (
-    <section className="fed-section div-why">
-      <div className="ceg-container">
-        <div className="div-why-grid">
-          <div className="div-why-text">
-            <div className="ceg-eyebrow fed-eyebrow-blue">
-              <span className="ceg-eyebrow-mark" />
-              <span>{why.eyebrow}</span>
-            </div>
-            <h2 className="fed-h2 fed-dark div-why-h2">{why.h2}</h2>
-            {why.body.map((p, i) => (<p key={i} className="div-why-body">{p}</p>))}
-          </div>
-          <div className="div-why-cards">
-            {why.cards.map((c, i) => (
-              <div key={i} className="div-stat-card">
-                <h3 className="div-stat-card-title">{c.title}</h3>
-                <p className="div-stat-card-body">{c.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -563,8 +439,14 @@ function SvcCTA({ cta }) {
 }
 
 // ─── Overview (crawlable intro prose) ────────────────────────────────────────
+// This is now the ONE place for "why us" type content — the old separate
+// Why/Narratives sections got folded in here (or cut, where they just
+// restated the intro) per Kevin's review. `extra` carries at most one
+// genuinely useful addendum per division: a deliverables list, a method
+// comparison, or a short disclosure note — never a wall of extra prose.
 function SvcOverview({ intro }) {
   if (!intro) return null;
+  const extra = intro.extra;
   return (
     <section className="fed-section svc-overview">
       <div className="ceg-container">
@@ -575,75 +457,24 @@ function SvcOverview({ intro }) {
           </div>
           <h2 className="fed-h2 fed-dark">{intro.h2}</h2>
           {intro.body.map((p, i) => (<p key={i} className="svc-prose-p">{p}</p>))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Narrative bands ─────────────────────────────────────────────────────────
-// Renders the edit package's added prose sections. Each entry carries a heading
-// plus exactly one of: `body` (paragraphs), `items` (a deliverables list), or
-// `cols` (a two-up comparison, e.g. mechanical vs hydraulic dredging).
-function SvcNarratives({ narratives }) {
-  if (!narratives || !narratives.length) return null;
-  return (
-    <section className="fed-section svc-narratives">
-      <div className="ceg-container">
-        {narratives.map((n, i) => (
-          <div key={i} className="svc-narrative">
-            <h2 className="fed-h2 fed-dark svc-narrative-h2">{n.h2}</h2>
-            {n.body && n.body.map((p, j) => (<p key={j} className="svc-prose-p">{p}</p>))}
-            {n.items && (
-              <ul className="svc-narrative-list">
-                {n.items.map((it, j) => (<li key={j}>{it}</li>))}
-              </ul>
-            )}
-            {n.cols && (
-              <div className="svc-narrative-cols">
-                {n.cols.map((c, j) => (
-                  <div key={j} className="svc-narrative-col">
-                    <h3 className="svc-narrative-col-k">{c.k}</h3>
-                    <p className="svc-narrative-col-d">{c.d}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-// ─── Where We Work (geo relevance) ───────────────────────────────────────────
-function SvcWhere({ copy }) {
-  const states = (window.CEG_DATA && window.CEG_DATA.LICENSED_STATES) || [];
-  if (!copy || !states.length) return null;
-  return (
-    <section className="fed-section svc-where">
-      <div className="ceg-container">
-        <div className="fed-section-head">
-          <div className="ceg-eyebrow fed-eyebrow-blue">
-            <span className="ceg-eyebrow-mark" />
-            <span>Where We Work</span>
-          </div>
-          <h2 className="fed-h2 fed-dark">Professional Engineering Coverage</h2>
-          <p className="fed-subhead-muted">{copy}</p>
-        </div>
-        <div className="svc-where-grid">
-          {states.map((s) => (
-            <div key={s.abbr} className="svc-where-item">
-              <span className="svc-where-abbr">{s.abbr}</span>
-              <span className="svc-where-name">{s.name}</span>
+          {extra && extra.note && (<p className="svc-prose-p">{extra.note}</p>)}
+          {extra && extra.label && <div className="svc-overview-extra-label">{extra.label}</div>}
+          {extra && extra.items && (
+            <ul className="svc-narrative-list">
+              {extra.items.map((it, i) => (<li key={i}>{it}</li>))}
+            </ul>
+          )}
+          {extra && extra.cols && (
+            <div className="svc-narrative-cols">
+              {extra.cols.map((c, i) => (
+                <div key={i} className="svc-narrative-col">
+                  <h3 className="svc-narrative-col-k">{c.k}</h3>
+                  <p className="svc-narrative-col-d">{c.d}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
-        {/* Per the edit package: no exact state count until the roster is verified. */}
-        <p className="svc-where-note">
-          Licensure varies by discipline and responsible professional. Contact Coastal for the
-          current license roster and discipline-specific availability.
-        </p>
       </div>
     </section>
   );
@@ -712,17 +543,12 @@ function ServiceApp() {
       <window.UtilityBar theme={theme} data={data} />
       <window.Nav theme={theme} data={data} conceptKey="drydock" onMobileOpen={() => setMobileOpen(true)} />
       <main>
-        {/* Order per the edit package: project proof sits directly below the
-            capabilities list, ahead of the long explanatory content. */}
         <SvcHero d={d} />
         <SvcStatBand stats={d.stats} />
         <SvcOverview intro={d.intro} />
         <SvcServices head={d.servicesHead} services={d.services} />
         <SvcProjects head={d.projectsHead} slugs={d.projectSlugs} photo={d.heroImg} />
-        <SvcNarratives narratives={d.narratives} />
-        <SvcWhy why={d.why} />
         <SvcCerts certs={d.certs} />
-        <SvcWhere copy={d.whereCopy} />
         <SvcFaq faqs={d.faqs} />
         <SvcCTA cta={d.cta} />
       </main>

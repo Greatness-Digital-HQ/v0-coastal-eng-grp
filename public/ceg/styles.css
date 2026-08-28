@@ -4726,6 +4726,14 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 }
 .svc-prose-p:last-child { margin-bottom: 0; }
 
+/* Compact addendum inside Overview (deliverables list, method comparison, or
+   a disclosure note) — one small labeled block, not a separate section. */
+.svc-overview-extra-label {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-mute, #8a8577);
+  margin: 28px 0 4px;
+}
+
 .svc-where { background: #f7f9fc; border-top: 1px solid #e2e8f0; }
 .svc-where-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
