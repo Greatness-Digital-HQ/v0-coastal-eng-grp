@@ -4110,9 +4110,9 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(11, 25, 41, 0.72) 0%,
-    rgba(11, 25, 41, 0.4) 45%,
-    rgba(11, 25, 41, 0.08) 100%
+    rgba(11, 25, 41, 0.8) 0%,
+    rgba(11, 25, 41, 0.48) 45%,
+    rgba(11, 25, 41, 0.16) 100%
   ), repeating-linear-gradient(
     0deg, transparent, transparent 60px,
     rgba(255,255,255,0.012) 60px, rgba(255,255,255,0.012) 61px
@@ -4133,8 +4133,8 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 }
 .fed-hero-lede {
   font-family: var(--font-inter, "Inter", system-ui, sans-serif);
-  font-size: 17px; line-height: 1.7; color: #a8bdd0; max-width: 660px; margin-bottom: 40px;
-  text-shadow: 0 1px 10px rgba(0,0,0,0.5);
+  font-size: 17px; line-height: 1.7; color: #eef3f8; max-width: 660px; margin-bottom: 40px;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.6);
 }
 .fed-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
 
@@ -4443,9 +4443,9 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   position: absolute; inset: 0;
   background: linear-gradient(
     to right,
-    rgba(11,25,41,0.72) 0%,
-    rgba(11,25,41,0.4) 55%,
-    rgba(11,25,41,0.08) 100%
+    rgba(11,25,41,0.8) 0%,
+    rgba(11,25,41,0.48) 55%,
+    rgba(11,25,41,0.16) 100%
   );
   pointer-events: none; z-index: 0;
 }
@@ -4459,9 +4459,9 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 }
 .div-hero-lede {
   font-family: var(--font-inter, "Inter", sans-serif);
-  font-size: 16px; line-height: 1.7; color: #a8bdd0;
+  font-size: 16px; line-height: 1.7; color: #eef3f8;
   max-width: 680px; margin-bottom: 40px;
-  text-shadow: 0 1px 10px rgba(0,0,0,0.5);
+  text-shadow: 0 1px 10px rgba(0,0,0,0.6);
 }
 
 /* Shared service-page hero — per-service photo via an inline-styled child,
@@ -4478,9 +4478,9 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .svc-hero::after {
   background: linear-gradient(
     to right,
-    rgba(11,25,41,0.68) 0%,
-    rgba(11,25,41,0.36) 48%,
-    rgba(11,25,41,0.06) 100%
+    rgba(11,25,41,0.76) 0%,
+    rgba(11,25,41,0.44) 48%,
+    rgba(11,25,41,0.14) 100%
   );
 }
 
