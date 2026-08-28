@@ -1104,49 +1104,6 @@ function Divisions({ theme, data }) {
   );
 }
 
-// ─── Markets ────────────────────────────────────────────────────────────────
-function Markets({ theme, data }) {
-  const headRef = useReveal(0.2);
-  const gridRef = useReveal(0.1);
-  return (
-    <section id="markets" className="ceg-section ceg-markets">
-      <div className="ceg-container">
-        <div className="ceg-section-head ceg-section-head-row ceg-reveal-fade-up" ref={headRef}>
-          <div>
-            <Eyebrow mark>Markets we serve</Eyebrow>
-            <h2 className="ceg-h2">Federal contracts.<br/>Commercial accountability.</h2>
-          </div>
-          <p className="ceg-section-lede">
-            The bulk of our work supports federal coastal-resilience programs.
-            Our veteran-owned status enables direct teaming on NAVFAC and USACE
-            set-aside opportunities.
-          </p>
-        </div>
-
-        <div className="ceg-markets-grid ceg-reveal-stagger-grid" ref={gridRef}>
-          {data.MARKETS.map((m, i) => (
-            <a key={m.key} href={`#market-${m.key}`} className="ceg-market-card">
-              <div className="ceg-market-bg" aria-hidden>
-                <MarketPhoto marketKey={m.key} />
-              </div>
-              <div className="ceg-market-body">
-                <div className="ceg-market-name">{m.name}</div>
-                <div className="ceg-market-detail">{m.detail}</div>
-                <div className="ceg-market-foot">
-                  <span className="ceg-market-projects">{m.projects} projects</span>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.4" />
-                  </svg>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // ─── Projects ─────────────────────────────────────────────────────────────���─
 function Projects({ theme, data }) {
   // Featured case study (large) + category browser (side) + 3 case studies below.
@@ -1998,6 +1955,6 @@ function IntegratedDelivery() {
 Object.assign(window, {
   applyThemeVars,
   Eyebrow, Btn, UtilityBar, Nav, Hero, PlaceholderPhoto, MarketPhoto,
-  Capabilities, WhyCEG, FeaturedProjects, Careers, CertificationsBar, Locations, Divisions, Markets, Projects, VOSBBand, ClientsStrip, ContactBand, FinalCTA, Footer, MobileMenu,
+  Capabilities, WhyCEG, FeaturedProjects, Careers, CertificationsBar, Locations, Divisions, Projects, VOSBBand, ClientsStrip, ContactBand, FinalCTA, Footer, MobileMenu,
   NarrativeIntro, IntegratedDelivery,
 });
