@@ -1025,6 +1025,12 @@ function Capabilities({ theme, data }) {
 }
 
 // ─── Divisions section ──────────────────────────────────────────────────────────
+// The all-services hub page's centerpiece: same tab-accordion shape as the
+// homepage's Capabilities section (real photos, one open division at a time),
+// but showing every division's short services list and linking each CTA to
+// its real page — this is the "expandable, one place to see everything"
+// structure Kevin wants, without repeating a full service list on every
+// individual service page too.
 function Divisions({ theme, data }) {
   const [active, setActive] = useState(0);
   const div = data.DIVISIONS[active];
@@ -1064,14 +1070,11 @@ function Divisions({ theme, data }) {
           </div>
 
           <div className="ceg-divisions-display">
-            <PlaceholderPhoto kind={div.key === "engineering" ? "bridge" : div.key === "marine-services" ? "barge" : div.key} tall />
             <div
-              className="ceg-division-card"
-              data-has-photo={div.key === "diving" ? "true" : undefined}
-            >
-              {div.key === "diving" && (
-                <div className="ceg-division-card-photo-bg" style={{backgroundImage: "url('/assets/commercial-diving.jpg')"}} />
-              )}
+              className="ceg-photo is-tall"
+              style={{ backgroundImage: `url('${CAP_PHOTOS[div.key]}')`, backgroundSize: "cover", backgroundPosition: "center" }}
+            />
+            <div className="ceg-division-card">
               <div className="ceg-division-card-num">0{active + 1}</div>
               <div className="ceg-division-card-name">{div.name}</div>
               <p className="ceg-division-card-blurb">{div.blurb}</p>
@@ -1085,7 +1088,7 @@ function Divisions({ theme, data }) {
                   </li>
                 ))}
               </ul>
-              <a href={`#service-${div.key}`} className="ceg-division-card-cta">
+              <a href={`/services/${div.key}`} className="ceg-division-card-cta">
                 <span className="ceg-division-card-cta-label">Explore {div.short}</span>
                 <span className="ceg-division-card-cta-arrow">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>

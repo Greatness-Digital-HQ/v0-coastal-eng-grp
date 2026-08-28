@@ -345,7 +345,11 @@ const SERVICE_PAGES = {
         "Equipment is selected around access, draft, capacity, operating conditions, and the work sequence rather than simple availability. Coastal identifies the ownership and control status of each major asset during planning, so project teams know exactly what is committed to the work.",
       ],
     },
-    whereCopy: "Coastal Engineering Group mobilizes marine equipment and support throughout the Eastern United States. Our Professional Engineers maintain licensure in:",
+    // No whereCopy: Fleet & Marine Support is equipment and logistics, not an
+    // engineering discipline — it has no PE-licensure roster to show, unlike
+    // the other four divisions. SvcWhere renders nothing when whereCopy is
+    // absent, so this page correctly skips the "Professional Engineering
+    // Coverage" section entirely instead of showing it by mistake.
     faqs: [
       { q: "What marine support does Coastal provide?", a: "Workboats and crew transport, material and crane barges, lifting and rigging support, diving platforms, survey and ROV support, towing and repositioning coordination, temporary access platforms, and emergency mobilization." },
       { q: "Does Coastal own the equipment it provides?", a: "Marine assets are provided as Coastal-owned, leased, subcontracted, or partner-provided depending on the project. Coastal identifies the ownership and control status of each major asset during planning, along with its capacities and operating limitations." },
