@@ -422,9 +422,9 @@ ul { list-style: none; padding: 0; margin: 0; }
 .hero-stats {
   position: relative;
   background: #0a1828;
-  padding-top: 160px; padding-bottom: 0;
+  padding-top: 160px; padding-bottom: 90px;
   color: white;
-  min-height: 720px;
+  min-height: 640px;
   overflow: hidden;
   display: flex; flex-direction: column;
 }
@@ -433,6 +433,10 @@ ul { list-style: none; padding: 0; margin: 0; }
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  /* Bright, barely-scrimmed photo — matches the treatment already applied
+     to the service-page heroes and Kevin's direct note that he wants the
+     photo actually visible, like Ballard's own hero. */
+  opacity: 0.92;
 }
 .hero-stats .ceg-hero-video-wrap {
   position: absolute; inset: 0; z-index: 0;
@@ -449,45 +453,44 @@ ul { list-style: none; padding: 0; margin: 0; }
 }
 .hero-stats .ceg-hero-video-scrim {
   position: absolute; inset: 0;
-  background:
-    linear-gradient(180deg, rgba(10,24,40,0.55) 0%, rgba(10,24,40,0.35) 35%, rgba(10,24,40,0.85) 100%),
-    linear-gradient(135deg, rgba(19,56,106,0.45) 0%, rgba(19,56,106,0.15) 100%);
+  /* Light left-side scrim only — same reasoning as the service-page heroes:
+     protect the headline without hiding the photo. */
+  background: linear-gradient(
+    to right,
+    rgba(10,24,40,0.66) 0%,
+    rgba(10,24,40,0.32) 50%,
+    rgba(10,24,40,0.1) 100%
+  );
   z-index: 1;
 }
 .hero-stats .ceg-container { position: relative; z-index: 2; }
 
-/* Centered editorial column */
+/* Left-aligned editorial column — per Kevin's ask, matches Ballard's
+   left-aligned, single-message hero instead of a centered stack. */
 .hero-stats .ceg-hero-stats-center {
   position: relative; z-index: 2;
-  display: flex; flex-direction: column; align-items: center;
-  text-align: center;
+  display: flex; flex-direction: column; align-items: flex-start;
+  text-align: left;
   padding-top: 40px;
-  padding-bottom: 80px;
+  padding-bottom: 0;
   flex: 1 0 auto;
-}
-.hero-stats .ceg-hero-stats-center .ceg-eyebrow {
-  color: rgba(255,255,255,0.9);
-  margin-bottom: 28px;
-  justify-content: center;
-  font-size: 30px;
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  gap: 18px;
-}
-.hero-stats .ceg-hero-stats-center .ceg-eyebrow-mark {
-  width: 56px;
-  height: 2px;
-  background: white;
+  max-width: 65%;
 }
 .hero-stats .ceg-h1 {
   color: white;
-  font-size: clamp(48px, 6.2vw, 96px);
-  line-height: 1.02;
+  font-size: clamp(40px, 5.2vw, 76px);
+  line-height: 1.05;
   letter-spacing: -0.02em;
-  max-width: 24ch;
-  margin: 0 auto;
-  font-weight: 500;
+  max-width: 20ch;
+  margin: 0;
+  font-weight: 700;
   text-wrap: balance;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+}
+.hero-stats .ceg-h1 em {
+  font-style: normal;
+  color: #8ec5e8;
+  position: relative;
 }
 /* Italic accent verbs in the headline */
 .hero-stats .ceg-h1 em {
@@ -524,15 +527,16 @@ ul { list-style: none; padding: 0; margin: 0; }
 }
 .hero-stats .ceg-hero-lede {
   color: rgba(255,255,255,0.92);
-  max-width: 60ch;
-  margin: 30px auto 0;
+  max-width: 55ch;
+  margin: 24px 0 0;
   font-size: 18px;
   line-height: 1.55;
-  text-align: center;
+  text-align: left;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.5);
 }
 .hero-stats .ceg-hero-ctas {
-  margin-top: 40px;
-  justify-content: center;
+  margin-top: 36px;
+  justify-content: flex-start;
 }
 .hero-stats .ceg-btn-ghost,
 .hero-stats .ceg-btn-ghost-onbrand {
@@ -5636,6 +5640,9 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 }
 
 /* ─── Homepage narrative intro (below hero) ───────────────────────────────── */
+/* Rebuilt per Kevin's "identical to Ballard" ask: a two-column statement
+   split, a services teaser, and a markets diagram — one continuous section,
+   matching Ballard's homepage exactly. */
 .ceg-narrative-intro { background: var(--bg, #fbfaf7); }
 .ceg-narrative-inner { max-width: 860px; margin: 0 auto; text-align: center; }
 .ceg-narrative-inner .ceg-h2 { margin-bottom: 24px; }
@@ -5644,6 +5651,97 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   font-size: 1.08rem; line-height: 1.75; color: var(--ink-soft, #2e3540); margin: 0 0 18px;
 }
 .ceg-narrative-p:last-child { margin-bottom: 0; }
+
+.ceg-narrative-split {
+  display: grid; grid-template-columns: 1fr 1.6fr; gap: 56px;
+  padding-bottom: 64px;
+}
+.ceg-narrative-statement {
+  font-weight: 800; color: var(--brand); line-height: 1.2; margin: 0;
+}
+.ceg-narrative-copy { padding-top: 6px; }
+@media (max-width: 900px) {
+  .ceg-narrative-split { grid-template-columns: 1fr; gap: 24px; }
+}
+
+.ceg-narrative-services {
+  display: flex; align-items: flex-start; gap: 28px;
+  padding: 48px 0; border-top: 1px solid var(--rule, #e0d9cb);
+}
+.ceg-narrative-services-rule {
+  width: 64px; height: 3px; background: var(--brand); flex-shrink: 0; margin-top: 14px;
+}
+.ceg-narrative-services-h3 {
+  font-family: var(--font-display); font-weight: 700; font-size: 24px;
+  color: var(--brand); margin: 0 0 12px; letter-spacing: -0.01em;
+}
+.ceg-narrative-services-p {
+  font-family: var(--font-inter, "Inter", sans-serif);
+  font-size: 1rem; line-height: 1.7; color: var(--ink-soft); margin: 0 0 20px; max-width: 62ch;
+}
+@media (max-width: 640px) {
+  .ceg-narrative-services { flex-direction: column; gap: 14px; }
+}
+
+/* Radial markets diagram — a center hex linking to /markets, ringed by one
+   hex per market. Collapses to a plain stacked grid on narrow viewports. */
+.ceg-markets-diagram-wrap { padding: 56px 0 24px; border-top: 1px solid var(--rule, #e0d9cb); }
+.ceg-markets-diagram-head { text-align: center; margin-bottom: 40px; }
+.ceg-markets-diagram-h3 {
+  font-family: var(--font-display); font-weight: 700; font-size: 24px;
+  color: var(--brand); margin: 0; letter-spacing: -0.01em;
+}
+.ceg-markets-diagram {
+  position: relative; width: 100%; max-width: 560px; aspect-ratio: 1 / 1;
+  margin: 0 auto;
+}
+.ceg-markets-diagram-center,
+.ceg-markets-diagram-node {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; text-decoration: none;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  transition: transform .25s ease, background .25s ease;
+}
+.ceg-markets-diagram-center {
+  width: 34%; aspect-ratio: 1 / 1;
+  background: var(--brand); color: #fff;
+  font-family: var(--font-display); font-weight: 700; font-size: 15px;
+  line-height: 1.3; z-index: 2; padding: 8px;
+}
+.ceg-markets-diagram-node {
+  width: 30%; aspect-ratio: 1 / 1;
+  background: var(--bg, #fbfaf7); border: 1.5px solid var(--rule, #e0d9cb);
+  padding: 10px; gap: 3px; z-index: 1;
+}
+.ceg-markets-diagram-node:hover {
+  transform: translate(-50%, -50%) scale(1.06);
+  background: var(--brand-soft, #e5ecf6); border-color: var(--brand);
+}
+.ceg-markets-diagram-node-name {
+  font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--ink);
+}
+.ceg-markets-diagram-node-detail {
+  font-family: var(--font-inter, "Inter", sans-serif); font-size: 10.5px;
+  color: var(--ink-soft); line-height: 1.3;
+}
+/* Below 720px the radial layout gets too cramped to read — collapse it
+   into a plain stacked grid instead of hiding the markets content. */
+@media (max-width: 720px) {
+  .ceg-markets-diagram {
+    max-width: none; aspect-ratio: auto;
+    display: grid; grid-template-columns: 1fr; gap: 12px;
+  }
+  .ceg-markets-diagram-center,
+  .ceg-markets-diagram-node {
+    position: static; transform: none;
+    width: 100%; aspect-ratio: auto;
+    clip-path: none; border-radius: 8px;
+    flex-direction: row; justify-content: flex-start; gap: 12px;
+    padding: 16px 20px; text-align: left;
+  }
+  .ceg-markets-diagram-node:hover { transform: none; }
+}
 
 /* ─── Integrated delivery — Inspect. Engineer. Build. Maintain. ────────────── */
 .ceg-integrated {

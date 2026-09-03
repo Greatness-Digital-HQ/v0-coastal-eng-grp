@@ -447,37 +447,27 @@ function HeroPhoto({ theme, data }) {
   );
 }
 
-// HERO B — stats-led editorial, full-bleed image background
+// HERO B — stats-led editorial, full-bleed image background.
+// Restructured per Kevin's "identical to Ballard" ask: Ballard's hero is a
+// left-aligned two-line headline (one word emphasized), a short paragraph,
+// and a single pill CTA over a bright, barely-scrimmed photo — no eyebrow
+// tag, no bottom proof/stat bar. That trust content already lives in the
+// intro section and the final CTA chips elsewhere, so it isn't lost, just
+// not duplicated here.
 function HeroStats({ theme, data }) {
   return (
     <section className="ceg-hero hero-stats">
       <div className="ceg-hero-background" aria-hidden style={{backgroundImage: "url('/assets/hero-background.jpg')"}} />
       <div className="ceg-hero-video-scrim" />
       <div className="ceg-container ceg-hero-stats-center">
-        <Eyebrow accent>Marine Infrastructure | Eastern United States</Eyebrow>
         <h1 className="ceg-h1 serif">
-          Marine Infrastructure. Engineered, Built, and Maintained.
+          Marine Infrastructure.<br /><em>Engineered</em>, Built, and Maintained.
         </h1>
         <p className="ceg-hero-lede">
-          Coastal Engineering Group self-performs marine construction, dredging, commercial diving, underwater inspection, and waterfront engineering for federal, state, municipal, transportation, utility, and industrial clients throughout the Eastern United States.
+          Coastal Engineering Group self-performs marine construction, dredging, commercial diving, underwater inspection, and waterfront engineering throughout the Eastern United States.
         </p>
         <div className="ceg-hero-ctas">
-          <Btn href="#capabilities" variant="hero-accent">View Capabilities</Btn>
-          <Btn href="/contact" variant="ghost-onbrand" arrow={true}>Discuss a Project</Btn>
-        </div>
-      </div>
-      <div className="ceg-hero-stats-bar">
-        <div className="ceg-container ceg-hero-stats-bar-row ceg-hero-proof-row">
-          {[
-            "Veteran-Owned Small Business",
-            "ADCI-Certified Commercial Diving Contractor",
-            "Professional Engineers Licensed Across Multiple States",
-            "Operations Throughout the Eastern United States",
-          ].map((p, i) => (
-            <div key={i} className="ceg-hero-stat ceg-hero-proof-item">
-              <div className="ceg-hero-proof">{p}</div>
-            </div>
-          ))}
+          <Btn href="/services" variant="hero-accent">Learn More</Btn>
         </div>
       </div>
     </section>
@@ -1887,18 +1877,70 @@ function FinalCTA({ data }) {
 }
 
 // ─── Homepage narrative intro (below hero) ───────────────────────────────────
-function NarrativeIntro() {
+// Homepage intro — per Kevin's "identical to Ballard" ask, this now mirrors
+// the one continuous section on Ballard's homepage that (1) states who
+// Coastal is in a two-column split (bold statement | paragraph), (2) teases
+// Services with a short blurb + link out (their homepage has no services
+// grid, just this), and (3) visualizes Markets as a radial diagram — the
+// piece their homepage actually gives visual weight to, not services.
+function NarrativeIntro({ data }) {
+  const markets = (data && data.MARKETS) || [];
+  const radius = 36;
+  const startAngle = -90;
+
   return (
     <section className="ceg-section ceg-narrative-intro">
       <div className="ceg-container">
-        <div className="ceg-narrative-inner">
-          <h2 className="ceg-h2">One Team Above and Below the Waterline</h2>
-          <p className="ceg-narrative-p">
-            Marine infrastructure problems rarely fit within a single discipline. Coastal combines engineering judgment, specialty field crews, marine equipment, dredging capability, and commercial diving so clients can move from investigation to repair with fewer gaps between design and execution.
-          </p>
-          <p className="ceg-narrative-p">
-            Our teams work in active waterways, restricted-access facilities, industrial environments, transportation corridors, and federal installations where planning, documentation, safety, and constructability are essential.
-          </p>
+        <div className="ceg-narrative-split">
+          <h2 className="ceg-h2 ceg-narrative-statement">
+            One Team Above and Below the Waterline.
+          </h2>
+          <div className="ceg-narrative-copy">
+            <p className="ceg-narrative-p">
+              Marine infrastructure problems rarely fit within a single discipline. Coastal combines engineering judgment, specialty field crews, marine equipment, dredging capability, and commercial diving so clients can move from investigation to repair with fewer gaps between design and execution.
+            </p>
+            <p className="ceg-narrative-p">
+              Our teams work in active waterways, restricted-access facilities, industrial environments, transportation corridors, and federal installations where planning, documentation, safety, and constructability are essential.
+            </p>
+          </div>
+        </div>
+
+        <div className="ceg-narrative-services">
+          <div className="ceg-narrative-services-rule" aria-hidden="true" />
+          <div className="ceg-narrative-services-text">
+            <h3 className="ceg-narrative-services-h3">Our Services</h3>
+            <p className="ceg-narrative-services-p">
+              Coastal provides client services at every project stage — marine construction, engineering and inspection, dredging, commercial diving, and fleet support — tailored to follow each project through its lifecycle and beyond.
+            </p>
+            <a href="/services" className="ceg-btn ceg-btn-primary">Learn More →</a>
+          </div>
+        </div>
+
+        <div className="ceg-markets-diagram-wrap">
+          <div className="ceg-markets-diagram-head">
+            <h3 className="ceg-markets-diagram-h3">Markets Served by Coastal</h3>
+          </div>
+          <div className="ceg-markets-diagram">
+            <a href="/markets" className="ceg-markets-diagram-center">
+              <span>Markets<br />We Serve</span>
+            </a>
+            {markets.map((m, i) => {
+              const angle = (startAngle + (360 / markets.length) * i) * (Math.PI / 180);
+              const x = 50 + radius * Math.cos(angle);
+              const y = 50 + radius * Math.sin(angle);
+              return (
+                <a
+                  key={m.key}
+                  href="/markets"
+                  className="ceg-markets-diagram-node"
+                  style={{ left: `${x}%`, top: `${y}%` }}
+                >
+                  <span className="ceg-markets-diagram-node-name">{m.name}</span>
+                  <span className="ceg-markets-diagram-node-detail">{m.detail}</span>
+                </a>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
