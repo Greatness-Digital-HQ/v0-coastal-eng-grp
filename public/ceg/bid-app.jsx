@@ -330,8 +330,8 @@ function BidSuccess({ refNum }) {
     <div className="bid-success">
       <div className="bid-success-icon">
         <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-          <circle cx="32" cy="32" r="30" stroke="#1c6fbf" strokeWidth="1.5"/>
-          <polyline points="18,32 27,41 46,22" stroke="#1c6fbf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="32" cy="32" r="30" stroke="#13386a" strokeWidth="1.5"/>
+          <polyline points="18,32 27,41 46,22" stroke="#13386a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </div>
       <div className="bid-success-ref">Request #{refNum}</div>
@@ -395,19 +395,24 @@ function BidRequestApp() {
       <window.Nav theme={theme} data={data} conceptKey="drydock" onMobileOpen={() => setMobileOpen(true)} />
       <main className="bid-page">
 
-        {/* ── Page header ── */}
-        <section className="bid-hero">
+        {/* ── Page header — same dark photo-hero pattern as every other
+             content page (Markets/Projects/News); only the body below it
+             used to stay dark instead of switching to the site's light
+             body background. */}
+        <section className="prj-archive-hero">
           <div className="ceg-container">
-            <div className="bid-eyebrow">
-              <span className="bid-eyebrow-mark" />
-              Contact
+            <div className="prj-archive-hero-inner">
+              <div className="ceg-eyebrow fed-eyebrow">
+                <span className="ceg-eyebrow-mark" />
+                <span>Contact</span>
+              </div>
+              <h1 className="prj-archive-h1">Discuss a Marine<br />Infrastructure Project.</h1>
+              <p className="prj-archive-lede">
+                Tell us what you are planning, pursuing, evaluating, or responding to. Coastal
+                will route the inquiry to the appropriate construction, engineering, dredging,
+                diving, marine operations, federal, or corporate contact.
+              </p>
             </div>
-            <h1 className="bid-h1">Discuss a Marine<br />Infrastructure Project.</h1>
-            <p className="bid-lead">
-              Tell us what you are planning, pursuing, evaluating, or responding to. Coastal
-              will route the inquiry to the appropriate construction, engineering, dredging,
-              diving, marine operations, federal, or corporate contact.
-            </p>
           </div>
         </section>
 

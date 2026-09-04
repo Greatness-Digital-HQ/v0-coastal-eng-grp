@@ -13,6 +13,17 @@
 
 const { useState: useMOMobile, useState: useMOActive } = React;
 
+// Real photos instead of the old hand-drawn placeholder illustration — only
+// Federal has its own dedicated photography, so the other four reuse the
+// closest-matching division photo already on hand.
+const MARKET_PHOTOS = {
+  federal: "/assets/federal-hero-bg.jpg",
+  "state-local": "/assets/marine-construction.jpg",
+  energy: "/assets/commercial-diving.jpg",
+  commercial: "/assets/marine-services.jpg",
+  industrial: "/assets/dredging.jpg",
+};
+
 const MARKET_COPY = {
   federal: {
     body: "As a veteran-owned small business, Coastal is positioned for direct teaming on NAVFAC and USACE set-aside opportunities — marine construction, dredging, commercial diving, and engineering support for federal waterfront and coastal-resilience programs.",
@@ -88,7 +99,10 @@ function MarketsAccordion({ data }) {
           </div>
 
           <div className="ceg-divisions-display">
-            <window.MarketPhoto marketKey={m.key} />
+            <div
+              className="ceg-photo is-tall"
+              style={{ backgroundImage: `url('${MARKET_PHOTOS[m.key]}')`, backgroundSize: "cover", backgroundPosition: "center" }}
+            />
             <div className="ceg-division-card">
               <div className="ceg-division-card-num">0{active + 1}</div>
               <div className="ceg-division-card-name">{m.name}</div>
