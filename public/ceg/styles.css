@@ -2024,6 +2024,8 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .ceg-logo-left { flex-shrink: 0; }
 .ceg-logo-left img { height: 56px; width: auto; display: block; }
 .ceg-nav-combined-inner .ceg-nav-main { flex: 1; justify-content: center; }
+/* +2px per Kevin's ask */
+.ceg-nav-combined .ceg-nav-trigger { font-size: 16.5px; }
 .ceg-nav-combined .ceg-dropdown,
 .ceg-nav-combined .ceg-mega {
   left: 50%; transform: translateX(-50%);
@@ -5703,35 +5705,67 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   font-family: var(--font-display); font-weight: 700; font-size: 24px;
   color: var(--brand); margin: 0 0 20px; letter-spacing: -0.01em;
 }
-/* Six tight, compact boxes (five divisions + "All Services") — three
-   columns by two rows, wide rather than tall per Kevin's ask. */
+/* Six photo boxes (five divisions + "All Services") — three columns by two
+   rows, ~3x the height of the original compact boxes per Kevin's ask, with
+   rounded corners kept from that version. */
 .ceg-services-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
 }
 .ceg-services-box {
-  display: flex; align-items: center; gap: 10px;
-  padding: 14px 16px;
-  border: 1px solid var(--rule, #e0d9cb); border-radius: 8px;
-  font-family: var(--font-inter, "Inter", sans-serif);
-  font-size: 14px; font-weight: 600; color: var(--ink);
-  text-decoration: none; line-height: 1.25;
-  transition: border-color .2s ease, background .2s ease, color .2s ease;
+  position: relative;
+  display: flex; align-items: flex-end;
+  height: 210px;
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: var(--ink);
+  background-size: cover; background-position: center;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(10, 24, 40, 0.10);
+  transition: transform .25s ease, box-shadow .25s ease;
 }
-.ceg-services-box svg { flex-shrink: 0; color: var(--brand); }
 .ceg-services-box:hover {
-  border-color: var(--brand); background: var(--brand-soft, #e5ecf6);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(10, 24, 40, 0.18);
 }
-.ceg-services-box-all {
-  justify-content: space-between;
-  background: var(--brand); border-color: var(--brand); color: #fff;
+/* Photo fades from a solid scrim on the left (keeps the label legible) to
+   transparent by the right edge, so the photo mainly shows through on the
+   right side of the box — same treatment as the footer's diver illustration. */
+.ceg-services-box-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, var(--ink) 30%, rgba(10, 20, 34, 0.45) 65%, transparent 92%);
 }
-.ceg-services-box-all svg { color: #fff; }
-.ceg-services-box-all:hover { background: var(--brand-hi, var(--brand)); }
+.ceg-services-box-body {
+  position: relative; z-index: 1; width: 100%;
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 20px 22px;
+}
+.ceg-services-box-name {
+  font-family: var(--font-display); font-weight: 700; font-size: 20px;
+  color: #fff; line-height: 1.2;
+}
+.ceg-services-box-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  align-self: flex-start;
+  font-family: var(--font-inter, "Inter", sans-serif);
+  font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+  color: #fff;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  transition: border-color .2s ease, gap .2s ease;
+}
+.ceg-services-box-cta svg { flex-shrink: 0; }
+.ceg-services-box:hover .ceg-services-box-cta { border-color: #fff; gap: 9px; }
+.ceg-services-box-all { background: var(--brand); }
+.ceg-services-box-all:hover { box-shadow: 0 14px 28px rgba(11, 45, 94, 0.28); }
+@media (max-width: 900px) {
+  .ceg-services-box-name { font-size: 18px; }
+}
 @media (max-width: 720px) {
   .ceg-services-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 480px) {
   .ceg-services-grid { grid-template-columns: 1fr; }
+  .ceg-services-box { height: 180px; }
 }
 
 /* Radial markets diagram — a center hex linking to /markets, ringed by one

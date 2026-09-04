@@ -1893,18 +1893,37 @@ function NarrativeIntro({ data }) {
           <h3 className="ceg-narrative-services-h3">Our Services</h3>
           <div className="ceg-services-grid">
             {data.DIVISIONS.map((d) => (
-              <a key={d.key} href={`/services/${d.key}`} className="ceg-services-box">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d={DIV_ICON[d.key]} />
-                </svg>
-                <span>{d.short}</span>
+              <a
+                key={d.key}
+                href={`/services/${d.key}`}
+                className="ceg-services-box"
+                style={{ backgroundImage: `url('${CAP_PHOTOS[d.key]}')` }}
+              >
+                {/* Photo fades to a solid scrim on the left so the label
+                    stays legible, showing through mostly on the right —
+                    the same treatment as the footer's diver illustration. */}
+                <div className="ceg-services-box-scrim" aria-hidden="true" />
+                <div className="ceg-services-box-body">
+                  <span className="ceg-services-box-name">{d.short}</span>
+                  <span className="ceg-services-box-cta">
+                    Learn More
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                    </svg>
+                  </span>
+                </div>
               </a>
             ))}
             <a href="/services" className="ceg-services-box ceg-services-box-all">
-              <span>All Services</span>
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
-              </svg>
+              <div className="ceg-services-box-body">
+                <span className="ceg-services-box-name">All Services</span>
+                <span className="ceg-services-box-cta">
+                  Learn More
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                  </svg>
+                </span>
+              </div>
             </a>
           </div>
         </div>
