@@ -1348,18 +1348,6 @@ function Footer({ theme, data }) {
         <div className="ceg-footer-top">
           <div className="ceg-footer-brand">
             <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" className="ceg-footer-logo"/>
-            <p className="ceg-footer-tagline">
-              Coastal Engineering Group is a veteran-owned marine infrastructure contractor and
-              engineering firm serving public agencies, prime contractors, utilities, ports,
-              transportation owners, and industrial clients throughout the Eastern United States.
-              Our integrated capabilities include marine construction, dredging, commercial diving,
-              underwater inspection, waterfront engineering, and marine support.
-            </p>
-            <div className="ceg-footer-certs">
-              {data.CERTS.slice(0, 4).map((c) => (
-                <span key={c.abbr} className="ceg-footer-cert">{c.abbr}</span>
-              ))}
-            </div>
           </div>
           {/* Two flat rows instead of one column per nav item — with only
               Services carrying a submenu, a per-item column grid left one
@@ -1410,9 +1398,7 @@ function Footer({ theme, data }) {
           <div className="ceg-footer-mid-block">
             <div className="ceg-footer-mid-h">Careers</div>
             <div className="ceg-footer-mid-v">
-              <a href="/careers">Open positions</a><br/>
-              <a href="/careers">Why Coastal</a><br/>
-              <a href="https://recruiting.paylocity.com" target="_blank" rel="noopener noreferrer">Apply via Paylocity</a>
+              <a href="/careers">Open positions</a>
             </div>
           </div>
           <div className="ceg-footer-mid-block ceg-footer-mid-cta ceg-footer-mid-cta--vendor">
