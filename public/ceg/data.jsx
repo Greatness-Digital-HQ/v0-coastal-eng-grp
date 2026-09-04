@@ -56,7 +56,7 @@ const DIVISIONS = [
   {
     key: "construction",
     name: "Marine Construction",
-    short: "Construction",
+    short: "Marine Construction",
     blurb: "Waterfront construction, structural rehabilitation, and repair over and below the waterline: piers, bulkheads, outfalls, intakes, and scour protection.",
     menuBlurb: "Waterfront construction and repair, above and below the waterline.",
     services: ["Pile Driving", "Bulkheads & Seawalls", "Bridge Substructures", "Pier & Wharf Construction"],

@@ -104,6 +104,11 @@ function UtilityBar({ theme, data }) {
           <span>NAVFAC · USACE · USCG</span>
         </div>
         <div className="ceg-util-right">
+          {/* Phone moved up here from the nav row per Kevin's ask — merges
+              the old logo row + sticky nav bar into one, going from three
+              stacked header bars down to two. */}
+          <a href={`tel:${data.CONTACT.phone}`}>{data.CONTACT.phone}</a>
+          <span className="ceg-util-sep">·</span>
           {/* Was "Emergency Marine Response" (a dead "#contact" anchor before
               that) — shortened to "Safety" per Kevin's review, still points
               at the real Safety & Quality page. data.CONTACT.emergency
@@ -245,46 +250,24 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
   );
 
   if (isCentered) {
+    // Merged logo row + sticky menu bar into one container per Kevin's ask
+    // (was two stacked bars here, plus the utility bar above = three total;
+    // phone moved up into the utility bar, so this is now just one bar).
     return (
-      <>
-        {/* Top section — scrolls away with page */}
-        <header className={`ceg-nav-shell ceg-nav-centered nav-${theme.nav}`}>
-          <div className="ceg-container ceg-nav-centered-top">
-            <div className="ceg-nav-centered-side ceg-nav-centered-side-l">
-              <a href={`tel:${data.CONTACT.phone}`} className="ceg-nav-phone">{data.CONTACT.phone}</a>
-            </div>
-            <a href="/" className="ceg-logo ceg-logo-center">
-              <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" />
-            </a>
-            <div className="ceg-nav-centered-side ceg-nav-centered-side-r">
-              <a href="/contact" className="ceg-nav-centered-cta">
-                Discuss a Project
-                <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden>
-                  <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
-                </svg>
-              </a>
-            </div>
+      <header className={`ceg-nav-shell ceg-nav-combined nav-${theme.nav} ${scrolled ? "is-scrolled" : ""}`}>
+        <div className="ceg-container ceg-nav-combined-inner">
+          <a href="/" className="ceg-logo ceg-logo-left">
+            <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" />
+          </a>
+          {navItems}
+          <div className="ceg-nav-combined-right">
+            <Btn href="/contact" variant="primary" arrow={false} className="ceg-nav-combined-cta">Discuss a Project</Btn>
             <button className="ceg-nav-burger" onClick={onMobileOpen} aria-label="Open menu">
               <span /><span /><span />
             </button>
           </div>
-        </header>
-        {/* Sticky nav bar — separate element so sticky works */}
-        <div className={`ceg-nav-sticky-bar ${scrolled ? "is-scrolled" : ""}`}>
-          <div className="ceg-container ceg-nav-sticky-bar-inner">
-            {/* Phone — fades in when scrolled */}
-            <a href={`tel:${data.CONTACT.phone}`} className="ceg-nav-sticky-phone">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                <path d="M3 2h2l1.5 3-1.5 1c.7 1.4 1.6 2.3 3 3l1-1.5L12 9v2c0 .6-.4 1-1 1C6.6 12 2 7.4 2 3c0-.6.4-1 1-1z" stroke="currentColor" strokeWidth="1.3" fill="none"/>
-              </svg>
-              {data.CONTACT.phone}
-            </a>
-            {navItems}
-            {/* Request a Bid — fades in when scrolled */}
-            <Btn href="/contact" variant="primary" arrow={false} className="ceg-nav-sticky-cta">Discuss a Project</Btn>
-          </div>
         </div>
-      </>
+      </header>
     );
   }
 
@@ -447,37 +430,27 @@ function HeroPhoto({ theme, data }) {
   );
 }
 
-// HERO B — stats-led editorial, full-bleed image background
+// HERO B — stats-led editorial, full-bleed image background.
+// Restructured per Kevin's "identical to Ballard" ask: Ballard's hero is a
+// left-aligned two-line headline (one word emphasized), a short paragraph,
+// and a single pill CTA over a bright, barely-scrimmed photo — no eyebrow
+// tag, no bottom proof/stat bar. That trust content already lives in the
+// intro section and the final CTA chips elsewhere, so it isn't lost, just
+// not duplicated here.
 function HeroStats({ theme, data }) {
   return (
     <section className="ceg-hero hero-stats">
       <div className="ceg-hero-background" aria-hidden style={{backgroundImage: "url('/assets/hero-background.jpg')"}} />
       <div className="ceg-hero-video-scrim" />
       <div className="ceg-container ceg-hero-stats-center">
-        <Eyebrow accent>Marine Infrastructure | Eastern United States</Eyebrow>
         <h1 className="ceg-h1 serif">
-          Marine Infrastructure. Engineered, Built, and Maintained.
+          Marine Infrastructure.<br /><em>Engineered</em>, Built, and Maintained.
         </h1>
         <p className="ceg-hero-lede">
-          Coastal Engineering Group self-performs marine construction, dredging, commercial diving, underwater inspection, and waterfront engineering for federal, state, municipal, transportation, utility, and industrial clients throughout the Eastern United States.
+          Coastal Engineering Group self-performs marine construction, dredging, commercial diving, underwater inspection, and waterfront engineering throughout the Eastern United States.
         </p>
         <div className="ceg-hero-ctas">
-          <Btn href="#capabilities" variant="hero-accent">View Capabilities</Btn>
-          <Btn href="/contact" variant="ghost-onbrand" arrow={true}>Discuss a Project</Btn>
-        </div>
-      </div>
-      <div className="ceg-hero-stats-bar">
-        <div className="ceg-container ceg-hero-stats-bar-row ceg-hero-proof-row">
-          {[
-            "Veteran-Owned Small Business",
-            "ADCI-Certified Commercial Diving Contractor",
-            "Professional Engineers Licensed Across Multiple States",
-            "Operations Throughout the Eastern United States",
-          ].map((p, i) => (
-            <div key={i} className="ceg-hero-stat ceg-hero-proof-item">
-              <div className="ceg-hero-proof">{p}</div>
-            </div>
-          ))}
+          <Btn href="/services" variant="hero-accent">Learn More</Btn>
         </div>
       </div>
     </section>
@@ -1375,38 +1348,27 @@ function Footer({ theme, data }) {
         <div className="ceg-footer-top">
           <div className="ceg-footer-brand">
             <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" className="ceg-footer-logo"/>
-            <p className="ceg-footer-tagline">
-              Coastal Engineering Group is a veteran-owned marine infrastructure contractor and
-              engineering firm serving public agencies, prime contractors, utilities, ports,
-              transportation owners, and industrial clients throughout the Eastern United States.
-              Our integrated capabilities include marine construction, dredging, commercial diving,
-              underwater inspection, waterfront engineering, and marine support.
-            </p>
-            <div className="ceg-footer-certs">
-              {data.CERTS.slice(0, 4).map((c) => (
-                <span key={c.abbr} className="ceg-footer-cert">{c.abbr}</span>
-              ))}
-            </div>
           </div>
-          <div className="ceg-footer-cols">
-            {Object.entries(data.NAV).map(([k, item]) => (
-              <div key={k} className="ceg-footer-col">
-                {item.items ? (
-                  <div className="ceg-footer-col-h">{item.label}</div>
-                ) : (
-                  <div className="ceg-footer-col-h"><a href={item.href}>{item.label}</a></div>
-                )}
-                {item.items && (
-                  <ul>
-                    {item.items.slice(0, 5).map((entry) => {
-                      const label = typeof entry === "string" ? entry : entry.label;
-                      const href  = typeof entry === "string" ? "#" : (entry.href || "#");
-                      return <li key={label}><a href={href}>{label}</a></li>;
-                    })}
-                  </ul>
-                )}
-              </div>
-            ))}
+          {/* Two flat rows instead of one column per nav item — with only
+              Services carrying a submenu, a per-item column grid left one
+              tall column next to four mostly-empty ones. Primary links on
+              their own row, the Services submenu on a second row below. */}
+          <div className="ceg-footer-nav">
+            <nav className="ceg-footer-nav-row ceg-footer-nav-primary" aria-label="Footer">
+              {Object.entries(data.NAV).map(([k, item]) => {
+                const href = item.href || (item.items && item.items[0] && item.items[0].href) || "#";
+                return <a key={k} href={href}>{item.label}</a>;
+              })}
+            </nav>
+            {data.NAV.capabilities.items && (
+              <nav className="ceg-footer-nav-row ceg-footer-nav-sub" aria-label="Services">
+                {data.NAV.capabilities.items.map((entry) => {
+                  const label = typeof entry === "string" ? entry : entry.label;
+                  const href  = typeof entry === "string" ? "#" : (entry.href || "#");
+                  return <a key={label} href={href}>{label}</a>;
+                })}
+              </nav>
+            )}
           </div>
         </div>
 
@@ -1436,9 +1398,7 @@ function Footer({ theme, data }) {
           <div className="ceg-footer-mid-block">
             <div className="ceg-footer-mid-h">Careers</div>
             <div className="ceg-footer-mid-v">
-              <a href="/careers">Open positions</a><br/>
-              <a href="/careers">Why Coastal</a><br/>
-              <a href="https://recruiting.paylocity.com" target="_blank" rel="noopener noreferrer">Apply via Paylocity</a>
+              <a href="/careers">Open positions</a>
             </div>
           </div>
           <div className="ceg-footer-mid-block ceg-footer-mid-cta ceg-footer-mid-cta--vendor">
@@ -1887,18 +1847,115 @@ function FinalCTA({ data }) {
 }
 
 // ─── Homepage narrative intro (below hero) ───────────────────────────────────
-function NarrativeIntro() {
+// Homepage intro — per Kevin's "identical to Ballard" ask, this now mirrors
+// the one continuous section on Ballard's homepage that (1) states who
+// Coastal is in a two-column split (bold statement | paragraph), (2) teases
+// Services with a short blurb + link out (their homepage has no services
+// grid, just this), and (3) visualizes Markets as a radial diagram — the
+// piece their homepage actually gives visual weight to, not services.
+function NarrativeIntro({ data }) {
+  const markets = (data && data.MARKETS) || [];
+  const radius = 36;
+  const startAngle = -90;
+  const diagramRef = useReveal(0.25);
+
   return (
     <section className="ceg-section ceg-narrative-intro">
       <div className="ceg-container">
-        <div className="ceg-narrative-inner">
-          <h2 className="ceg-h2">One Team Above and Below the Waterline</h2>
-          <p className="ceg-narrative-p">
-            Marine infrastructure problems rarely fit within a single discipline. Coastal combines engineering judgment, specialty field crews, marine equipment, dredging capability, and commercial diving so clients can move from investigation to repair with fewer gaps between design and execution.
-          </p>
-          <p className="ceg-narrative-p">
-            Our teams work in active waterways, restricted-access facilities, industrial environments, transportation corridors, and federal installations where planning, documentation, safety, and constructability are essential.
-          </p>
+        <div className="ceg-narrative-split">
+          <h2 className="ceg-h2 ceg-narrative-statement">
+            One Team Above and Below the Waterline.
+          </h2>
+          <div className="ceg-narrative-copy">
+            <p className="ceg-narrative-p">
+              Marine infrastructure problems rarely fit within a single discipline. Coastal combines engineering judgment, specialty field crews, marine equipment, dredging capability, and commercial diving so clients can move from investigation to repair with fewer gaps between design and execution.
+            </p>
+            <p className="ceg-narrative-p">
+              Our teams work in active waterways, restricted-access facilities, industrial environments, transportation corridors, and federal installations where planning, documentation, safety, and constructability are essential.
+            </p>
+          </div>
+        </div>
+
+        <div className="ceg-narrative-services">
+          <h3 className="ceg-narrative-services-h3">Our Services</h3>
+          <div className="ceg-services-grid">
+            {data.DIVISIONS.map((d) => (
+              <a
+                key={d.key}
+                href={`/services/${d.key}`}
+                className="ceg-services-box"
+                style={{ backgroundImage: `url('${CAP_PHOTOS[d.key]}')` }}
+              >
+                {/* Photo fades to a solid scrim on the left so the label
+                    stays legible, showing through mostly on the right —
+                    the same treatment as the footer's diver illustration. */}
+                <div className="ceg-services-box-scrim" aria-hidden="true" />
+                <div className="ceg-services-box-body">
+                  <span className="ceg-services-box-name">{d.short}</span>
+                  <span className="ceg-services-box-cta">
+                    Learn More
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            ))}
+            <a href="/services" className="ceg-services-box ceg-services-box-all">
+              <div className="ceg-services-box-body">
+                <span className="ceg-services-box-name">All Services</span>
+                <span className="ceg-services-box-cta">
+                  Learn More
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                  </svg>
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div className="ceg-markets-diagram-wrap">
+          <div className="ceg-markets-diagram-head">
+            <h3 className="ceg-markets-diagram-h3">Markets Served by Coastal</h3>
+            {/* Mobile-only: the center hex reads as a redundant repeat of the
+                heading above once the diagram collapses to a stacked list,
+                so it's swapped for this link there (hidden on desktop, where
+                the hex still does that job). */}
+            <a href="/markets" className="ceg-markets-diagram-head-link">
+              View All Markets
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+              </svg>
+            </a>
+          </div>
+          <div className="ceg-markets-diagram" ref={diagramRef}>
+            <a href="/markets" className="ceg-markets-diagram-center" style={{ transitionDelay: "0.05s" }}>
+              <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <polygon points="25,0 75,0 100,50 75,100 25,100 0,50" strokeLinejoin="round" />
+              </svg>
+              <span className="ceg-markets-diagram-center-label">Markets<br />We Serve</span>
+            </a>
+            {markets.map((m, i) => {
+              const angle = (startAngle + (360 / markets.length) * i) * (Math.PI / 180);
+              const x = 50 + radius * Math.cos(angle);
+              const y = 50 + radius * Math.sin(angle);
+              return (
+                <a
+                  key={m.key}
+                  href="/markets"
+                  className="ceg-markets-diagram-node"
+                  style={{ left: `${x}%`, top: `${y}%`, transitionDelay: `${0.16 + i * 0.09}s` }}
+                >
+                  <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                    <polygon points="25,0 75,0 100,50 75,100 25,100 0,50" strokeLinejoin="round" />
+                  </svg>
+                  <span className="ceg-markets-diagram-node-name">{m.name}</span>
+                  <span className="ceg-markets-diagram-node-detail">{m.detail}</span>
+                </a>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

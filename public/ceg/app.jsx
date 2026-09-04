@@ -18,19 +18,18 @@ function App() {
       <window.UtilityBar theme={theme} data={data} />
       <window.Nav theme={theme} data={data} conceptKey="drydock" onMobileOpen={() => setMobileOpen(true)} />
       <main>
-        {/* Trimmed per Kevin's review — wants the homepage closer to
-            ballardmc.com: shorter, more white space, less stacked content.
-            Dropped IntegratedDelivery (overlapped Capabilities/WhyCEG),
-            Careers (already one click away via the utility bar and nav),
-            CertificationsBar and Locations (real info, but better suited to
-            About than a homepage scroll). Nothing here was deleted from the
-            site — just off the homepage. */}
+        {/* Restructured per Kevin's direct ask: "structure identical to
+            ballardmc.com." Ballard's homepage is Hero -> one intro section
+            (statement/paragraph split, a services teaser, a markets diagram)
+            -> Featured Projects -> Footer. Nothing else. That means
+            Capabilities (the services accordion), WhyCEG, and FinalCTA are
+            off the homepage now — none of those exist on Ballard's homepage
+            — but nothing was deleted from the codebase, just unused here;
+            Capabilities/WhyCEG aren't rendered anywhere else, FinalCTA still
+            is (services hub, markets page). */}
         <window.Hero theme={theme} data={data} conceptKey="drydock" />
-        <window.NarrativeIntro />
-        <window.Capabilities theme={theme} data={data} />
-        <window.WhyCEG theme={theme} data={data} />
+        <window.NarrativeIntro data={data} />
         <window.FeaturedProjects theme={theme} data={data} />
-        <window.FinalCTA data={data} />
       </main>
       <window.Footer theme={theme} data={data} />
       <window.MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} data={data} />
