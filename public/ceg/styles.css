@@ -1576,6 +1576,31 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 }
 .ceg-footer-col ul li a:hover { color: white; }
 
+/* Two flat rows — primary nav links, then the Services submenu below —
+   instead of one column per nav item (see the note by the JSX). */
+.ceg-footer-nav {
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 22px; height: 100%;
+}
+.ceg-footer-nav-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 32px; }
+.ceg-footer-nav-primary a {
+  font-family: var(--font-display); font-weight: 700; font-size: 15px;
+  color: rgba(255, 255, 255, 0.92);
+}
+.ceg-footer-nav-primary a:hover { color: #fff; }
+.ceg-footer-nav-sub {
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+.ceg-footer-nav-sub a {
+  font-family: var(--font-inter, "Inter", sans-serif); font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.ceg-footer-nav-sub a:hover { color: #fff; }
+@media (max-width: 640px) {
+  .ceg-footer-nav-row { gap: 8px 20px; }
+}
+
 .ceg-footer-mid {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
   padding: 40px 0;

@@ -1361,25 +1361,26 @@ function Footer({ theme, data }) {
               ))}
             </div>
           </div>
-          <div className="ceg-footer-cols">
-            {Object.entries(data.NAV).map(([k, item]) => (
-              <div key={k} className="ceg-footer-col">
-                {item.items ? (
-                  <div className="ceg-footer-col-h">{item.label}</div>
-                ) : (
-                  <div className="ceg-footer-col-h"><a href={item.href}>{item.label}</a></div>
-                )}
-                {item.items && (
-                  <ul>
-                    {item.items.slice(0, 5).map((entry) => {
-                      const label = typeof entry === "string" ? entry : entry.label;
-                      const href  = typeof entry === "string" ? "#" : (entry.href || "#");
-                      return <li key={label}><a href={href}>{label}</a></li>;
-                    })}
-                  </ul>
-                )}
-              </div>
-            ))}
+          {/* Two flat rows instead of one column per nav item — with only
+              Services carrying a submenu, a per-item column grid left one
+              tall column next to four mostly-empty ones. Primary links on
+              their own row, the Services submenu on a second row below. */}
+          <div className="ceg-footer-nav">
+            <nav className="ceg-footer-nav-row ceg-footer-nav-primary" aria-label="Footer">
+              {Object.entries(data.NAV).map(([k, item]) => {
+                const href = item.href || (item.items && item.items[0] && item.items[0].href) || "#";
+                return <a key={k} href={href}>{item.label}</a>;
+              })}
+            </nav>
+            {data.NAV.capabilities.items && (
+              <nav className="ceg-footer-nav-row ceg-footer-nav-sub" aria-label="Services">
+                {data.NAV.capabilities.items.map((entry) => {
+                  const label = typeof entry === "string" ? entry : entry.label;
+                  const href  = typeof entry === "string" ? "#" : (entry.href || "#");
+                  return <a key={label} href={href}>{label}</a>;
+                })}
+              </nav>
+            )}
           </div>
         </div>
 
