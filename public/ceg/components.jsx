@@ -1870,6 +1870,7 @@ function NarrativeIntro({ data }) {
   const markets = (data && data.MARKETS) || [];
   const radius = 36;
   const startAngle = -90;
+  const diagramRef = useReveal(0.25);
 
   return (
     <section className="ceg-section ceg-narrative-intro">
@@ -1911,11 +1912,21 @@ function NarrativeIntro({ data }) {
         <div className="ceg-markets-diagram-wrap">
           <div className="ceg-markets-diagram-head">
             <h3 className="ceg-markets-diagram-h3">Markets Served by Coastal</h3>
+            {/* Mobile-only: the center hex reads as a redundant repeat of the
+                heading above once the diagram collapses to a stacked list,
+                so it's swapped for this link there (hidden on desktop, where
+                the hex still does that job). */}
+            <a href="/markets" className="ceg-markets-diagram-head-link">
+              View All Markets
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+              </svg>
+            </a>
           </div>
-          <div className="ceg-markets-diagram">
-            <a href="/markets" className="ceg-markets-diagram-center">
+          <div className="ceg-markets-diagram" ref={diagramRef}>
+            <a href="/markets" className="ceg-markets-diagram-center" style={{ transitionDelay: "0.05s" }}>
               <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                <polygon points="25,0 75,0 100,50 75,100 25,100 0,50" />
+                <polygon points="25,0 75,0 100,50 75,100 25,100 0,50" strokeLinejoin="round" />
               </svg>
               <span className="ceg-markets-diagram-center-label">Markets<br />We Serve</span>
             </a>
@@ -1928,10 +1939,10 @@ function NarrativeIntro({ data }) {
                   key={m.key}
                   href="/markets"
                   className="ceg-markets-diagram-node"
-                  style={{ left: `${x}%`, top: `${y}%` }}
+                  style={{ left: `${x}%`, top: `${y}%`, transitionDelay: `${0.16 + i * 0.09}s` }}
                 >
                   <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                    <polygon points="25,0 75,0 100,50 75,100 25,100 0,50" />
+                    <polygon points="25,0 75,0 100,50 75,100 25,100 0,50" strokeLinejoin="round" />
                   </svg>
                   <span className="ceg-markets-diagram-node-name">{m.name}</span>
                   <span className="ceg-markets-diagram-node-detail">{m.detail}</span>

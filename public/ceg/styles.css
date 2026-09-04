@@ -5742,6 +5742,14 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   font-family: var(--font-display); font-weight: 700; font-size: 24px;
   color: var(--brand); margin: 0; letter-spacing: -0.01em;
 }
+/* Mobile-only "view all" link — see the note by the JSX that renders it. */
+.ceg-markets-diagram-head-link {
+  display: none;
+  align-items: center; gap: 6px; justify-content: center;
+  font-family: var(--font-inter, "Inter", sans-serif); font-weight: 600; font-size: 14px;
+  color: var(--brand); text-decoration: none; margin-top: 10px;
+}
+.ceg-markets-diagram-head-link:hover { color: var(--brand-hi, var(--brand)); }
 .ceg-markets-diagram {
   /* ~50% bigger per Kevin's ask (was max-width: 560px) */
   position: relative; width: 100%; max-width: 840px; aspect-ratio: 1 / 1;
@@ -5752,19 +5760,36 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; text-decoration: none;
-  transition: transform .25s ease;
+  transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .4s cubic-bezier(.22,1,.36,1);
+}
+/* Entrance animation — hexagons bloom outward from the center on scroll-in,
+   staggered via inline transitionDelay in the JSX. Gated behind
+   prefers-reduced-motion so the base translate(-50%,-50%) positioning
+   (needed for layout, not just animation) is never disturbed for anyone
+   who has motion turned down. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 721px) {
+  .ceg-markets-diagram:not(.is-revealed) .ceg-markets-diagram-center,
+  .ceg-markets-diagram:not(.is-revealed) .ceg-markets-diagram-node {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
 }
 /* CSS border + clip-path only paints the hexagon's horizontal edges — an SVG
    polygon with a stroke renders uniformly on every edge, including the
-   diagonals, so the shape itself moved to SVG. */
+   diagonals, so the shape itself moved to SVG. A drop-shadow filter (rather
+   than box-shadow, which would box off the corners) follows the hex outline
+   itself for a subtle lift. */
 .ceg-markets-diagram-hex {
   position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;
+  filter: drop-shadow(0 8px 16px rgba(10, 24, 40, 0.10));
+  transition: filter .25s ease;
 }
 .ceg-markets-diagram-hex polygon { transition: fill .25s ease, stroke .25s ease; }
 .ceg-markets-diagram-center-label,
 .ceg-markets-diagram-node-name,
 .ceg-markets-diagram-node-detail {
   position: relative; z-index: 1;
+  max-width: 62%;
 }
 .ceg-markets-diagram-center {
   width: 34%; aspect-ratio: 1 / 1;
@@ -5772,16 +5797,25 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   font-family: var(--font-display); font-weight: 700; font-size: 22px;
   line-height: 1.3; z-index: 2; padding: 8px;
 }
-.ceg-markets-diagram-center .ceg-markets-diagram-hex polygon { fill: var(--brand); }
+.ceg-markets-diagram-center .ceg-markets-diagram-hex {
+  filter: drop-shadow(0 12px 26px rgba(11, 45, 94, 0.32));
+}
+.ceg-markets-diagram-center .ceg-markets-diagram-hex polygon {
+  fill: var(--brand); stroke: rgba(255, 255, 255, 0.22); stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
 .ceg-markets-diagram-node {
   width: 30%; aspect-ratio: 1 / 1;
-  padding: 10px; gap: 3px; z-index: 1;
+  padding: 14px; gap: 4px; z-index: 1;
 }
 .ceg-markets-diagram-node .ceg-markets-diagram-hex polygon {
-  fill: var(--bg, #fbfaf7); stroke: var(--rule, #e0d9cb); stroke-width: 1.5;
+  fill: var(--bg, #fbfaf7); stroke: var(--rule, #e0d9cb); stroke-width: 1.75;
   vector-effect: non-scaling-stroke;
 }
 .ceg-markets-diagram-node:hover { transform: translate(-50%, -50%) scale(1.06); }
+.ceg-markets-diagram-node:hover .ceg-markets-diagram-hex {
+  filter: drop-shadow(0 14px 24px rgba(11, 45, 94, 0.20));
+}
 .ceg-markets-diagram-node:hover .ceg-markets-diagram-hex polygon {
   fill: var(--brand-soft, #e5ecf6); stroke: var(--brand);
 }
@@ -5793,22 +5827,26 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   color: var(--ink-soft); line-height: 1.3;
 }
 /* Below 720px the radial layout gets too cramped to read — collapse it
-   into a plain stacked grid instead of hiding the markets content. */
+   into a plain stacked grid instead of hiding the markets content. The
+   center hex is dropped here (it just repeated the "Markets Served by
+   Coastal" heading above it once stacked) in favor of the head-link. */
 @media (max-width: 720px) {
+  .ceg-markets-diagram-head-link { display: inline-flex; }
   .ceg-markets-diagram {
     max-width: none; aspect-ratio: auto;
     display: grid; grid-template-columns: 1fr; gap: 12px;
   }
-  .ceg-markets-diagram-center,
+  .ceg-markets-diagram-center { display: none; }
   .ceg-markets-diagram-node {
-    position: static; transform: none;
+    position: static; transform: none; opacity: 1;
     width: 100%; aspect-ratio: auto;
     border-radius: 8px;
-    flex-direction: row; justify-content: flex-start; gap: 12px;
+    flex-direction: column; align-items: flex-start; justify-content: center; gap: 3px;
     padding: 16px 20px; text-align: left;
   }
+  .ceg-markets-diagram-node-name,
+  .ceg-markets-diagram-node-detail { max-width: none; }
   .ceg-markets-diagram-hex { display: none; }
-  .ceg-markets-diagram-center { background: var(--brand); }
   .ceg-markets-diagram-node { background: var(--bg, #fbfaf7); border: 1px solid var(--rule, #e0d9cb); }
   .ceg-markets-diagram-node:hover { transform: none; }
 }
