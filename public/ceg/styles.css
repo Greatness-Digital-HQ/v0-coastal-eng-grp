@@ -2004,6 +2004,38 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   }
 }
 
+/* Combined nav bar — logo, links and CTA merged into one container, per
+   Kevin's ask to go from three stacked header bars down to two (phone
+   moved up into the utility bar above). */
+.ceg-nav-combined {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  border-bottom: 1px solid var(--rule);
+  transition: box-shadow 0.2s ease;
+}
+.ceg-nav-combined.is-scrolled { box-shadow: 0 4px 24px rgba(10, 24, 40, 0.12); }
+.ceg-nav-combined-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 10px 0;
+}
+.ceg-logo-left { flex-shrink: 0; }
+.ceg-logo-left img { height: 56px; width: auto; display: block; }
+.ceg-nav-combined-inner .ceg-nav-main { flex: 1; justify-content: center; }
+.ceg-nav-combined .ceg-dropdown,
+.ceg-nav-combined .ceg-mega {
+  left: 50%; transform: translateX(-50%);
+}
+.ceg-nav-combined-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; margin-left: auto; }
+.ceg-nav-combined-right .ceg-nav-burger { display: none; }
+@media (max-width: 920px) {
+  .ceg-nav-combined-inner .ceg-nav-main { display: none; }
+  .ceg-nav-combined-right .ceg-btn { display: none; }
+  .ceg-nav-combined-right .ceg-nav-burger { display: inline-flex !important; }
+}
+
 /* DRYDOCK — denser, editorial */
 /* Bumped from 88px/48px per Kevin's review — wants more white space and a
    more minimal feel overall, closer to ballardmc.com. */
@@ -5665,22 +5697,41 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 }
 
 .ceg-narrative-services {
-  display: flex; align-items: flex-start; gap: 28px;
   padding: 48px 0; border-top: 1px solid var(--rule, #e0d9cb);
-}
-.ceg-narrative-services-rule {
-  width: 64px; height: 3px; background: var(--brand); flex-shrink: 0; margin-top: 14px;
 }
 .ceg-narrative-services-h3 {
   font-family: var(--font-display); font-weight: 700; font-size: 24px;
-  color: var(--brand); margin: 0 0 12px; letter-spacing: -0.01em;
+  color: var(--brand); margin: 0 0 20px; letter-spacing: -0.01em;
 }
-.ceg-narrative-services-p {
+/* Six tight, compact boxes (five divisions + "All Services") — three
+   columns by two rows, wide rather than tall per Kevin's ask. */
+.ceg-services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.ceg-services-box {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--rule, #e0d9cb); border-radius: 8px;
   font-family: var(--font-inter, "Inter", sans-serif);
-  font-size: 1rem; line-height: 1.7; color: var(--ink-soft); margin: 0 0 20px; max-width: 62ch;
+  font-size: 14px; font-weight: 600; color: var(--ink);
+  text-decoration: none; line-height: 1.25;
+  transition: border-color .2s ease, background .2s ease, color .2s ease;
 }
-@media (max-width: 640px) {
-  .ceg-narrative-services { flex-direction: column; gap: 14px; }
+.ceg-services-box svg { flex-shrink: 0; color: var(--brand); }
+.ceg-services-box:hover {
+  border-color: var(--brand); background: var(--brand-soft, #e5ecf6);
+}
+.ceg-services-box-all {
+  justify-content: space-between;
+  background: var(--brand); border-color: var(--brand); color: #fff;
+}
+.ceg-services-box-all svg { color: #fff; }
+.ceg-services-box-all:hover { background: var(--brand-hi, var(--brand)); }
+@media (max-width: 720px) {
+  .ceg-services-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .ceg-services-grid { grid-template-columns: 1fr; }
 }
 
 /* Radial markets diagram — a center hex linking to /markets, ringed by one
@@ -5692,7 +5743,8 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   color: var(--brand); margin: 0; letter-spacing: -0.01em;
 }
 .ceg-markets-diagram {
-  position: relative; width: 100%; max-width: 560px; aspect-ratio: 1 / 1;
+  /* ~50% bigger per Kevin's ask (was max-width: 560px) */
+  position: relative; width: 100%; max-width: 840px; aspect-ratio: 1 / 1;
   margin: 0 auto;
 }
 .ceg-markets-diagram-center,
@@ -5700,29 +5752,44 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; text-decoration: none;
-  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-  transition: transform .25s ease, background .25s ease;
+  transition: transform .25s ease;
+}
+/* CSS border + clip-path only paints the hexagon's horizontal edges — an SVG
+   polygon with a stroke renders uniformly on every edge, including the
+   diagonals, so the shape itself moved to SVG. */
+.ceg-markets-diagram-hex {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;
+}
+.ceg-markets-diagram-hex polygon { transition: fill .25s ease, stroke .25s ease; }
+.ceg-markets-diagram-center-label,
+.ceg-markets-diagram-node-name,
+.ceg-markets-diagram-node-detail {
+  position: relative; z-index: 1;
 }
 .ceg-markets-diagram-center {
   width: 34%; aspect-ratio: 1 / 1;
-  background: var(--brand); color: #fff;
-  font-family: var(--font-display); font-weight: 700; font-size: 15px;
+  color: #fff;
+  font-family: var(--font-display); font-weight: 700; font-size: 22px;
   line-height: 1.3; z-index: 2; padding: 8px;
 }
+.ceg-markets-diagram-center .ceg-markets-diagram-hex polygon { fill: var(--brand); }
 .ceg-markets-diagram-node {
   width: 30%; aspect-ratio: 1 / 1;
-  background: var(--bg, #fbfaf7); border: 1.5px solid var(--rule, #e0d9cb);
   padding: 10px; gap: 3px; z-index: 1;
 }
-.ceg-markets-diagram-node:hover {
-  transform: translate(-50%, -50%) scale(1.06);
-  background: var(--brand-soft, #e5ecf6); border-color: var(--brand);
+.ceg-markets-diagram-node .ceg-markets-diagram-hex polygon {
+  fill: var(--bg, #fbfaf7); stroke: var(--rule, #e0d9cb); stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+.ceg-markets-diagram-node:hover { transform: translate(-50%, -50%) scale(1.06); }
+.ceg-markets-diagram-node:hover .ceg-markets-diagram-hex polygon {
+  fill: var(--brand-soft, #e5ecf6); stroke: var(--brand);
 }
 .ceg-markets-diagram-node-name {
-  font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--ink);
+  font-family: var(--font-display); font-weight: 700; font-size: 21px; color: var(--ink);
 }
 .ceg-markets-diagram-node-detail {
-  font-family: var(--font-inter, "Inter", sans-serif); font-size: 10.5px;
+  font-family: var(--font-inter, "Inter", sans-serif); font-size: 16px;
   color: var(--ink-soft); line-height: 1.3;
 }
 /* Below 720px the radial layout gets too cramped to read — collapse it
@@ -5736,10 +5803,13 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   .ceg-markets-diagram-node {
     position: static; transform: none;
     width: 100%; aspect-ratio: auto;
-    clip-path: none; border-radius: 8px;
+    border-radius: 8px;
     flex-direction: row; justify-content: flex-start; gap: 12px;
     padding: 16px 20px; text-align: left;
   }
+  .ceg-markets-diagram-hex { display: none; }
+  .ceg-markets-diagram-center { background: var(--brand); }
+  .ceg-markets-diagram-node { background: var(--bg, #fbfaf7); border: 1px solid var(--rule, #e0d9cb); }
   .ceg-markets-diagram-node:hover { transform: none; }
 }
 

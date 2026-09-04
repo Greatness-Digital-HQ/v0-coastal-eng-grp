@@ -104,6 +104,11 @@ function UtilityBar({ theme, data }) {
           <span>NAVFAC · USACE · USCG</span>
         </div>
         <div className="ceg-util-right">
+          {/* Phone moved up here from the nav row per Kevin's ask — merges
+              the old logo row + sticky nav bar into one, going from three
+              stacked header bars down to two. */}
+          <a href={`tel:${data.CONTACT.phone}`}>{data.CONTACT.phone}</a>
+          <span className="ceg-util-sep">·</span>
           {/* Was "Emergency Marine Response" (a dead "#contact" anchor before
               that) — shortened to "Safety" per Kevin's review, still points
               at the real Safety & Quality page. data.CONTACT.emergency
@@ -245,46 +250,24 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
   );
 
   if (isCentered) {
+    // Merged logo row + sticky menu bar into one container per Kevin's ask
+    // (was two stacked bars here, plus the utility bar above = three total;
+    // phone moved up into the utility bar, so this is now just one bar).
     return (
-      <>
-        {/* Top section — scrolls away with page */}
-        <header className={`ceg-nav-shell ceg-nav-centered nav-${theme.nav}`}>
-          <div className="ceg-container ceg-nav-centered-top">
-            <div className="ceg-nav-centered-side ceg-nav-centered-side-l">
-              <a href={`tel:${data.CONTACT.phone}`} className="ceg-nav-phone">{data.CONTACT.phone}</a>
-            </div>
-            <a href="/" className="ceg-logo ceg-logo-center">
-              <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" />
-            </a>
-            <div className="ceg-nav-centered-side ceg-nav-centered-side-r">
-              <a href="/contact" className="ceg-nav-centered-cta">
-                Discuss a Project
-                <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden>
-                  <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
-                </svg>
-              </a>
-            </div>
+      <header className={`ceg-nav-shell ceg-nav-combined nav-${theme.nav} ${scrolled ? "is-scrolled" : ""}`}>
+        <div className="ceg-container ceg-nav-combined-inner">
+          <a href="/" className="ceg-logo ceg-logo-left">
+            <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" />
+          </a>
+          {navItems}
+          <div className="ceg-nav-combined-right">
+            <Btn href="/contact" variant="primary" arrow={false} className="ceg-nav-combined-cta">Discuss a Project</Btn>
             <button className="ceg-nav-burger" onClick={onMobileOpen} aria-label="Open menu">
               <span /><span /><span />
             </button>
           </div>
-        </header>
-        {/* Sticky nav bar — separate element so sticky works */}
-        <div className={`ceg-nav-sticky-bar ${scrolled ? "is-scrolled" : ""}`}>
-          <div className="ceg-container ceg-nav-sticky-bar-inner">
-            {/* Phone — fades in when scrolled */}
-            <a href={`tel:${data.CONTACT.phone}`} className="ceg-nav-sticky-phone">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                <path d="M3 2h2l1.5 3-1.5 1c.7 1.4 1.6 2.3 3 3l1-1.5L12 9v2c0 .6-.4 1-1 1C6.6 12 2 7.4 2 3c0-.6.4-1 1-1z" stroke="currentColor" strokeWidth="1.3" fill="none"/>
-              </svg>
-              {data.CONTACT.phone}
-            </a>
-            {navItems}
-            {/* Request a Bid — fades in when scrolled */}
-            <Btn href="/contact" variant="primary" arrow={false} className="ceg-nav-sticky-cta">Discuss a Project</Btn>
-          </div>
         </div>
-      </>
+      </header>
     );
   }
 
@@ -1906,13 +1889,22 @@ function NarrativeIntro({ data }) {
         </div>
 
         <div className="ceg-narrative-services">
-          <div className="ceg-narrative-services-rule" aria-hidden="true" />
-          <div className="ceg-narrative-services-text">
-            <h3 className="ceg-narrative-services-h3">Our Services</h3>
-            <p className="ceg-narrative-services-p">
-              Coastal provides client services at every project stage — marine construction, engineering and inspection, dredging, commercial diving, and fleet support — tailored to follow each project through its lifecycle and beyond.
-            </p>
-            <a href="/services" className="ceg-btn ceg-btn-primary">Learn More →</a>
+          <h3 className="ceg-narrative-services-h3">Our Services</h3>
+          <div className="ceg-services-grid">
+            {data.DIVISIONS.map((d) => (
+              <a key={d.key} href={`/services/${d.key}`} className="ceg-services-box">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d={DIV_ICON[d.key]} />
+                </svg>
+                <span>{d.short}</span>
+              </a>
+            ))}
+            <a href="/services" className="ceg-services-box ceg-services-box-all">
+              <span>All Services</span>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+              </svg>
+            </a>
           </div>
         </div>
 
@@ -1922,7 +1914,10 @@ function NarrativeIntro({ data }) {
           </div>
           <div className="ceg-markets-diagram">
             <a href="/markets" className="ceg-markets-diagram-center">
-              <span>Markets<br />We Serve</span>
+              <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <polygon points="25,0 75,0 100,50 75,100 25,100 0,50" />
+              </svg>
+              <span className="ceg-markets-diagram-center-label">Markets<br />We Serve</span>
             </a>
             {markets.map((m, i) => {
               const angle = (startAngle + (360 / markets.length) * i) * (Math.PI / 180);
@@ -1935,6 +1930,9 @@ function NarrativeIntro({ data }) {
                   className="ceg-markets-diagram-node"
                   style={{ left: `${x}%`, top: `${y}%` }}
                 >
+                  <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                    <polygon points="25,0 75,0 100,50 75,100 25,100 0,50" />
+                  </svg>
                   <span className="ceg-markets-diagram-node-name">{m.name}</span>
                   <span className="ceg-markets-diagram-node-detail">{m.detail}</span>
                 </a>
