@@ -250,19 +250,20 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
   );
 
   if (isCentered) {
-    // Merged logo row + sticky menu bar into one container per Kevin's ask
-    // (was two stacked bars here, plus the utility bar above = three total;
-    // phone moved up into the utility bar, so this is now just one bar).
+    // Hamburger-triggered flyout instead of an inline link row, per the
+    // client's direct ask to match how ballardmc.com's nav works — logo and
+    // CTA stay in the persistent bar, everything else lives in the flyout
+    // (window.MobileMenu, opened by onMobileOpen at every viewport width now,
+    // not just narrow ones).
     return (
       <header className={`ceg-nav-shell ceg-nav-combined nav-${theme.nav} ${scrolled ? "is-scrolled" : ""}`}>
         <div className="ceg-container ceg-nav-combined-inner">
           <a href="/" className="ceg-logo ceg-logo-left">
             <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" />
           </a>
-          {navItems}
           <div className="ceg-nav-combined-right">
             <Btn href="/contact" variant="primary" arrow={false} className="ceg-nav-combined-cta">Discuss a Project</Btn>
-            <button className="ceg-nav-burger" onClick={onMobileOpen} aria-label="Open menu">
+            <button className="ceg-nav-burger ceg-nav-burger-always" onClick={onMobileOpen} aria-label="Open menu">
               <span /><span /><span />
             </button>
           </div>
