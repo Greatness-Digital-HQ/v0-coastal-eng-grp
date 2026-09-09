@@ -2037,15 +2037,31 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 
 /* Combined nav bar — logo, links and CTA merged into one container, per
    Kevin's ask to go from three stacked header bars down to two (phone
-   moved up into the utility bar above). */
+   moved up into the utility bar above). Later made transparent-over-hero
+   per a direct ask to mirror ballardmc.com: it starts see-through, floating
+   on top of the hero photo, and turns solid white once scrolled. The
+   utility bar above it (the black strip) is untouched either way. */
 .ceg-nav-combined {
   position: sticky;
   top: 0;
   z-index: 80;
-  border-bottom: 1px solid var(--rule);
-  transition: box-shadow 0.2s ease;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  /* Nav is a positioned element, so it already paints above the (unpositioned
+     or lower-stacked) hero content that follows it — this margin just pulls
+     that hero content up underneath it in the document flow, so the
+     transparent bar actually shows the photo through it instead of a blank
+     gap. -78px ≈ this bar's own rendered height (56px logo + 2×10px padding
+     + 1px border); a page whose first section has no hero photo just shows
+     a harmless ~78px overlap of its own top edge. */
+  margin-bottom: -78px;
 }
-.ceg-nav-combined.is-scrolled { box-shadow: 0 4px 24px rgba(10, 24, 40, 0.12); }
+.ceg-nav-combined.is-scrolled {
+  background: var(--bg);
+  border-bottom-color: var(--rule);
+  box-shadow: 0 4px 24px rgba(10, 24, 40, 0.12);
+}
 .ceg-nav-combined-inner {
   display: flex;
   align-items: center;
@@ -2053,7 +2069,16 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   padding: 10px 0;
 }
 .ceg-logo-left { flex-shrink: 0; }
-.ceg-logo-left img { height: 56px; width: auto; display: block; }
+.ceg-logo-left img {
+  height: 56px; width: auto; display: block;
+  /* Stand-in for the all-white logo file the client is sending over —
+     this turns the existing colored mark into a solid white silhouette so
+     it reads over the dark hero photo. Swap to a real <img src> once that
+     asset lands (better fidelity than a filter); drop this rule then. */
+  filter: brightness(0) invert(1);
+  transition: filter 0.25s ease;
+}
+.ceg-nav-combined.is-scrolled .ceg-logo-left img { filter: none; }
 .ceg-nav-combined-inner .ceg-nav-main { flex: 1; justify-content: center; }
 /* +2px per Kevin's ask */
 .ceg-nav-combined .ceg-nav-trigger { font-size: 16.5px; }
@@ -2064,8 +2089,20 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .ceg-nav-combined-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; margin-left: auto; }
 .ceg-nav-combined-right .ceg-nav-burger { display: none; }
 /* Hamburger is now the only way into the nav (see the flyout menu section
-   below) — shown at every width, not just narrow ones. */
-.ceg-nav-combined-right .ceg-nav-burger-always { display: inline-flex !important; }
+   below) — shown at every width, not just narrow ones. Boxed with rounded
+   corners per request; white on the transparent/top state, dark once the
+   bar goes solid on scroll, so it contrasts in both. */
+.ceg-nav-combined-right .ceg-nav-burger-always {
+  display: inline-flex !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  border-radius: 8px;
+  transition: border-color 0.25s ease, background 0.2s ease;
+}
+.ceg-nav-combined-right .ceg-nav-burger-always:hover { background: rgba(255, 255, 255, 0.1); }
+.ceg-nav-combined-right .ceg-nav-burger-always span { background: #fff; transition: background 0.25s ease; }
+.ceg-nav-combined.is-scrolled .ceg-nav-combined-right .ceg-nav-burger-always { border-color: var(--rule); }
+.ceg-nav-combined.is-scrolled .ceg-nav-combined-right .ceg-nav-burger-always:hover { background: rgba(11, 25, 41, 0.06); }
+.ceg-nav-combined.is-scrolled .ceg-nav-combined-right .ceg-nav-burger-always span { background: var(--ink); }
 @media (max-width: 920px) {
   .ceg-nav-combined-inner .ceg-nav-main { display: none; }
   .ceg-nav-combined-right .ceg-btn { display: none; }
@@ -4954,7 +4991,10 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 /* ─── Archive Hero ───────────────────────────────────────────────────────── */
 .prj-archive-hero {
   background: #0b1929;
-  padding: 88px 0 0;
+  /* Bumped from 88px — the nav now overlaps this hero by ~78px (see
+     .ceg-nav-combined's negative margin), so the old value left the
+     eyebrow almost touching the logo. */
+  padding: 158px 0 0;
   position: relative; overflow: hidden;
 }
 .prj-archive-hero::before {
@@ -5274,7 +5314,11 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 
 /* ─── Archive hero ───────────────────────────────────────────────────────── */
 .nws-hero {
-  position: relative; background: #0b1929; padding: 80px 0 64px;
+  position: relative; background: #0b1929;
+  /* Bumped from 80px — the nav now overlaps this hero by ~78px (see
+     .ceg-nav-combined's negative margin), so the old value left the
+     eyebrow almost touching the logo. */
+  padding: 150px 0 64px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
   background-image: url('/assets/marine-construction.jpg');
   background-size: cover; background-position: center 40%;
@@ -6175,9 +6219,9 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   .div-hero-lede, .fed-hero-lede { font-size: 15.5px; margin-bottom: 26px; }
 
   /* Archive, news, contact, safety and about heroes */
-  .prj-archive-hero { padding: 64px 0 0; }
+  .prj-archive-hero { padding: 134px 0 0; }
   .prj-archive-h1 { font-size: clamp(2rem, 3.6vw, 2.9rem); margin: 12px 0 14px; }
-  .nws-hero { padding: 60px 0 46px; }
+  .nws-hero { padding: 130px 0 46px; }
   .bid-hero { padding: 60px 0 50px; }
   .bid-h1 { font-size: clamp(2.2rem, 3.8vw, 3.2rem); margin-bottom: 14px; }
   .sq-hero { padding: 60px 0 54px; min-height: 0; }
@@ -6207,10 +6251,10 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   .div-hero-h1, .fed-h1 { font-size: clamp(1.7rem, 2.9vw, 2.3rem); margin: 10px 0 12px; }
   .div-hero-lede, .fed-hero-lede { font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
 
-  .prj-archive-hero { padding: 52px 0 0; }
+  .prj-archive-hero { padding: 122px 0 0; }
   .prj-archive-h1 { font-size: clamp(1.8rem, 3.1vw, 2.5rem); margin: 10px 0 12px; }
   .prj-archive-lede { font-size: 15px; line-height: 1.6; }
-  .nws-hero { padding: 48px 0 38px; }
+  .nws-hero { padding: 118px 0 38px; }
   .bid-hero { padding: 48px 0 40px; }
   .bid-h1 { font-size: clamp(1.9rem, 3.2vw, 2.6rem); margin-bottom: 12px; }
   .bid-lead { font-size: 15px; line-height: 1.6; }
@@ -6242,10 +6286,10 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   .div-hero-h1, .fed-h1 { font-size: clamp(1.5rem, 2.5vw, 1.95rem); margin: 8px 0 10px; }
   .div-hero-lede, .fed-hero-lede { font-size: 14px; margin-bottom: 12px; }
 
-  .prj-archive-hero { padding: 40px 0 0; }
+  .prj-archive-hero { padding: 110px 0 0; }
   .prj-archive-h1 { font-size: clamp(1.6rem, 2.7vw, 2.1rem); margin: 8px 0 10px; }
   .prj-archive-lede { font-size: 14px; }
-  .nws-hero { padding: 38px 0 30px; }
+  .nws-hero { padding: 108px 0 30px; }
   .bid-hero { padding: 38px 0 32px; }
   .bid-h1 { font-size: clamp(1.7rem, 2.8vw, 2.2rem); margin-bottom: 10px; }
   .bid-lead { font-size: 14px; }

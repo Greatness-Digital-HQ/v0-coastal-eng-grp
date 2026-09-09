@@ -251,10 +251,11 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
 
   if (isCentered) {
     // Hamburger-triggered flyout instead of an inline link row, per the
-    // client's direct ask to match how ballardmc.com's nav works — logo and
-    // CTA stay in the persistent bar, everything else lives in the flyout
-    // (window.MobileMenu, opened by onMobileOpen at every viewport width now,
-    // not just narrow ones).
+    // client's direct ask to match how ballardmc.com's nav works — just
+    // logo + hamburger in the persistent bar now (CTA dropped from here,
+    // it still lives in the flyout's footer strip). The bar itself starts
+    // transparent, floating over the hero photo, and turns solid white on
+    // scroll (see .ceg-nav-combined / .is-scrolled in styles.css).
     return (
       <header className={`ceg-nav-shell ceg-nav-combined nav-${theme.nav} ${scrolled ? "is-scrolled" : ""}`}>
         <div className="ceg-container ceg-nav-combined-inner">
@@ -262,7 +263,6 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
             <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" />
           </a>
           <div className="ceg-nav-combined-right">
-            <Btn href="/contact" variant="primary" arrow={false} className="ceg-nav-combined-cta">Discuss a Project</Btn>
             <button className="ceg-nav-burger ceg-nav-burger-always" onClick={onMobileOpen} aria-label="Open menu">
               <span /><span /><span />
             </button>
