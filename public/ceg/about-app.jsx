@@ -69,9 +69,7 @@ const ABOUT_DATA = {
   // Dredging, Diving / Marine Operations), then shared services.
   leadershipPending: "Additional division and shared-services leadership profiles are being finalized.",
   veteran: {
-    headline: "Mission-Ready. Accountable. Built to Deliver.",
-    lede: "Coastal Engineering Group is a veteran-owned marine infrastructure contractor and engineering firm. Veteran ownership is reflected in how we plan, communicate, accept responsibility, and execute work in high-consequence environments.",
-    lede2: "For federal agencies and prime contractors, Coastal provides a qualified small-business partner with integrated engineering, construction, dredging, diving, and marine support capabilities. We can support direct awards, competitive procurements, subcontracting plans, mentor-protégé strategies, and teaming arrangements where our technical and field capabilities strengthen the overall team.",
+    headline: "Veteran Discipline. Applied in the Field.",
     // TODO(client): replace with the exact verified veteran-owned certification
     // designation (VOSB vs SDVOSB) before launch — Section 06.
     cards: [
@@ -81,9 +79,8 @@ const ABOUT_DATA = {
     ],
     points: [
       "Veteran-owned small business serving federal agencies and prime contractors",
-      "Integrated engineering, construction, dredging, diving, and marine support",
-      "Supports direct awards, competitive procurements, and subcontracting plans",
-      "Available for mentor-protégé strategies and teaming arrangements"
+      "Integrated engineering, construction, dredging, diving, and marine support — one accountable team",
+      "Positioned for direct awards, competitive procurements, and mentor-protégé teaming"
     ]
   },
   cta: {
@@ -225,8 +222,6 @@ function VeteranOwned() {
           <div className="ceg-about-veteran-content">
             <span className="ceg-eyebrow ceg-eyebrow-accent">Veteran-Owned</span>
             <h2 className="ceg-h2 on-light">{ABOUT_DATA.veteran.headline}</h2>
-            <p className="ceg-about-veteran-lede">{ABOUT_DATA.veteran.lede}</p>
-            <p className="ceg-about-veteran-lede">{ABOUT_DATA.veteran.lede2}</p>
             <ul className="ceg-about-veteran-points">
               {ABOUT_DATA.veteran.points.map((point, i) => (
                 <li key={i}>
