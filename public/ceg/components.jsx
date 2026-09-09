@@ -1444,9 +1444,31 @@ function Footer({ theme, data }) {
 }
 
 // ─── Mobile menu ─────────────────────────────────────────�����──────────────────
+// Flyout-only additions on top of the shared data.NAV (which also drives the
+// footer's link row — adding these there too was never asked for). Leadership
+// slots in right after About since it's a section of that same page; Newsroom/
+// Careers/Safety are appended at the end — Careers and Safety already have
+// their own links in the utility bar, but the client wants them in the
+// flyout too now, even at the cost of the duplication.
+const MOBILE_MENU_EXTRA_TRAILING = [
+  { key: "newsroom", label: "Newsroom", href: "/insights/news" },
+  { key: "careers", label: "Careers", href: "/careers" },
+  { key: "safety", label: "Safety", href: "/safety-quality" },
+];
+
 function MobileMenu({ open, onClose, data }) {
   const [openSection, setOpenSection] = useState(null);
   if (!open) return null;
+
+  const items = [];
+  Object.entries(data.NAV).forEach(([k, item]) => {
+    items.push({ key: k, ...item });
+    if (k === "about") {
+      items.push({ key: "leadership", label: "Leadership", href: "/about#leadership" });
+    }
+  });
+  items.push(...MOBILE_MENU_EXTRA_TRAILING);
+
   return (
     <>
       <div className="ceg-mobile-backdrop" onClick={onClose} aria-hidden="true" />
@@ -1458,7 +1480,8 @@ function MobileMenu({ open, onClose, data }) {
         </button>
       </div>
       <div className="ceg-mobile-body">
-        {Object.entries(data.NAV).map(([k, item]) => {
+        {items.map((item) => {
+          const k = item.key;
           // Direct-link items (no `items`) render as a flat link, not an accordion.
           if (!item.items) {
             return (
