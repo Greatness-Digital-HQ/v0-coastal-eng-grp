@@ -1691,7 +1691,10 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   padding: 24px 28px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-.ceg-mobile-logo { height: 36px; width: auto; background: #fff; padding: 6px 10px; }
+/* Matches the main nav bar's logo treatment (same 56px height, same white
+   filter) instead of its own smaller boxed-white version — the flyout
+   panel is always dark, so it can always show the plain white mark. */
+.ceg-mobile-logo { height: 56px; width: auto; filter: brightness(0) invert(1); }
 .ceg-mobile-close {
   display: flex; align-items: center; justify-content: center;
   width: 40px; height: 40px;
@@ -3508,6 +3511,9 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .ceg-about-leadership {
   background: #f8fafc;
   padding: 100px 0;
+  /* Keeps the #leadership deep link (flyout menu) from landing right under
+     the sticky nav bar once scrolled to. */
+  scroll-margin-top: 100px;
 }
 .ceg-about-leadership .ceg-section-head {
   text-align: center;

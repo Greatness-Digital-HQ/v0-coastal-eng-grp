@@ -285,6 +285,14 @@ function AboutApp() {
   useE(() => {
     document.body.dataset.concept = "drydock";
     document.body.dataset.page = "about";
+    // The flyout's new "Leadership" link points here as /about#leadership.
+    // Content only exists once this runtime-mounted app renders, so the
+    // browser's own initial anchor-scroll (which races the fetch+Babel
+    // load) misses it — scroll to the target ourselves once mounted.
+    if (window.location.hash) {
+      const el = document.querySelector(window.location.hash);
+      if (el) el.scrollIntoView();
+    }
   }, []);
 
   const themeStyle = window.applyThemeVars(theme);
