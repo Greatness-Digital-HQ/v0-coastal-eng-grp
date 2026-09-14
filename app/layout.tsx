@@ -67,6 +67,17 @@ export default function RootLayout({
       <body className="antialiased" data-concept="drydock">
         {children}
         {process.env.NODE_ENV === "production" && <Analytics />}
+        {/* Ybug client feedback widget, for the client's site review pass. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function() {
+  window.ybug_settings = {"id":"v4mdh4x4y54s5d47h2hz"};
+  var ybug = document.createElement('script'); ybug.type = 'text/javascript'; ybug.async = true;
+  ybug.src = 'https://widget.ybug.io/button/v4mdh4x4y54s5d47h2hz.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ybug, s);
+})();`,
+          }}
+        />
       </body>
     </html>
   )
