@@ -353,9 +353,10 @@ const CONTACT = {
   hours: "Mon–Fri  7:00–17:00 ET",
   emergency: "Emergency Marine Response",
   emergency247: "24/7 Emergency Response",
-  // TODO(client): company LinkedIn URL (Kevin, round 1 #16). The footer and
-  // contact page show the LinkedIn link only once this is set.
-  linkedin: "",
+  // Kevin, round 1 #16. Taken from the company's current site
+  // (coastalengineeringllc.com, same phone and HQ); Kevin to confirm. The
+  // footer and contact page show the LinkedIn link only when this is set.
+  linkedin: "https://www.linkedin.com/company/coastal-engineering-llc/",
 };
 
 // Careers — benefits + open roles teaser (JMT-leaning, talent-as-priority).
