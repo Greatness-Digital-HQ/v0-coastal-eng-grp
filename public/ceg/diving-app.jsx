@@ -78,11 +78,6 @@ const SERVICES = [
   },
 ];
 
-const CERTS = [
-  "ADCI Certified", "OSHA 10/30/40", "NHI / FHWA", "ASDSO Dam Safety",
-  "USACE CQM", "ASCE Waterfront", "EM385", "Confined Space", "Hazmat", "CPR / First Aid",
-];
-
 const PROJECTS = [
   {
     badge: "NAVFAC · Maryland",
@@ -156,11 +151,7 @@ function DivHero() {
     <section className="div-hero">
       <div className="ceg-container">
         <div className="div-hero-inner">
-          <div className="ceg-eyebrow fed-eyebrow">
-            <span className="ceg-eyebrow-mark" />
-            <span>Commercial Diving &amp; Underwater Construction</span>
-          </div>
-          <h1 className="div-hero-h1">Construction Capability<br />Below the Waterline.</h1>
+          <h1 className="div-hero-h1">Commercial Diving &amp; Underwater Construction</h1>
           <p className="div-hero-lede">
             Coastal Engineering Group provides surface-supplied commercial diving for underwater
             construction, inspection, repair, installation, demolition, and emergency response.
@@ -168,81 +159,13 @@ function DivHero() {
             organization — bringing construction experience, technical documentation, and field
             accountability below the waterline.
           </p>
-          <a href="/contact" className="fed-btn fed-btn-primary">Discuss a Project →</a>
         </div>
       </div>
     </section>
   );
 }
 
-// ─── Section 1 — PE Diver Difference Band ────────────────────────────────────
-function DivStatBand() {
-  const stats = [
-    { value: "PE Divers On Staff",  sub: "Licensed engineers certified to dive" },
-    { value: "ADCI Certified",      sub: "All commercial dive teams" },
-    { value: "Surface-Supplied",    sub: "Commercial diving systems and qualified supervision" },
-  ];
-  return (
-    <div className="div-stat-band">
-      <div className="ceg-container">
-        <div className="div-stat-band-inner">
-          {stats.map((s, i) => (
-            <React.Fragment key={i}>
-              {i > 0 && <div className="div-stat-band-divider" aria-hidden="true" />}
-              <div className="div-stat-band-item">
-                <span className="div-stat-band-value">{s.value}</span>
-                <span className="div-stat-band-sub">{s.sub}</span>
-              </div>
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Section 2 — Why PE-Led Diving ───────────────────────────────────────────
-function DivWhy() {
-  return (
-    <section className="fed-section div-why">
-      <div className="ceg-container">
-        <div className="div-why-grid">
-          <div className="div-why-text">
-            <div className="ceg-eyebrow fed-eyebrow-blue">
-              <span className="ceg-eyebrow-mark" />
-              <span>The Difference</span>
-            </div>
-            <h2 className="fed-h2 fed-dark div-why-h2">Most Contractors Send a Diver. We Send an Engineer.</h2>
-            <p className="div-why-body">
-              A standard commercial diver documents what they see. A PE diver understands what it means.
-            </p>
-            <p className="div-why-body">
-              When Coastal Engineering Group deploys a dive team, the lead diver holds a Professional
-              Engineer license. That means structural assessments happen underwater in real time —
-              not after the fact in an office. Defects are evaluated on the spot, repair recommendations
-              are drafted with engineering authority, and PE-stamped reports are delivered faster.
-            </p>
-            <p className="div-why-body">
-              One mobilization. Inspection and engineering in the same dive.
-            </p>
-          </div>
-          <div className="div-why-cards">
-            <div className="div-stat-card">
-              <h3 className="div-stat-card-title">Faster Decisions</h3>
-              <p className="div-stat-card-body">No waiting for an engineer to review dive footage. Our PE diver evaluates structural conditions directly and issues recommendations the same day.</p>
-            </div>
-            <div className="div-stat-card">
-              <h3 className="div-stat-card-title">PE-Stamped Reports</h3>
-              <p className="div-stat-card-body">Every inspection report is signed and sealed by a licensed Professional Engineer — accepted by NAVFAC, DOT, and state agencies without additional review layers.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Section 3 — Services Grid ───────────────────────────────────────────────
+// ─── Services Grid ───────────────────────────────────────────────────────────
 function DivServices() {
   return (
     <section className="fed-section div-services">
@@ -265,33 +188,13 @@ function DivServices() {
   );
 }
 
-// ─── Section 4 — Certifications ──────────────────────────────────────────────
-function DivCerts() {
-  return (
-    <div className="div-cert-strip">
-      <div className="ceg-container">
-        <div className="div-cert-label">Certifications Held By Our Dive Teams</div>
-        <div className="div-cert-pills">
-          {CERTS.map((c) => (
-            <span key={c} className="div-cert-pill">{c}</span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Section 5 — Featured Projects ───────────────────────────────────────────
+// ─── Featured Projects ───────────────────────────────────────────────────────
 function DivProjects() {
   return (
     <section id="projects" className="fed-section div-projects">
       <div className="ceg-container">
         <div className="fed-section-head">
-          <div className="ceg-eyebrow fed-eyebrow">
-            <span className="ceg-eyebrow-mark" />
-            <span>Dive Operations</span>
-          </div>
-          <h2 className="fed-h2 fed-light">Projects That Required More Than a Diver</h2>
+          <h2 className="fed-h2 fed-light">Sample of Commercial Diving &amp; Underwater Construction Projects</h2>
         </div>
         {/* Photo-only, matching the other service pages and the homepage
             gallery — real photos instead of cards, one button out. */}
@@ -303,34 +206,7 @@ function DivProjects() {
           ))}
         </div>
         <div style={{ textAlign: "center", marginTop: 40 }}>
-          <a href="/projects/featured-work" className="fed-btn fed-btn-primary">View All Projects →</a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Section 6 — CTA ─────────────────────────────────────────────────────────
-function DivCTA() {
-  return (
-    <section className="fed-cta">
-      <div className="ceg-container">
-        <div className="fed-cta-inner">
-          <h2 className="fed-cta-h2">Need a Certified Dive Team?</h2>
-          <p className="fed-cta-lede">
-            ADCI certified. PE-led. Deployed across 13 states. Tell us your project and we'll respond within 24 hours.
-          </p>
-          <div className="fed-cta-btns">
-            <a href="/contact" className="fed-btn fed-btn-white">Discuss a Project →</a>
-            <a href="tel:8453283178" className="fed-btn fed-btn-outline-white">Call 845-328-3178</a>
-          </div>
-          <div className="fed-cta-trust">
-            <span>ADCI</span><span className="fed-dot">·</span>
-            <span>PE Divers</span><span className="fed-dot">·</span>
-            <span>Veteran-Owned Small Business</span><span className="fed-dot">·</span>
-            <span>EM385</span><span className="fed-dot">·</span>
-            <span>OSHA 10/30/40</span>
-          </div>
+          <a href="/projects/featured-work#service=diving" className="fed-btn fed-btn-primary">View All Projects →</a>
         </div>
       </div>
     </section>
@@ -353,13 +229,12 @@ function DivingApp() {
       <window.UtilityBar theme={theme} data={data} />
       <window.Nav theme={theme} data={data} conceptKey="drydock" onMobileOpen={() => setMobileOpen(true)} />
       <main>
+        {/* Round 1 (Kevin): stat strip, "The Difference", certifications,
+            and the closing CTA removed — same shape as the other service
+            pages. */}
         <DivHero />
-        <DivStatBand />
-        <DivWhy />
         <DivServices />
-        <DivCerts />
         <DivProjects />
-        <DivCTA />
       </main>
       <window.Footer theme={theme} data={data} />
       <window.MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} data={data} />

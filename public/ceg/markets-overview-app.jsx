@@ -1,68 +1,69 @@
 // CEG — Markets overview.
 //
-// Kevin's review, round 1: Markets shouldn't be a dropdown of five separate
-// market pages — condense it into one page. Round 2 (after seeing it live):
-// "the markets page has redundant sections" — the original build paired a
-// card grid (window.Markets) with a second block below restating the same
-// name/detail for each market, linked by an anchor jump. That's gone now:
-// this page uses the same single tab-accordion pattern as the new Services
-// hub (public/ceg/services-overview-app.jsx) — one place to see every
-// market, nothing repeated. Federal is the one market with real depth
-// already built (public/ceg/federal-app.jsx, with its own SEO/FAQ schema);
-// that page stays live and the accordion's Federal tab links into it.
+// One page, one tab-accordion (same shape as the Services hub) so each
+// market's name and description appear exactly once. Kevin's round 1 review
+// replaced the five original markets with six (#154-159), rewrote the intro
+// (#153), removed the eyebrow and the closing CTA band (#151-152), and turned
+// each market's "Discuss a … project" button into a link to that market's
+// projects (#160). Federal & Defense still links to its deep-dive page,
+// public/ceg/federal-app.jsx.
 
 const { useState: useMOMobile, useState: useMOActive } = React;
 
-// Real photos instead of the old hand-drawn placeholder illustration — only
-// Federal has its own dedicated photography, so the other four reuse the
-// closest-matching division photo already on hand.
+// Closest-matching photography already on hand for each market.
 const MARKET_PHOTOS = {
   federal: "/assets/federal-hero-bg.jpg",
-  "state-local": "/assets/marine-construction.jpg",
-  energy: "/assets/commercial-diving.jpg",
-  commercial: "/assets/marine-services.jpg",
-  industrial: "/assets/dredging.jpg",
+  transportation: "/assets/railroad-bridge-inspection.jpg",
+  ports: "/assets/marine-services.jpg",
+  water: "/assets/water-tank-repair.jpg",
+  dams: "/assets/federal-project-dam.jpg",
+  "energy-industrial": "/assets/cable-relocation.jpg",
 };
+
+const projectsLink = (name) => `/projects/featured-work#market=${encodeURIComponent(name)}`;
 
 const MARKET_COPY = {
   federal: {
-    body: "As a veteran-owned small business, Coastal is positioned for direct teaming on NAVFAC and USACE set-aside opportunities — marine construction, dredging, commercial diving, and engineering support for federal waterfront and coastal-resilience programs.",
+    body: "Coastal supports federal agencies and their prime contractors with marine construction, engineering, dredging, and underwater services. As a veteran-owned small business, we bring coordinated field capabilities, detailed planning, and clear documentation to waterfront facilities, navigation structures, and other federal infrastructure.",
     cta: { label: "Explore our federal work", href: "/markets/federal" },
   },
-  "state-local": {
-    body: "Coastal supports state departments of transportation, port authorities, and municipal owners with bridge, pier, bulkhead, and waterway infrastructure — from underwater inspection through construction and repair.",
-    cta: { label: "Discuss a state or local project", href: "/contact" },
+  transportation: {
+    body: "We help transportation agencies, rail operators, and their contractors inspect, maintain, and rehabilitate infrastructure over and adjacent to water. Our services include underwater inspections, substructure repairs, scour protection, and marine access support for work beneath bridges and along transportation corridors.",
+    cta: { label: "View Bridges & Transportation projects", href: projectsLink("Bridges & Transportation") },
   },
-  energy: {
-    body: "Coastal's marine construction and diving capabilities support offshore wind, LNG, and transmission infrastructure, including cable and pipeline installation, structural work, and underwater inspection.",
-    cta: { label: "Discuss an energy project", href: "/contact" },
+  ports: {
+    body: "We support port authorities, municipalities, terminal operators, and waterfront owners with construction, rehabilitation, dredging, and inspection services. Typical work includes piers, wharves, bulkheads, seawalls, mooring structures, and waterfront access improvements, coordinated around facility operations and marine traffic.",
+    cta: { label: "View Ports, Harbors & Waterfronts projects", href: projectsLink("Ports, Harbors & Waterfronts") },
   },
-  commercial: {
-    body: "Coastal serves private waterfront owners and operators with construction, repair, and inspection of marinas, terminals, and piers.",
-    cta: { label: "Discuss a commercial project", href: "/contact" },
+  water: {
+    body: "We help utilities and municipalities inspect, repair, and maintain infrastructure that collects, stores, treats, and conveys water. Our capabilities support intakes, outfalls, tanks, reservoirs, gates, and submerged piping through commercial diving, sediment removal, structural repairs, and engineering assessments.",
+    cta: { label: "View Water & Wastewater projects", href: projectsLink("Water & Wastewater") },
   },
-  industrial: {
-    body: "Coastal supports industrial facility owners with waterfront construction, outfall and intake work, and underwater inspection for heavy industry operations.",
-    cta: { label: "Discuss an industrial project", href: "/contact" },
+  dams: {
+    body: "We support dam owners, water authorities, and public agencies with inspection, rehabilitation, and sediment management. Services include underwater assessments, concrete repairs, gate replacement, scour protection, and dredging to help maintain water-control structures and associated waterways.",
+    cta: { label: "View Dams & Water Resources projects", href: projectsLink("Dams & Water Resources") },
+  },
+  "energy-industrial": {
+    body: "We serve energy producers and industrial facility owners with inspection, maintenance, and construction support for marine and submerged infrastructure. Our work addresses cooling-water intakes, discharge structures, waterfront foundations, and corrosion protection, with execution planned around operating requirements and outage schedules.",
+    cta: { label: "View Energy & Industrial projects", href: projectsLink("Energy & Industrial") },
   },
 };
+
+const MARKETS_INTRO = [
+  "Coastal Engineering Group serves the agencies, owners, and contractors responsible for the infrastructure that connects communities, supports commerce, and manages essential water and energy resources.",
+  "We combine marine construction, engineering and inspection, dredging, commercial diving, and marine support to address challenging conditions above and below the waterline. From bridges and dams to ports and treatment facilities, we help clients assess conditions, execute repairs, and build lasting improvements, with safety and accountability guiding every project.",
+  "We work with federal, state, and local agencies, public authorities, private owners, and prime contractors, with the ability to mobilize throughout the United States.",
+];
 
 function MarketsOverviewHero() {
   return (
     <section className="prj-archive-hero">
       <div className="ceg-container">
         <div className="prj-archive-hero-inner">
-          <div className="ceg-eyebrow fed-eyebrow">
-            <span className="ceg-eyebrow-mark" />
-            <span>Markets</span>
-          </div>
           <h1 className="prj-archive-h1">Markets We Serve.</h1>
-          <p className="prj-archive-lede">
-            Federal agencies, state and local owners, energy, commercial, and
-            industrial clients — Coastal brings the same self-performed marine
-            construction, engineering, dredging, and diving capability to
-            each.
-          </p>
+          {MARKETS_INTRO.map((p, i) => (
+            <p key={i} className="prj-archive-lede">{p}</p>
+          ))}
         </div>
       </div>
     </section>
@@ -143,7 +144,6 @@ function MarketsOverviewApp() {
       <main>
         <MarketsOverviewHero />
         <MarketsAccordion data={data} />
-        <window.FinalCTA data={data} />
       </main>
       <window.Footer theme={theme} data={data} />
       <window.MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} data={data} />

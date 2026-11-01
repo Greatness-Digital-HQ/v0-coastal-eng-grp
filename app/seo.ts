@@ -27,6 +27,12 @@ export const PAGE_SEO = {
       "Veteran-owned marine infrastructure contractor and engineering firm integrating marine construction, dredging, commercial diving, underwater inspection and waterfront engineering across the Eastern United States.",
     path: "/about",
   },
+  leadership: {
+    title: "Leadership | Coastal Engineering Group",
+    description:
+      "Meet the leadership of Coastal Engineering Group, a veteran-owned marine construction, engineering, dredging and commercial diving company.",
+    path: "/leadership",
+  },
   services: {
     title: "Marine Construction, Engineering, Dredging & Diving Services | Coastal",
     description:
@@ -36,7 +42,7 @@ export const PAGE_SEO = {
   markets: {
     title: "Markets We Serve | Coastal Engineering Group",
     description:
-      "Federal, state & local, energy, commercial and industrial marine infrastructure clients served by Coastal Engineering Group throughout the Eastern United States.",
+      "Federal & defense, bridges & transportation, ports & waterfronts, water & wastewater, dams and energy & industrial clients served by Coastal Engineering Group.",
     path: "/markets",
   },
   safetyQuality: {
@@ -64,7 +70,7 @@ export const PAGE_SEO = {
     path: "/careers",
   },
   news: {
-    title: "Marine Infrastructure News & Insights | Coastal Engineering Group",
+    title: "Coastal News & Industry Insights | Coastal Engineering Group",
     description:
       "Project news, company updates and technical insights on marine construction, dredging, underwater inspection, engineering and commercial diving.",
     path: "/insights/news",
@@ -140,7 +146,7 @@ export function organizationJsonLd(): object {
     description: PAGE_SEO.home.description,
     address: {
       "@type": "PostalAddress",
-      streetAddress: "2 Seneca Hill",
+      streetAddress: "1 Schradin Hill",
       addressLocality: "Greenwood Lake",
       addressRegion: "NY",
       postalCode: "10925",

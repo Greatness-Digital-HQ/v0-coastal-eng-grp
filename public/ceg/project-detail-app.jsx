@@ -10,13 +10,11 @@ const FALLBACK_IMGS = {
   Dredging: "/assets/dredging.jpg",
 };
 
-const MARKET_COLORS = {
-  Federal:         { bg: "#1c6fbf", text: "#fff" },
-  "State & Local": { bg: "#0f7b6c", text: "#fff" },
-  Commercial:      { bg: "#7c3aed", text: "#fff" },
-  Energy:          { bg: "#b45309", text: "#fff" },
-  Utility:         { bg: "#374151", text: "#fff" },
-};
+// Market badge color comes from the shared MARKETS list (data.jsx).
+function marketColor(name) {
+  const m = window.CEG_DATA.MARKETS.find((mk) => mk.name === name);
+  return { bg: (m && m.color) || "#374151", text: "#fff" };
+}
 
 function imgFor(p) {
   return p.image || FALLBACK_IMGS[p.tag] || "/assets/commercial-diving.jpg";
@@ -37,7 +35,7 @@ function ProjectNotFound({ slug }) {
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function DetailHero({ project }) {
-  const mc = MARKET_COLORS[project.market] || { bg: "#374151", text: "#fff" };
+  const mc = marketColor(project.market);
   return (
     <section className="prj-detail-hero" style={{ "--hero-img": `url(${imgFor(project)})` }}>
       <div className="prj-detail-hero-scrim" />

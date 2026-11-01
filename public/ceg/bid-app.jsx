@@ -25,7 +25,7 @@ const INQUIRY_TYPES = [
   "Media / general question",
 ];
 
-const MARKETS   = ["Federal", "State & Local", "Commercial", "Energy", "Industrial"];
+const MARKETS   = window.CEG_DATA.MARKETS.map((m) => m.name);
 const TIMELINES = ["Immediate (ASAP)", "1–3 months", "3–6 months", "6–12 months", "Planning phase only"];
 const REFERRALS = ["NAVFAC / USACE contractor list", "Referral", "Web search", "LinkedIn", "Conference / trade show", "Returning client", "Other"];
 
@@ -351,6 +351,82 @@ function BidSuccess({ refNum }) {
   );
 }
 
+// ─── Contact directory (Ballard-style) ────────────────────────────────────────
+// Icon-led blocks — locations, 24/7 emergency response, LinkedIn — beside a
+// photo panel marking the two offices. Addresses come from data.CONTACT so the
+// footer and this page never disagree.
+const CNT_ICONS = {
+  pin: "M12 21s-7-6.2-7-11.5A7 7 0 0119 9.5C19 14.8 12 21 12 21zm0-9a2.5 2.5 0 100-5 2.5 2.5 0 000 5z",
+  phone: "M5 4h3l1.5 4-2 1.2a11 11 0 005.3 5.3l1.2-2 4 1.5v3a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z",
+};
+
+function CntIcon({ d }) {
+  return (
+    <span className="cnt-icon" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d={d} />
+      </svg>
+    </span>
+  );
+}
+
+function ContactDirectory({ data }) {
+  const c = data.CONTACT;
+  return (
+    <section className="cnt-directory">
+      <div className="ceg-container cnt-directory-grid">
+        <div className="cnt-blocks">
+          {c.locations.map((loc) => (
+            <div key={loc.name} className="cnt-block">
+              <CntIcon d={CNT_ICONS.pin} />
+              <div>
+                <h2 className="cnt-block-h">{loc.name}</h2>
+                <p className="cnt-block-v">{loc.line1}<br />{loc.line2}</p>
+              </div>
+            </div>
+          ))}
+          <div className="cnt-block">
+            <CntIcon d={CNT_ICONS.phone} />
+            <div>
+              <h2 className="cnt-block-h">{c.emergency247}</h2>
+              <p className="cnt-block-v">
+                <a href={`tel:${c.phone}`}>{c.phone}</a><br />
+                <a href={`mailto:${c.email}`}>{c.email}</a>
+              </p>
+            </div>
+          </div>
+          {c.linkedin && (
+            <div className="cnt-block">
+              <span className="cnt-icon" aria-hidden="true"><window.LinkedInIcon /></span>
+              <div>
+                <h2 className="cnt-block-h">Connect With Us</h2>
+                <p className="cnt-block-v">
+                  <a href={c.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="cnt-visual" style={{ backgroundImage: "url('/assets/hero-background.jpg')" }}>
+          <div className="cnt-visual-scrim" />
+          <div className="cnt-visual-body">
+            <div className="cnt-visual-h">Two Bases. Nationwide Mobilization.</div>
+            <ul className="cnt-visual-pins">
+              {c.locations.map((loc) => (
+                <li key={loc.name}>
+                  <CntIcon d={CNT_ICONS.pin} />
+                  <span><strong>{loc.name}</strong>{loc.line2}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ─── App root ─────────────────────────────────────────────────────────────────
 function BidRequestApp() {
   const data  = window.CEG_DATA;
@@ -395,18 +471,14 @@ function BidRequestApp() {
       <window.Nav theme={theme} data={data} conceptKey="drydock" onMobileOpen={() => setMobileOpen(true)} />
       <main className="bid-page">
 
-        {/* ── Page header — same dark photo-hero pattern as every other
-             content page (Markets/Projects/News); only the body below it
-             used to stay dark instead of switching to the site's light
-             body background. */}
-        <section className="prj-archive-hero">
+        {/* ── Page header — modeled on ballardmc.com/contact_us per Kevin's
+             round 1 review (#168): one bold "Contact Us" heading and a
+             single intro paragraph. Stays on the dark band because the
+             transparent nav's white logo sits over it. */}
+        <section className="prj-archive-hero cnt-hero">
           <div className="ceg-container">
             <div className="prj-archive-hero-inner">
-              <div className="ceg-eyebrow fed-eyebrow">
-                <span className="ceg-eyebrow-mark" />
-                <span>Contact</span>
-              </div>
-              <h1 className="prj-archive-h1">Discuss a Marine<br />Infrastructure Project.</h1>
+              <h1 className="prj-archive-h1 cnt-h1">Contact Us</h1>
               <p className="prj-archive-lede">
                 Tell us what you are planning, pursuing, evaluating, or responding to. Coastal
                 will route the inquiry to the appropriate construction, engineering, dredging,
@@ -416,9 +488,13 @@ function BidRequestApp() {
           </div>
         </section>
 
-        {/* ── Form body ── */}
-        <div className="bid-body">
+        <ContactDirectory data={data} />
+
+        {/* ── Inquiry form — kept below the Ballard-style directory until
+             Kevin decides whether the page keeps a form at all. ── */}
+        <div className="bid-body" id="inquiry">
           <div className="ceg-container">
+            <h2 className="cnt-form-h2">Send a Project Inquiry</h2>
             {submitted ? (
               <BidSuccess refNum={refNum} />
             ) : (

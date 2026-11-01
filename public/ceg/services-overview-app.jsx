@@ -17,19 +17,15 @@ function ServicesOverviewHero() {
     <section className="div-hero svc-hero">
       <div className="svc-hero-photo" aria-hidden="true" style={{ backgroundImage: "url('/assets/hero-background.jpg')" }} />
       <div className="ceg-container">
+        {/* Round 1 (Kevin): the visible H1, paragraph, and button are gone —
+            the hero is just the photo and the "Services" eyebrow. The H1
+            stays for search engines and screen readers, visually hidden. */}
         <div className="div-hero-inner">
           <div className="ceg-eyebrow fed-eyebrow">
             <span className="ceg-eyebrow-mark" />
             <span>Services</span>
           </div>
-          <h1 className="div-hero-h1">Five Divisions.<br />One Accountable Team.</h1>
-          <p className="div-hero-lede">
-            Marine construction, engineering and inspection, dredging, commercial
-            diving and underwater construction, and fleet and marine support —
-            self-performed by one company so nothing gets lost between design,
-            equipment, and the water.
-          </p>
-          <a href="/contact" className="fed-btn fed-btn-primary">Discuss a Project →</a>
+          <h1 className="ceg-sr-only">Marine Construction, Engineering, Dredging &amp; Diving Services</h1>
         </div>
       </div>
     </section>
@@ -55,7 +51,6 @@ function ServicesOverviewApp() {
       <main>
         <ServicesOverviewHero />
         <window.Divisions theme={theme} data={data} />
-        <window.FinalCTA data={data} />
       </main>
       <window.Footer theme={theme} data={data} />
       <window.MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} data={data} />
