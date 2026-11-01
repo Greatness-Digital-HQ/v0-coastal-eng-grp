@@ -31,7 +31,7 @@ export const SERVICE_SEO: Record<string, ServiceSeo> = {
     metaDescription:
       "Marine construction, waterfront rehabilitation, pile and concrete repair, bulkheads, outfalls, intakes, scour protection and emergency marine work.",
     schemaDescription:
-      "Construction, rehabilitation, and repair of waterfront and submerged infrastructure — piers, docks and wharves; bulkheads, sheet-pile structures, fender and mooring systems; timber, steel, concrete and composite pile installation and repair; concrete and structural steel rehabilitation above and below water; cofferdams and engineered temporary works; outfalls, intakes and utility crossings; scour and shoreline protection; dam, lock and navigation infrastructure; and emergency marine repair throughout the Eastern United States.",
+      "Construction, rehabilitation, and repair of waterfront and submerged infrastructure — piers, docks and wharves; bulkheads, seawalls and sheet-pile structures; pile installation and repair; bridge and structural rehabilitation above and below water; cofferdams, dewatering and construction access; intakes, outfalls and submerged utility crossings; erosion control and scour protection; dam, gate and lock rehabilitation; and marine demolition and emergency repairs throughout the United States.",
   },
   engineering: {
     slug: "engineering",
@@ -41,7 +41,7 @@ export const SERVICE_SEO: Record<string, ServiceSeo> = {
     metaDescription:
       "Waterfront engineering, underwater and structural inspection, condition assessment, repair design, construction engineering and QA/QC support.",
     schemaDescription:
-      "Waterfront structural engineering and rehabilitation design, underwater inspection and condition assessment, bridge, pier, bulkhead, pile, dam, intake and outfall inspection, repair recommendations and specifications, construction engineering and engineered temporary works, construction management and USACE CQM support, and hydrographic, sonar and NDT data integration throughout the Eastern United States.",
+      "Structural evaluation and rehabilitation design, underwater inspection and assessment, bridge, dam and utility inspections, repair design and documentation, construction engineering, access, rigging and lift planning, field observation and QA/QC including USACE construction quality management support, bid and preconstruction support, and hydrographic surveying and sonar imaging throughout the United States.",
   },
   dredging: {
     slug: "dredging",
@@ -56,12 +56,12 @@ export const SERVICE_SEO: Record<string, ServiceSeo> = {
   "marine-services": {
     slug: "marine-services",
     name: "Fleet & Marine Support",
-    serviceType: "Marine Equipment and Logistics Support",
+    serviceType: "Fleet and Marine Support",
     metaTitle: "Fleet & Marine Support | Workboats, Barges & Equipment | Coastal",
     metaDescription:
       "Workboats, barges, cranes, marine logistics, crew support, equipment mobilization and specialty support for waterfront construction and diving projects.",
     schemaDescription:
-      "Marine equipment and logistics support for construction, dredging, inspection and commercial diving — workboats and crew transport, material, equipment and crane barges, lifting, rigging and placement support, diving platforms, survey, inspection and ROV support, towing and repositioning coordination, temporary access and floating work platforms, and emergency mobilization throughout the Eastern United States.",
+      "Workboats, barges, floating work platforms and marine logistics for construction, dredging, inspection and commercial diving — workboats and crew transport, barges and floating work platforms, marine lifting and material placement, commercial diving support, survey, inspection and ROV support, towing and barge positioning, equipment mobilization and logistics, emergency marine support, and mooring and anchoring support throughout the United States.",
   },
   diving: {
     slug: "diving",

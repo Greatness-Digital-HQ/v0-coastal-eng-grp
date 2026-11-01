@@ -152,5 +152,7 @@ export function organizationJsonLd(): object {
       postalCode: "10925",
       addressCountry: "US",
     },
+    // Mirrors CONTACT.linkedin in public/ceg/data.jsx.
+    sameAs: ["https://www.linkedin.com/company/coastal-engineering-llc/"],
   }
 }
