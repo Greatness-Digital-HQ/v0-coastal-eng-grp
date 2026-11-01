@@ -52,19 +52,28 @@ function NewsCard({ article }) {
 }
 
 // ─── Filter bar ───────────────────────────────────────────────────────────────
+// Fixed labels and order per Kevin's round 1 review (#174). Keys are the
+// article `category` values in news-data.jsx; card badges keep the singular.
+const FILTER_LABELS = [
+  ["All",              "All Updates"],
+  ["Press Release",    "Press Releases"],
+  ["News",             "Company News"],
+  ["Industry Insight", "Industry Insights"],
+  ["Project Update",   "Project Updates"],
+];
+
 function NewsFilterBar({ active, onChange, articles }) {
-  const cats = ["All", ...Array.from(new Set(articles.map(a => a.category)))];
   return (
     <div className="prj-filter-bar">
       <div className="ceg-container">
         <div className="prj-filter-inner">
-          {cats.map((c) => (
+          {FILTER_LABELS.map(([c, label]) => (
             <button
               key={c}
               className={`prj-filter-btn ${active === c ? "is-active" : ""}`}
               onClick={() => onChange(c)}
             >
-              {c}
+              {label}
               <span className="prj-filter-count">
                 {c === "All" ? articles.length : articles.filter(a => a.category === c).length}
               </span>
@@ -94,12 +103,13 @@ function NewsArchive() {
         <div className="ceg-container nws-hero-inner">
           <div className="ceg-eyebrow fed-eyebrow">
             <span className="ceg-eyebrow-mark" />
-            <span>News &amp; Insights</span>
+            <span>Newsroom</span>
           </div>
-          <h1 className="prj-archive-h1">Projects, People, and Marine Infrastructure Knowledge</h1>
+          <h1 className="prj-archive-h1">Coastal News &amp; Industry Insights</h1>
           <p className="prj-archive-lede">
-            Follow Coastal Engineering Group&apos;s project awards, completions, growth, safety
-            milestones, technical perspectives, equipment updates, and community involvement.
+            The latest announcements, project milestones, and perspectives from Coastal
+            Engineering Group. Explore company news and practical insights from our work in
+            marine construction, engineering, dredging, and commercial diving.
           </p>
         </div>
       </section>
@@ -144,7 +154,6 @@ function NewsArchiveApp() {
       <window.Nav theme={theme} data={data} conceptKey="drydock" onMobileOpen={() => setMobileOpen(true)} />
       <main>
         <NewsArchive />
-        <window.ContactBand theme={theme} data={data} />
       </main>
       <window.Footer theme={theme} data={data} />
       <window.MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} data={data} />

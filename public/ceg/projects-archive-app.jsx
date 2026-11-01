@@ -10,46 +10,68 @@ const FALLBACK_IMGS = {
   Dredging: "/assets/dredging.jpg",
 };
 
-const MARKET_COLORS = {
-  Federal:       { bg: "#1c6fbf", text: "#fff" },
-  "State & Local": { bg: "#0f7b6c", text: "#fff" },
-  Commercial:    { bg: "#7c3aed", text: "#fff" },
-  Energy:        { bg: "#b45309", text: "#fff" },
-  Utility:       { bg: "#374151", text: "#fff" },
-};
-
 function imgFor(p) {
   return p.image || FALLBACK_IMGS[p.tag] || "/assets/commercial-diving.jpg";
 }
 
-// ─── Filter bar ───────────────────────────────────────────────────────────────
-function FilterBar({ active, onChange, projects }) {
-  const markets = ["All", ...Array.from(new Set(projects.map(p => p.market))).sort()];
+function marketColor(data, name) {
+  const m = data.MARKETS.find((mk) => mk.name === name);
+  return { bg: (m && m.color) || "#374151", text: "#fff" };
+}
+
+// ─── Filter bars ──────────────────────────────────────────────────────────────
+// Two rows per Kevin's round 1 review (#164, #167): Market (the six markets)
+// and Service (the five divisions). Every option is shown so the structure is
+// visible even where no project is tagged yet; empty ones are disabled.
+function FilterRow({ label, options, active, onChange, countFor }) {
+  return (
+    <div className="prj-filter-inner prj-filter-row">
+      <span className="prj-filter-label">{label}</span>
+      {options.map(([value, text]) => {
+        const count = countFor(value);
+        return (
+          <button
+            key={value}
+            className={`prj-filter-btn ${active === value ? "is-active" : ""}`}
+            onClick={() => onChange(value)}
+            disabled={count === 0 && active !== value}
+          >
+            {text}
+            <span className="prj-filter-count">{count}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function FilterBar({ data, market, service, onMarket, onService }) {
+  const projects = data.PROJECTS;
+  const marketOptions = [["All", "All"], ...data.MARKETS.map((m) => [m.name, m.name])];
+  const serviceOptions = [["All", "All"], ...data.DIVISIONS.map((d) => [d.key, d.name])];
+  // Counts respect the other row's active filter, so the numbers always match
+  // what a click would show.
+  const inService = (p) => service === "All" || (p.services || []).includes(service);
+  const inMarket = (p) => market === "All" || p.market === market;
   return (
     <div className="prj-filter-bar">
       <div className="ceg-container">
-        <div className="prj-filter-inner">
-          {markets.map((m) => (
-            <button
-              key={m}
-              className={`prj-filter-btn ${active === m ? "is-active" : ""}`}
-              onClick={() => onChange(m)}
-            >
-              {m}
-              <span className="prj-filter-count">
-                {m === "All" ? projects.length : projects.filter(p => p.market === m).length}
-              </span>
-            </button>
-          ))}
-        </div>
+        <FilterRow
+          label="Market" options={marketOptions} active={market} onChange={onMarket}
+          countFor={(v) => projects.filter((p) => inService(p) && (v === "All" || p.market === v)).length}
+        />
+        <FilterRow
+          label="Service" options={serviceOptions} active={service} onChange={onService}
+          countFor={(v) => projects.filter((p) => inMarket(p) && (v === "All" || (p.services || []).includes(v))).length}
+        />
       </div>
     </div>
   );
 }
 
 // ─── Project card ─────────────────────────────────────────────────────────────
-function ProjectCard({ p }) {
-  const mc = MARKET_COLORS[p.market] || { bg: "#374151", text: "#fff" };
+function ProjectCard({ p, data }) {
+  const mc = marketColor(data, p.market);
   return (
     <a href={`/projects/${p.slug}`} className="prj-card">
       <div className="prj-card-media">
@@ -78,26 +100,28 @@ function ProjectCard({ p }) {
   );
 }
 
-// Read an initial market filter from the URL hash (e.g. #market=Energy), so the
-// Markets nav dropdown can deep-link straight into the relevant portfolio view.
-// Falls back to "All" if the hash is missing or names a market with no projects.
-function initialMarketFromHash(projects) {
+// Read initial filters from the URL hash (e.g. #market=Water%20%26%20Wastewater
+// or #service=diving), so the Markets page and the service pages can deep-link
+// straight into the relevant portfolio view. Values with no tagged project yet
+// fall back to "All" rather than landing on an empty grid.
+function initialFromHash(key, known) {
   if (typeof window === "undefined") return "All";
-  const m = /[#&]market=([^&]+)/.exec(window.location.hash || "");
+  const m = new RegExp(`[#&]${key}=([^&]+)`).exec(window.location.hash || "");
   if (!m) return "All";
   const want = decodeURIComponent(m[1]);
-  const known = new Set(projects.map((p) => p.market));
-  return known.has(want) ? want : "All";
+  return known.includes(want) ? want : "All";
 }
 
 // ─── Archive page ─────────────────────────────────────────────────────────────
 function ProjectsArchive() {
   const data = window.CEG_DATA;
-  const [activeFilter, setActiveFilter] = usePA(() => initialMarketFromHash(data.PROJECTS));
+  const [market, setMarket] = usePA(() => initialFromHash("market", data.PROJECTS.map((p) => p.market)));
+  const [service, setService] = usePA(() => initialFromHash("service", data.PROJECTS.flatMap((p) => p.services || [])));
 
-  const filtered = activeFilter === "All"
-    ? data.PROJECTS
-    : data.PROJECTS.filter(p => p.market === activeFilter);
+  const filtered = data.PROJECTS.filter((p) =>
+    (market === "All" || p.market === market) &&
+    (service === "All" || (p.services || []).includes(service))
+  );
 
   return (
     <>
@@ -109,9 +133,9 @@ function ProjectsArchive() {
               <span className="ceg-eyebrow-mark" />
               <span>Projects</span>
             </div>
-            <h1 className="prj-archive-h1">Selected Marine Infrastructure Projects</h1>
+            <h1 className="prj-archive-h1">Our Work Above and Below the Waterline</h1>
             <p className="prj-archive-lede">
-              Coastal Engineering Group supports critical waterfront infrastructure from initial investigation through construction and closeout. Explore representative projects across marine construction, dredging, engineering, underwater inspection, and commercial diving.
+              Explore Coastal Engineering Group’s work across marine construction, engineering and inspection, dredging, and commercial diving. From bridges and dams to ports and waterfront facilities, these projects demonstrate how we bring technical expertise, practical field solutions, and a commitment to safety to challenging infrastructure assignments.
             </p>
           </div>
         </div>
@@ -119,11 +143,11 @@ function ProjectsArchive() {
 
       {/* Filter + Grid */}
       <div className="prj-archive-body">
-        <FilterBar active={activeFilter} onChange={setActiveFilter} projects={data.PROJECTS} />
+        <FilterBar data={data} market={market} service={service} onMarket={setMarket} onService={setService} />
         <div className="ceg-container">
           <div className="prj-grid">
             {filtered.map((p) => (
-              <ProjectCard key={p.slug} p={p} />
+              <ProjectCard key={p.slug} p={p} data={data} />
             ))}
           </div>
           {filtered.length === 0 && (
@@ -152,7 +176,6 @@ function ProjectsArchiveApp() {
       <window.Nav theme={theme} data={data} conceptKey="drydock" onMobileOpen={() => setMobileOpen(true)} />
       <main>
         <ProjectsArchive />
-        <window.ContactBand theme={theme} data={data} />
       </main>
       <window.Footer theme={theme} data={data} />
       <window.MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} data={data} />

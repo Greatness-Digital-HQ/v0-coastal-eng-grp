@@ -82,44 +82,15 @@ function Btn({ children, variant = "primary", arrow = true, href = "#", onClick,
 }
 
 // ─── Top utility bar ────────────────────────────────────────────────────────
+// Round 1 (Kevin, #2): the whole bar is now a single careers call-out, the
+// same pattern as Ballard's "Looking for a career at Ballard? Click here."
 function UtilityBar({ theme, data }) {
   return (
     <div className="ceg-util">
-      <div className="ceg-container ceg-util-row">
-        <div className="ceg-util-left">
-          <span className="ceg-util-pill">
-            <svg className="ceg-flag" viewBox="0 0 19 10" aria-hidden xmlns="http://www.w3.org/2000/svg">
-              <rect width="19" height="10" fill="#B22234" />
-              <rect y="0.77"  width="19" height="0.77" fill="#fff" />
-              <rect y="2.31"  width="19" height="0.77" fill="#fff" />
-              <rect y="3.85"  width="19" height="0.77" fill="#fff" />
-              <rect y="5.39"  width="19" height="0.77" fill="#fff" />
-              <rect y="6.93"  width="19" height="0.77" fill="#fff" />
-              <rect y="8.47"  width="19" height="0.77" fill="#fff" />
-              <rect width="7.6" height="5.39" fill="#3C3B6E" />
-            </svg>
-            Veteran-Owned Small Business
-          </span>
-          <span className="ceg-util-sep">·</span>
-          <span>NAVFAC · USACE · USCG</span>
-        </div>
-        <div className="ceg-util-right">
-          {/* Phone moved up here from the nav row per Kevin's ask — merges
-              the old logo row + sticky nav bar into one, going from three
-              stacked header bars down to two. */}
-          <a href={`tel:${data.CONTACT.phone}`}>{data.CONTACT.phone}</a>
-          <span className="ceg-util-sep">·</span>
-          {/* Was "Emergency Marine Response" (a dead "#contact" anchor before
-              that) — shortened to "Safety" per Kevin's review, still points
-              at the real Safety & Quality page. data.CONTACT.emergency
-              itself is untouched — it's still used, correctly, elsewhere
-              (footer hours, contact page) to describe the actual 24/7
-              emergency-response line. */}
-          <a href="/safety-quality">Safety</a>
-          <span className="ceg-util-sep">·</span>
-          <a href="/careers">Careers</a>
-          <a href="#partners">Partner Portal</a>
-        </div>
+      <div className="ceg-container ceg-util-row ceg-util-row--careers">
+        <a href="/careers" className="ceg-util-careers">
+          Looking for a career at Coastal Engineering? <span>Click here</span>
+        </a>
       </div>
     </div>
   );
@@ -1017,20 +988,7 @@ function Divisions({ theme, data }) {
   return (
     <section id="services" className="ceg-section ceg-divisions">
       <div className="ceg-container">
-        <div className="ceg-section-head">
-          <Eyebrow mark>Five divisions · One company</Eyebrow>
-          <h2 className="ceg-h2">
-            From the {""}
-            <span className="ceg-h2-em">drawing board</span>
-            {" "}to the {""}
-            <span className="ceg-h2-em">water column.</span>
-          </h2>
-          <p className="ceg-section-lede">
-            We self-perform across every phase of marine work — eliminating the
-            handoffs, schedule risk, and split accountability of multi-prime delivery.
-          </p>
-        </div>
-
+        {/* Section heading removed per Kevin's round 1 review (#23). */}
         <div className="ceg-division-tiles">
           {data.DIVISIONS.map((d, i) => (
             <a key={d.key} href={`/services/${d.key}`} className="ceg-division-tile">
@@ -1347,53 +1305,43 @@ function Footer({ theme, data }) {
     <footer className="ceg-footer">
       <div className="ceg-container">
         <div className="ceg-footer-top">
+          {/* Footer link rows removed per Kevin's round 1 review (#12) —
+              the flyout menu is the site's one navigation list. */}
           <div className="ceg-footer-brand">
             <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" className="ceg-footer-logo"/>
-          </div>
-          {/* Two flat rows instead of one column per nav item — with only
-              Services carrying a submenu, a per-item column grid left one
-              tall column next to four mostly-empty ones. Primary links on
-              their own row, the Services submenu on a second row below. */}
-          <div className="ceg-footer-nav">
-            <nav className="ceg-footer-nav-row ceg-footer-nav-primary" aria-label="Footer">
-              {Object.entries(data.NAV).map(([k, item]) => {
-                const href = item.href || (item.items && item.items[0] && item.items[0].href) || "#";
-                return <a key={k} href={href}>{item.label}</a>;
-              })}
-            </nav>
-            {data.NAV.capabilities.items && (
-              <nav className="ceg-footer-nav-row ceg-footer-nav-sub" aria-label="Services">
-                {data.NAV.capabilities.items.map((entry) => {
-                  const label = typeof entry === "string" ? entry : entry.label;
-                  const href  = typeof entry === "string" ? "#" : (entry.href || "#");
-                  return <a key={label} href={href}>{label}</a>;
-                })}
-              </nav>
-            )}
           </div>
         </div>
 
         <div className="ceg-footer-mid">
-          <div className="ceg-footer-mid-block">
-            <div className="ceg-footer-mid-h">Headquarters</div>
-            <div className="ceg-footer-mid-v">
-              {data.CONTACT.hq}<br/>
-              {data.CONTACT.addressLine1}<br/>
-              {data.CONTACT.addressLine2}
-            </div>
+          <div className="ceg-footer-mid-block ceg-footer-mid-block--locations">
+            <div className="ceg-footer-mid-h">Our Locations</div>
+            {data.CONTACT.locations.map((loc) => (
+              <div key={loc.name} className="ceg-footer-mid-v ceg-footer-location">
+                <strong>{loc.name}</strong><br/>
+                {loc.line1}<br/>
+                {loc.line2}
+              </div>
+            ))}
           </div>
           <div className="ceg-footer-mid-block">
             <div className="ceg-footer-mid-h">Contact</div>
             <div className="ceg-footer-mid-v">
               <a href={`tel:${data.CONTACT.phone}`}>{data.CONTACT.phone}</a><br/>
               <a href={`mailto:${data.CONTACT.email}`}>{data.CONTACT.email}</a>
+              {data.CONTACT.linkedin && (
+                <>
+                  <br/>
+                  <a href={data.CONTACT.linkedin} target="_blank" rel="noopener noreferrer" className="ceg-footer-linkedin">
+                    <LinkedInIcon /> LinkedIn
+                  </a>
+                </>
+              )}
             </div>
           </div>
           <div className="ceg-footer-mid-block">
             <div className="ceg-footer-mid-h">Hours</div>
             <div className="ceg-footer-mid-v">
-              {data.CONTACT.hours}<br/>
-              {data.CONTACT.emergency}
+              {data.CONTACT.emergency247}
             </div>
           </div>
           <div className="ceg-footer-mid-block">
@@ -1430,26 +1378,24 @@ function Footer({ theme, data }) {
 
         <div className="ceg-footer-bottom">
           <div>© 2026 Coastal Engineering Group. All rights reserved.</div>
-          <div className="ceg-footer-legal">
-            <a href="/safety-quality">Safety &amp; Quality</a>
-            <a href="#">Privacy</a>
-            <a href="#">Accessibility</a>
-            <a href="#">SAM.gov UEI</a>
-            <a href="#">Sitemap</a>
-          </div>
         </div>
       </div>
     </footer>
   );
 }
 
+function LinkedInIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ verticalAlign: "-2px" }}>
+      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/>
+    </svg>
+  );
+}
+
 // ─── Mobile menu ─────────────────────────────────────────�����──────────────────
-// Flyout-only additions on top of the shared data.NAV (which also drives the
-// footer's link row — adding these there too was never asked for). Leadership
-// slots in right after About since it's a section of that same page; Newsroom/
-// Careers/Safety are appended at the end — Careers and Safety already have
-// their own links in the utility bar, but the client wants them in the
-// flyout too now, even at the cost of the duplication.
+// Flyout-only additions on top of the shared data.NAV. Home leads the list
+// and Leadership slots in right after About (Kevin, round 1: #1, #18 — it now
+// has its own page). Newsroom/Careers/Safety are appended at the end.
 const MOBILE_MENU_EXTRA_TRAILING = [
   { key: "newsroom", label: "Newsroom", href: "/insights/news" },
   { key: "careers", label: "Careers", href: "/careers" },
@@ -1460,11 +1406,11 @@ function MobileMenu({ open, onClose, data }) {
   const [openSection, setOpenSection] = useState(null);
   if (!open) return null;
 
-  const items = [];
+  const items = [{ key: "home", label: "Home", href: "/" }];
   Object.entries(data.NAV).forEach(([k, item]) => {
     items.push({ key: k, ...item });
     if (k === "about") {
-      items.push({ key: "leadership", label: "Leadership", href: "/about#leadership" });
+      items.push({ key: "leadership", label: "Leadership", href: "/leadership" });
     }
   });
   items.push(...MOBILE_MENU_EXTRA_TRAILING);
@@ -1510,10 +1456,6 @@ function MobileMenu({ open, onClose, data }) {
             </div>
           );
         })}
-      </div>
-      <div className="ceg-mobile-foot">
-        <a href={`tel:${data.CONTACT.phone}`}>{data.CONTACT.phone}</a>
-        <Btn href="/contact" onClick={onClose}>Discuss a Project</Btn>
       </div>
     </div>
     </>
@@ -2022,5 +1964,5 @@ Object.assign(window, {
   applyThemeVars,
   Eyebrow, Btn, UtilityBar, Nav, Hero, PlaceholderPhoto, MarketPhoto,
   Capabilities, WhyCEG, FeaturedProjects, Careers, CertificationsBar, Locations, Divisions, Projects, VOSBBand, ClientsStrip, ContactBand, FinalCTA, Footer, MobileMenu,
-  NarrativeIntro, IntegratedDelivery,
+  NarrativeIntro, IntegratedDelivery, LinkedInIcon,
 });

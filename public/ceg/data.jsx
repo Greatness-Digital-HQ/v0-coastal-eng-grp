@@ -57,7 +57,7 @@ const DIVISIONS = [
     key: "construction",
     name: "Marine Construction",
     short: "Marine Construction",
-    blurb: "Waterfront construction, structural rehabilitation, and repair over and below the waterline: piers, bulkheads, outfalls, intakes, and scour protection.",
+    blurb: "Construction, rehabilitation, and repair of bridges, dams, piers, bulkheads, seawalls, and other waterfront infrastructure. We combine engineering insight with field expertise to execute challenging work above and below the waterline.",
     menuBlurb: "Waterfront construction and repair, above and below the waterline.",
     services: ["Pile Driving", "Bulkheads & Seawalls", "Bridge Substructures", "Pier & Wharf Construction"],
   },
@@ -65,7 +65,7 @@ const DIVISIONS = [
     key: "engineering",
     name: "Marine Engineering & Inspection",
     short: "Engineering & Inspection",
-    blurb: "Waterfront engineering, underwater and structural inspection, condition assessment, and repair design informed by field conditions.",
+    blurb: "Structural inspections, underwater assessments, engineering evaluations, and repair design for marine and waterfront infrastructure. We turn field findings into practical recommendations that help owners prioritize repairs and plan construction.",
     menuBlurb: "Underwater inspection, condition assessment, and repair design.",
     services: ["Underwater Inspection", "Condition Assessment", "Repair Design", "Construction Engineering"],
   },
@@ -73,7 +73,7 @@ const DIVISIONS = [
     key: "dredging",
     name: "Dredging",
     short: "Dredging",
-    blurb: "Mechanical and hydraulic dredging, sediment management, dewatering, disposal coordination, and waterway maintenance.",
+    blurb: "Mechanical and hydraulic dredging to restore water depths, remove accumulated sediment, and maintain waterways, marinas, and reservoirs. Our capabilities include sediment handling, dewatering, and disposal coordination.",
     menuBlurb: "Mechanical and hydraulic dredging and sediment management.",
     services: ["Maintenance Dredging", "Capital Dredging", "Environmental Dredging", "Sediment Management"],
   },
@@ -81,7 +81,7 @@ const DIVISIONS = [
     key: "diving",
     name: "Commercial Diving & Underwater Construction",
     short: "Diving & Underwater Construction",
-    blurb: "Surface-supplied commercial diving for underwater construction, inspection, repair, welding, concrete work, and emergency response.",
+    blurb: "Surface-supplied commercial diving for underwater inspection, construction, and structural repairs. Our teams perform underwater welding, concrete placement, and specialty work where submerged conditions demand qualified personnel, careful planning, and disciplined execution.",
     menuBlurb: "Surface-supplied diving for underwater construction and repair.",
     services: ["Underwater Construction", "Inspection & NDT", "Welding & Burning", "Salvage & Recovery"],
   },
@@ -89,26 +89,34 @@ const DIVISIONS = [
     key: "marine-services",
     name: "Fleet & Marine Support",
     short: "Fleet & Marine Support",
-    blurb: "Workboats, barges, cranes, marine logistics, and equipment mobilization supporting our own work and prime contractors.",
+    blurb: "Workboats, barges, crane support, and marine logistics to keep waterfront projects moving. We coordinate equipment mobilization, material transport, and on-water support for Coastal projects and prime contractors.",
     menuBlurb: "Workboats, barges, cranes, and marine logistics support.",
     services: ["Workboats & Crew Transport", "Deck & Crane Barges", "Lifting & Rigging", "Marine Logistics"],
   },
 ];
 
+// Six markets per Kevin's round 1 review (#154-159). `detail` is the market's
+// subtitle; the full description lives in markets-overview-app.jsx. `name` is
+// the value PROJECTS[].market uses; `color` is its badge color.
 const MARKETS = [
-  { key: "federal", name: "Federal", detail: "NAVFAC, USACE, Coast Guard", projects: 47 },
-  { key: "state-local", name: "State & Local", detail: "DOTs, port authorities, municipal", projects: 32 },
-  { key: "energy", name: "Energy", detail: "Offshore wind, LNG, transmission", projects: 18 },
-  { key: "commercial", name: "Commercial", detail: "Marinas, terminals, private piers", projects: 24 },
-  { key: "industrial", name: "Industrial", detail: "Heavy industry waterfront facilities", projects: 15 },
+  { key: "federal", color: "#1c6fbf", name: "Federal & Defense", detail: "USACE, NAVFAC, U.S. Coast Guard & federal prime contractors" },
+  { key: "transportation", color: "#0f7b6c", name: "Bridges & Transportation", detail: "State DOTs, transportation authorities & rail operators" },
+  { key: "ports", color: "#7c3aed", name: "Ports, Harbors & Waterfronts", detail: "Port authorities, terminal operators, municipalities & marina owners" },
+  { key: "water", color: "#0e7490", name: "Water & Wastewater", detail: "Municipal utilities, water authorities & treatment plant operators" },
+  { key: "dams", color: "#374151", name: "Dams & Water Resources", detail: "Dam owners, reservoir operators & water management agencies" },
+  { key: "energy-industrial", color: "#b45309", name: "Energy & Industrial", detail: "Power utilities, energy producers & industrial facility owners" },
 ];
 
+// `market` is one of MARKETS[].name and `services` lists DIVISIONS[].key — both
+// drive the filters on /projects/featured-work. TODO(client): the round 1
+// re-tag below was mapped from each project's own scope; Kevin to confirm.
 const PROJECTS = [
   {
     slug: "railroad-bridge-inspection",
     title: "Railroad Bridge Inspection Over Open Water",
     client: "CSX Transportation",
-    market: "Commercial",
+    market: "Bridges & Transportation",
+    services: ["diving", "engineering"],
     state: "NY",
     year: "2024",
     tag: "Diving",
@@ -124,7 +132,8 @@ const PROJECTS = [
     slug: "freshwater-utility-cable-relocation",
     title: "Freshwater Utility Cable Relocation",
     client: "Public Service Electric & Gas",
-    market: "Utility",
+    market: "Energy & Industrial",
+    services: ["diving", "construction"],
     state: "PA",
     year: "2024",
     tag: "Diving",
@@ -140,7 +149,8 @@ const PROJECTS = [
     slug: "port-of-baltimore-water-tank-repair",
     title: "Port of Baltimore Water Tank Repair",
     client: "Baltimore City Department of Public Works",
-    market: "State & Local",
+    market: "Water & Wastewater",
+    services: ["diving", "engineering"],
     state: "MD",
     year: "2023",
     tag: "Diving",
@@ -156,7 +166,8 @@ const PROJECTS = [
     slug: "delaware-river-bridge-inspection",
     title: "Delaware River Bridge Inspection",
     client: "DRJTBC",
-    market: "State & Local",
+    market: "Bridges & Transportation",
+    services: ["diving", "engineering"],
     state: "PA",
     year: "2025",
     tag: "Diving",
@@ -172,7 +183,8 @@ const PROJECTS = [
     slug: "atlantic-shores-offshore-wind",
     title: "Atlantic Shores Offshore Wind",
     client: "Atlantic Shores OW",
-    market: "Energy",
+    market: "Energy & Industrial",
+    services: ["marine-services"],
     state: "NJ",
     year: "2025",
     tag: "Marine Services",
@@ -188,7 +200,8 @@ const PROJECTS = [
     slug: "port-newark-container-terminal",
     title: "Port Newark Container Terminal",
     client: "Port Authority NY/NJ",
-    market: "Commercial",
+    market: "Ports, Harbors & Waterfronts",
+    services: ["engineering"],
     state: "NJ",
     year: "2023",
     tag: "Engineering",
@@ -204,7 +217,8 @@ const PROJECTS = [
     slug: "mayport-naval-station-wharf-repair",
     title: "Mayport Naval Station Wharf Repair",
     client: "NAVFAC Southeast",
-    market: "Federal",
+    market: "Federal & Defense",
+    services: ["diving", "construction"],
     state: "FL",
     year: "2025",
     tag: "Diving",
@@ -220,7 +234,8 @@ const PROJECTS = [
     slug: "greenwood-lake-dam-rehabilitation",
     title: "Greenwood Lake Dam Rehabilitation",
     client: "Greenwood Lake Commission",
-    market: "State & Local",
+    market: "Dams & Water Resources",
+    services: ["engineering"],
     state: "NY",
     year: "2024",
     tag: "Engineering",
@@ -323,15 +338,24 @@ const NAV = {
 };
 
 // NOTE: general email and emergency-response line pending client verification.
-// HQ address is from the current business listing (Greenwood Lake, NY).
+// Both locations per Kevin's round 1 review (#13). The HQ street address is
+// mirrored in app/seo.ts (organizationJsonLd) — keep the two in sync.
 const CONTACT = {
   phone: "845-328-3178",
   email: "info@coastalengineeringgroup.com",
   hq: "Coastal Engineering Group",
-  addressLine1: "2 Seneca Hill",
+  addressLine1: "1 Schradin Hill",
   addressLine2: "Greenwood Lake, NY 10925",
+  locations: [
+    { name: "New York Headquarters", line1: "1 Schradin Hill", line2: "Greenwood Lake, NY 10925" },
+    { name: "Florida Office & Yard", line1: "1801 E 30th Street", line2: "Jacksonville FL, 32206" },
+  ],
   hours: "Mon–Fri  7:00–17:00 ET",
   emergency: "Emergency Marine Response",
+  emergency247: "24/7 Emergency Response",
+  // TODO(client): company LinkedIn URL (Kevin, round 1 #16). The footer and
+  // contact page show the LinkedIn link only once this is set.
+  linkedin: "",
 };
 
 // Careers — benefits + open roles teaser (JMT-leaning, talent-as-priority).
