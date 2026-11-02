@@ -11,7 +11,7 @@ const CEG_NEWS = [
     author: "CEG Communications",
     readTime: "3 min read",
     excerpt: "Coastal Engineering Group has been awarded a NAVFAC Mid-Atlantic Multiple Award Construction Contract task order for waterfront rehabilitation at a Mid-Atlantic naval installation. Work begins Q3 2025.",
-    image: "/assets/diver-city.jpg",
+    image: "/assets/diver-city.webp",
     tags: ["NAVFAC", "Federal", "Contract Award"],
     body: [
       "Coastal Engineering Group (CEG) has been awarded a task order under the NAVFAC Mid-Atlantic Multiple Award Construction Contract (MACC) for waterfront rehabilitation services at a Mid-Atlantic naval installation. The award represents a continued expansion of CEG's federal waterfront portfolio across the region.",
@@ -29,7 +29,7 @@ const CEG_NEWS = [
     author: "CEG Communications",
     readTime: "2 min read",
     excerpt: "Coastal Engineering Group has established a permanent operations base in Jacksonville, Florida, positioning the company to better serve NAVFAC Southeast, port authorities, and commercial clients across the Gulf Coast and Southeast Atlantic.",
-    image: "/assets/marine-construction.jpg",
+    image: "/assets/marine-construction.webp",
     tags: ["Growth", "Southeast", "Operations"],
     body: [
       "Coastal Engineering Group has established a permanent operations hub in Jacksonville, Florida — the company's second regional base after its Greenwood Lake, NY headquarters. The expansion positions CEG to better support federal and commercial clients across the Southeast Atlantic and Gulf Coast markets.",
@@ -47,7 +47,7 @@ const CEG_NEWS = [
     author: "CEG Engineering",
     readTime: "5 min read",
     excerpt: "When a Professional Engineer leads the dive rather than reviewing footage afterward, inspection cycles get shorter, repair decisions get faster, and mobilization costs drop. Here's how the math works.",
-    image: "/assets/commercial-diving.jpg",
+    image: "/assets/commercial-diving.webp",
     tags: ["PE Diving", "Inspection", "Engineering"],
     body: [
       "The standard model for underwater infrastructure inspection looks like this: a commercial dive team documents conditions, surfaces with footage and photographs, and an engineer reviews the data — sometimes days or weeks later — before issuing a condition report. It's a two-step process built on a handoff.",
@@ -67,7 +67,7 @@ const CEG_NEWS = [
     author: "CEG Communications",
     readTime: "2 min read",
     excerpt: "CEG has completed the spillway redesign and embankment stabilization design package for the Greenwood Lake Dam, with NYSDEC permits in hand and the Greenwood Lake Commission moving toward construction procurement.",
-    image: "/assets/federal-project-dam.jpg",
+    image: "/assets/federal-project-dam.webp",
     tags: ["Dam Safety", "ASDSO", "State & Local"],
     body: [
       "Coastal Engineering Group has completed the engineering design package for the Greenwood Lake Dam Rehabilitation project on behalf of the Greenwood Lake Commission in New York. The full PE-stamped design — including spillway redesign, embankment stabilization, and construction documents — has been permitted through the New York State Department of Environmental Conservation (NYSDEC).",
@@ -85,7 +85,7 @@ const CEG_NEWS = [
     author: "CEG Communications",
     readTime: "2 min read",
     excerpt: "CEG's marine services division is providing tug and deck barge support for Atlantic Shores Offshore Wind cable lay vessel operations off the New Jersey coast, supporting one of the region's largest offshore wind development projects.",
-    image: "/assets/marine-services.jpg",
+    image: "/assets/marine-services.webp",
     tags: ["Energy", "Offshore Wind", "Marine Services"],
     body: [
       "Coastal Engineering Group's marine services division has mobilized tug and deck barge assets in support of Atlantic Shores Offshore Wind's cable lay vessel operations off the New Jersey coast. The engagement supports one of the largest offshore wind development projects currently underway on the US East Coast.",
@@ -103,7 +103,7 @@ const CEG_NEWS = [
     author: "CEG Communications",
     readTime: "2 min read",
     excerpt: "CEG completed a full structural underwater inspection of a CSX overwater railroad bridge in New York, delivering a PE-stamped condition report in 10 business days with no interruption to daily freight operations.",
-    image: "/assets/railroad-bridge-inspection.jpg",
+    image: "/assets/railroad-bridge-inspection.webp",
     tags: ["Bridge Inspection", "Commercial", "Diving"],
     body: [
       "Coastal Engineering Group has completed an underwater structural inspection of a CSX Transportation overwater railroad bridge in New York, delivering a PE-stamped condition report within 10 business days of mobilization — with zero disruption to active rail freight operations across the crossing.",

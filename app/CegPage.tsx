@@ -1,7 +1,10 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { preload } from "react-dom"
 import { useParams } from "next/navigation"
+// Written by scripts/build-ceg.mjs before every build and dev start.
+import manifest from "./ceg-manifest.json"
 
 // Shared client loader for the CEG prototype runtime.
 //
@@ -17,12 +20,27 @@ import { useParams } from "next/navigation"
 // The React and Babel bundles are served from /public/vendor rather than unpkg
 // — a third-party CDN outage used to take the whole site down. See
 // public/vendor/README.md.
+//
+// In production the .jsx files are compiled at build time (scripts/build-ceg.mjs)
+// and loaded as plain scripts, so visitors never download Babel. `next dev`
+// still compiles in the browser, so edits to public/ceg/*.jsx show on reload.
 
 const RUNTIME_REACT     = "/vendor/react.js"
 const RUNTIME_REACT_DOM = "/vendor/react-dom.js"
 const RUNTIME_BABEL     = "/vendor/babel.js"
 
+const PRECOMPILED = process.env.NODE_ENV === "production"
+const COMPILED = manifest as Record<string, string>
+
 const BASE_FILES = ["/ceg/themes.jsx", "/ceg/components.jsx", "/ceg/drydock-body.jsx"]
+
+/** The build output for /ceg/<name>.jsx. */
+function compiledUrl(url: string): string {
+  const name = url.replace(/^\/ceg\//, "").replace(/\.jsx$/, "")
+  const out = COMPILED[name]
+  if (!out) throw new Error(`No compiled build of ${url}; run node scripts/build-ceg.mjs`)
+  return out
+}
 
 function loadExternalScript(src: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -76,6 +94,12 @@ export default function CegPage({ app, label, extraData = [], serviceKey, useSlu
   const params = useParams()
   const slug = Array.isArray(params?.slug) ? params.slug[0] : (params?.slug ?? "")
 
+  const files = ["/ceg/data.jsx", ...extraData.map((d) => `/ceg/${d}.jsx`), ...BASE_FILES, `/ceg/${app}.jsx`]
+  const scripts = PRECOMPILED ? [RUNTIME_REACT, RUNTIME_REACT_DOM, ...files.map(compiledUrl)] : []
+  // Emitted as <link rel="preload"> in the server HTML, so the downloads start
+  // before this component hydrates.
+  for (const src of scripts) preload(src, { as: "script", crossOrigin: "anonymous" })
+
   useEffect(() => {
     if (mounted.current) return
     mounted.current = true
@@ -90,10 +114,13 @@ export default function CegPage({ app, label, extraData = [], serviceKey, useSlu
       w.__CEG_NEWS_SLUG = slug
     }
 
-    const files = ["/ceg/data.jsx", ...extraData.map((d) => `/ceg/${d}.jsx`), ...BASE_FILES, `/ceg/${app}.jsx`]
-
     ;(async () => {
       try {
+        if (PRECOMPILED) {
+          // All requested at once; async=false keeps them executing in order.
+          await Promise.all(scripts.map(loadExternalScript))
+          return
+        }
         await loadExternalScript(RUNTIME_REACT)
         await loadExternalScript(RUNTIME_REACT_DOM)
         await loadExternalScript(RUNTIME_BABEL)

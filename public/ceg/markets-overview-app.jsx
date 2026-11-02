@@ -12,12 +12,12 @@ const { useState: useMOMobile, useState: useMOActive } = React;
 
 // Closest-matching photography already on hand for each market.
 const MARKET_PHOTOS = {
-  federal: "/assets/federal-hero-bg.jpg",
-  transportation: "/assets/railroad-bridge-inspection.jpg",
-  ports: "/assets/marine-services.jpg",
-  water: "/assets/water-tank-repair.jpg",
-  dams: "/assets/federal-project-dam.jpg",
-  "energy-industrial": "/assets/cable-relocation.jpg",
+  federal: "/assets/federal-hero-bg.webp",
+  transportation: "/assets/railroad-bridge-inspection.webp",
+  ports: "/assets/marine-services.webp",
+  water: "/assets/water-tank-repair.webp",
+  dams: "/assets/federal-project-dam.webp",
+  "energy-industrial": "/assets/cable-relocation.webp",
 };
 
 const projectsLink = (name) => `/projects/featured-work#market=${encodeURIComponent(name)}`;

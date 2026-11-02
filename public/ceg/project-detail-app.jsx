@@ -3,11 +3,11 @@
 const { useState: usePD, useEffect: usePDE } = React;
 
 const FALLBACK_IMGS = {
-  Diving: "/assets/commercial-diving.jpg",
-  Engineering: "/assets/marine-engineering.jpg",
-  Construction: "/assets/marine-construction.jpg",
-  "Marine Services": "/assets/marine-services.jpg",
-  Dredging: "/assets/dredging.jpg",
+  Diving: "/assets/commercial-diving.webp",
+  Engineering: "/assets/marine-engineering.webp",
+  Construction: "/assets/marine-construction.webp",
+  "Marine Services": "/assets/marine-services.webp",
+  Dredging: "/assets/dredging.webp",
 };
 
 // Market badge color comes from the shared MARKETS list (data.jsx).
@@ -17,7 +17,7 @@ function marketColor(name) {
 }
 
 function imgFor(p) {
-  return p.image || FALLBACK_IMGS[p.tag] || "/assets/commercial-diving.jpg";
+  return p.image || FALLBACK_IMGS[p.tag] || "/assets/commercial-diving.webp";
 }
 
 // ─── Not-found fallback ───────────────────────────────────────────────────────

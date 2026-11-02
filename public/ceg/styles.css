@@ -1540,7 +1540,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   right: -2%;
   width: 42%;
   height: 115%;
-  background-image: url('/assets/footer-diver-illustration.jpg');
+  background-image: url('/assets/footer-diver-illustration.webp');
   background-size: cover;
   background-position: center top;
   opacity: 0.22;
@@ -3009,7 +3009,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   box-shadow: 0 8px 32px rgba(28, 111, 191, 0.08);
 }
 .ceg-pillar-photo {
-  background-image: url('/assets/careers-work-photo.jpg');
+  background-image: url('/assets/careers-work-photo.webp');
   background-size: cover;
   background-position: center center;
   border: none !important;
@@ -3326,7 +3326,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url('/assets/about-hero-bg.jpg');
+  background-image: url('/assets/about-hero-bg.webp');
   background-size: cover;
   background-position: center 40%;
   opacity: 0.38;
@@ -3389,7 +3389,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   left: -5%;
   width: 55%;
   height: 120%;
-  background-image: url('/assets/diver-helmet.jpg');
+  background-image: url('/assets/diver-helmet.webp');
   background-size: cover;
   background-position: center top;
   opacity: 0.15;
@@ -3620,7 +3620,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   right: -5%;
   width: 55%;
   height: 120%;
-  background-image: url('/assets/diver-city.jpg');
+  background-image: url('/assets/diver-city.webp');
   background-size: cover;
   background-position: center top;
   opacity: 0.15;
@@ -3786,7 +3786,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url('/assets/diver-helmet.jpg');
+  background-image: url('/assets/diver-helmet.webp');
   background-size: cover; background-position: center;
   opacity: 0.14;
   pointer-events: none;
@@ -4114,7 +4114,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   right: -4%;
   width: 52%;
   height: 120%;
-  background-image: url('/assets/cta-diver-crane.jpg');
+  background-image: url('/assets/cta-diver-crane.webp');
   background-size: cover;
   background-position: center 30%;
   opacity: 0.18;
@@ -4296,7 +4296,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url('/assets/federal-hero-bg.jpg');
+  background-image: url('/assets/federal-hero-bg.webp');
   background-size: cover;
   background-position: center 40%;
   opacity: 0.9;
@@ -4390,7 +4390,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url('/assets/marine-construction.jpg');
+  background-image: url('/assets/marine-construction.webp');
   background-size: cover;
   background-position: center 35%;
   opacity: 0.12;
@@ -4631,7 +4631,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .div-hero::before {
   content: "";
   position: absolute; inset: 0;
-  background-image: url('/assets/commercial-diving.jpg');
+  background-image: url('/assets/commercial-diving.webp');
   background-size: cover; background-position: center 30%;
   opacity: 0.9; pointer-events: none; z-index: 0;
 }
@@ -4771,7 +4771,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .div-services::before {
   content: "";
   position: absolute; inset: 0;
-  background-image: url('/assets/cta-diver-crane.jpg');
+  background-image: url('/assets/cta-diver-crane.webp');
   background-size: cover; background-position: center;
   opacity: 0.07; pointer-events: none; z-index: 0;
 }
@@ -5037,7 +5037,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .prj-archive-hero::before {
   content: "";
   position: absolute; inset: 0;
-  background-image: url('/assets/hero-background.jpg');
+  background-image: url('/assets/hero-background.webp');
   background-size: cover; background-position: center;
   opacity: 0.1; pointer-events: none;
 }
@@ -5368,7 +5368,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
      eyebrow almost touching the logo. */
   padding: 150px 0 64px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
-  background-image: url('/assets/marine-construction.jpg');
+  background-image: url('/assets/marine-construction.webp');
   background-size: cover; background-position: center 40%;
 }
 .nws-hero::before {

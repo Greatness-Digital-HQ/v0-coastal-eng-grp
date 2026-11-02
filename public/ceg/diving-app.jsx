@@ -84,7 +84,7 @@ const PROJECTS = [
     title: "USNA — Farragut, Robert Crown & Santee Basin Seawall Repairs",
     body: "Multi-site seawall and bulkhead repair at the US Naval Academy. PE-led underwater QC dive team across three basin locations.",
     tags: ["Seawall", "QA/QC", "NAVFAC"],
-    img: "/assets/diver-helmet.jpg",
+    img: "/assets/diver-helmet.webp",
     imgAlt: "Diver preparing for underwater seawall inspection",
   },
   {
@@ -92,7 +92,7 @@ const PROJECTS = [
     title: "Pier 32 — Acoustic Monitoring & Environmental Protection",
     body: "Survey boat operations, acoustic monitoring, and environmental protection diving at a US Navy submarine base facility.",
     tags: ["Pier", "Navy", "Survey"],
-    img: "/assets/commercial-diving.jpg",
+    img: "/assets/commercial-diving.webp",
     imgAlt: "Commercial diver in federal facility operations",
   },
   {
@@ -100,7 +100,7 @@ const PROJECTS = [
     title: "Type 2 NBIS Underwater Bridge & Culvert Inspections",
     body: "NHI/FHWA-compliant Level 2 bridge and culvert inspections across New Jersey Department of Transportation's underwater inspection program.",
     tags: ["Bridge", "NHI/FHWA", "NBIS"],
-    img: "/assets/federal-hydrographic.jpg",
+    img: "/assets/federal-hydrographic.webp",
     imgAlt: "Hydrographic survey and scanning operations",
   },
 ];

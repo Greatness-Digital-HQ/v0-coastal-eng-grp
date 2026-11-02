@@ -408,7 +408,7 @@ function ContactDirectory({ data }) {
           )}
         </div>
 
-        <div className="cnt-visual" style={{ backgroundImage: "url('/assets/hero-background.jpg')" }}>
+        <div className="cnt-visual" style={{ backgroundImage: "url('/assets/hero-background.webp')" }}>
           <div className="cnt-visual-scrim" />
           <div className="cnt-visual-body">
             <div className="cnt-visual-h">Two Bases. Nationwide Mobilization.</div>
