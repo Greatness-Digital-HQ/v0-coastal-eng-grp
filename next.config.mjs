@@ -1,3 +1,6 @@
+import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from "next/constants.js"
+import { buildCeg } from "./scripts/build-ceg.mjs"
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
@@ -34,4 +37,10 @@ const nextConfig = {
   },
 }
 
-export default nextConfig
+// Compile public/ceg/*.jsx before building or serving (app/CegPage.tsx imports
+// the result). Done here rather than in package.json because the Vercel
+// project runs its own build command.
+export default function config(phase) {
+  if (phase === PHASE_PRODUCTION_BUILD || phase === PHASE_DEVELOPMENT_SERVER) buildCeg()
+  return nextConfig
+}
