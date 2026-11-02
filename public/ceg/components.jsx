@@ -231,7 +231,7 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
       <header className={`ceg-nav-shell ceg-nav-combined nav-${theme.nav} ${scrolled ? "is-scrolled" : ""}`}>
         <div className="ceg-container ceg-nav-combined-inner">
           <a href="/" className="ceg-logo ceg-logo-left">
-            <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" />
+            <img src="/assets/logo-c-left.png" alt="Coastal Engineering Group" />
           </a>
           <div className="ceg-nav-combined-right">
             <button className="ceg-nav-burger ceg-nav-burger-always" onClick={onMobileOpen} aria-label="Open menu">
@@ -249,7 +249,7 @@ function Nav({ theme, data, conceptKey, onMobileOpen }) {
       <div className="ceg-nav-logo-row">
         <div className="ceg-container ceg-nav-logo-inner">
           <a href="/" className="ceg-logo">
-            <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" />
+            <img src="/assets/logo-c-left.png" alt="Coastal Engineering Group" />
           </a>
           <a href="#contact" className="ceg-nav-phone">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
@@ -1308,7 +1308,7 @@ function Footer({ theme, data }) {
           {/* Footer link rows removed per Kevin's round 1 review (#12) —
               the flyout menu is the site's one navigation list. */}
           <div className="ceg-footer-brand">
-            <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" className="ceg-footer-logo"/>
+            <img src="/assets/logo-c-left.png" alt="Coastal Engineering Group" className="ceg-footer-logo"/>
           </div>
         </div>
 
@@ -1420,7 +1420,7 @@ function MobileMenu({ open, onClose, data }) {
       <div className="ceg-mobile-backdrop" onClick={onClose} aria-hidden="true" />
       <div className="ceg-mobile" role="dialog" aria-modal="true">
       <div className="ceg-mobile-head">
-        <img src="/assets/logo-horizontal.png" alt="Coastal Engineering Group" className="ceg-mobile-logo"/>
+        <img src="/assets/logo-c-left.png" alt="Coastal Engineering Group" className="ceg-mobile-logo"/>
         <button className="ceg-mobile-close" onClick={onClose} aria-label="Close">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.6"/></svg>
         </button>
