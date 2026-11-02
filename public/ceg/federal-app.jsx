@@ -85,7 +85,7 @@ const FED_DATA = {
       title: "US Naval Academy — Farragut Field Seawall Repair",
       body: "PE-led underwater QC dive team and full-time structural QC specialist for seawall and bulkhead repairs along the Santee River Basin. EM385-compliant operations throughout.",
       tags: ["QA/QC", "Seawall", "NAVFAC"],
-      img: "/assets/diver-helmet.jpg",
+      img: "/assets/diver-helmet.webp",
       imgAlt: "Diver preparing for underwater seawall inspection",
     },
     {
@@ -93,7 +93,7 @@ const FED_DATA = {
       title: "Low-Flow Port Bulkhead Replacement & Debris Removal",
       body: "Underwater construction and debris removal services for US Army Corps of Engineers. Full documentation package and PE oversight from mobilization through closeout.",
       tags: ["Construction", "USACE", "Bulkhead"],
-      img: "/assets/federal-project-dam.jpg",
+      img: "/assets/federal-project-dam.webp",
       imgAlt: "Federal dam and waterway infrastructure project",
     },
     {
@@ -101,7 +101,7 @@ const FED_DATA = {
       title: "NYC MTA — Inspection, Scanning & ROV Services",
       body: "Multi-discipline underwater inspection, sonar scanning, and ROV services for New York City Metropolitan Transportation Authority bridge and waterway infrastructure.",
       tags: ["Inspection", "ROV", "Scanning"],
-      img: "/assets/federal-hydrographic.jpg",
+      img: "/assets/federal-hydrographic.webp",
       imgAlt: "Hydrographic survey and scanning operations",
     },
   ],
@@ -186,7 +186,7 @@ function FedAdvantage() {
         <div className="fed-advantage-layout">
           <div className="fed-advantage-photo">
             <img
-              src="/assets/federal-team.jpg"
+              src="/assets/federal-team.webp"
               alt="CEG dive team preparing for federal waterfront project"
               loading="lazy"
             />

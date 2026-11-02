@@ -39,7 +39,7 @@ const ICON = {
 const SERVICE_PAGES = {
   construction: {
     page: "construction",
-    heroImg: "/assets/marine-construction.jpg",
+    heroImg: "/assets/marine-construction.webp",
     h1: "Marine Construction",
     lede: [
       "Coastal Engineering Group builds, rehabilitates, and repairs marine infrastructure above and below the waterline. We combine construction expertise, commercial diving, and engineering support to solve challenging access, structural, and underwater conditions, with safety and accountability guiding every phase.",
@@ -63,7 +63,7 @@ const SERVICE_PAGES = {
 
   engineering: {
     page: "engineering",
-    heroImg: "/assets/marine-engineering.jpg",
+    heroImg: "/assets/marine-engineering.webp",
     h1: "Marine Engineering & Inspection",
     lede: [
       "Coastal Engineering Group provides engineering, inspection, and construction support for bridges, dams, waterfront structures, and submerged infrastructure. We help clients understand existing conditions, prioritize repairs, and develop practical solutions that account for access, equipment, sequencing, and constructability.",
@@ -88,7 +88,7 @@ const SERVICE_PAGES = {
   // Kevin supplied no new hero, intro, or card copy for Dredging in round 1.
   dredging: {
     page: "dredging",
-    heroImg: "/assets/dredging.jpg",
+    heroImg: "/assets/dredging.webp",
     h1: "Dredging",
     lede: "Coastal Engineering Group performs mechanical and hydraulic dredging for channels, basins, lagoons, waterfront facilities, waterways, and environmental applications. We plan the work around production, access, sediment characteristics, water management, dewatering, transportation, disposal, environmental controls, and the operational needs of the facility.",
     servicesHead: { h2: "Dredging Capabilities", sub: "Hover any capability to see typical scope and applications." },
@@ -110,7 +110,7 @@ const SERVICE_PAGES = {
 
   "marine-services": {
     page: "marine-services",
-    heroImg: "/assets/marine-services.jpg",
+    heroImg: "/assets/marine-services.webp",
     h1: "Fleet & Marine Support",
     lede: [
       "Coastal Engineering Group provides workboats, barges, floating work platforms, and marine logistics for construction, dredging, inspection, and commercial diving projects. We bring crews, equipment, and materials to the work, and coordinate the support needed to keep operations moving safely and efficiently.",

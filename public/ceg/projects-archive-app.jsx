@@ -3,15 +3,15 @@
 const { useState: usePA } = React;
 
 const FALLBACK_IMGS = {
-  Diving: "/assets/commercial-diving.jpg",
-  Engineering: "/assets/marine-engineering.jpg",
-  Construction: "/assets/marine-construction.jpg",
-  "Marine Services": "/assets/marine-services.jpg",
-  Dredging: "/assets/dredging.jpg",
+  Diving: "/assets/commercial-diving.webp",
+  Engineering: "/assets/marine-engineering.webp",
+  Construction: "/assets/marine-construction.webp",
+  "Marine Services": "/assets/marine-services.webp",
+  Dredging: "/assets/dredging.webp",
 };
 
 function imgFor(p) {
-  return p.image || FALLBACK_IMGS[p.tag] || "/assets/commercial-diving.jpg";
+  return p.image || FALLBACK_IMGS[p.tag] || "/assets/commercial-diving.webp";
 }
 
 function marketColor(data, name) {

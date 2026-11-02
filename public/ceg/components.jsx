@@ -412,7 +412,7 @@ function HeroPhoto({ theme, data }) {
 function HeroStats({ theme, data }) {
   return (
     <section className="ceg-hero hero-stats">
-      <div className="ceg-hero-background" aria-hidden style={{backgroundImage: "url('/assets/hero-background.jpg')"}} />
+      <div className="ceg-hero-background" aria-hidden style={{backgroundImage: "url('/assets/hero-background.webp')"}} />
       <div className="ceg-hero-video-scrim" />
       <div className="ceg-container ceg-hero-stats-center">
         <h1 className="ceg-h1 serif">
@@ -890,11 +890,11 @@ function MarketPhoto({ marketKey }) {
 // page was removed. Real photos (not the Unsplash PlaceholderPhoto
 // placeholders) for the same five divisions, matching what the grid used.
 const CAP_PHOTOS = {
-  construction: "/assets/marine-construction.jpg",
-  engineering: "/assets/marine-engineering.jpg",
-  dredging: "/assets/dredging.jpg",
-  diving: "/assets/commercial-diving.jpg",
-  "marine-services": "/assets/marine-services.jpg",
+  construction: "/assets/marine-construction.webp",
+  engineering: "/assets/marine-engineering.webp",
+  dredging: "/assets/dredging.webp",
+  diving: "/assets/commercial-diving.webp",
+  "marine-services": "/assets/marine-services.webp",
 };
 
 function Capabilities({ theme, data }) {
@@ -1521,7 +1521,7 @@ function WhyCEG({ theme, data }) {
               <a href="/contact" className="ceg-btn ceg-btn-primary ceg-why-cta">Discuss a Project →</a>
             </div>
             <img
-              src="/assets/why-ceg-photo.jpg"
+              src="/assets/why-ceg-photo.webp"
               alt="Commercial diver working on marine structure underwater"
               className="ceg-why-photo"
             />
@@ -1554,7 +1554,7 @@ function WhyCEG({ theme, data }) {
 // no leftover row, which 8 didn't. PROJECTS only has 8 real project photos
 // today, so the 9th tile is a standalone decorative photo (not a fabricated
 // project record — there's no real client/scope info behind this one).
-const GALLERY_EXTRA_PHOTO = { image: "/assets/cta-diver-crane.jpg", title: "Marine construction fieldwork", slug: null };
+const GALLERY_EXTRA_PHOTO = { image: "/assets/cta-diver-crane.webp", title: "Marine construction fieldwork", slug: null };
 
 function FeaturedProjects({ theme, data }) {
   const headRef = useReveal(0.2);

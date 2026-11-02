@@ -15,7 +15,7 @@ const { useState: useSOMobile } = React;
 function ServicesOverviewHero() {
   return (
     <section className="div-hero svc-hero">
-      <div className="svc-hero-photo" aria-hidden="true" style={{ backgroundImage: "url('/assets/hero-background.jpg')" }} />
+      <div className="svc-hero-photo" aria-hidden="true" style={{ backgroundImage: "url('/assets/hero-background.webp')" }} />
       <div className="ceg-container">
         {/* Round 1 (Kevin): the visible H1, paragraph, and button are gone —
             the hero is just the photo and the "Services" eyebrow. The H1
