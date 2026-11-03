@@ -51,11 +51,17 @@ async function addOwners() {
       [email],
     )
   }
-  // A first password so an owner can sign in before email is set up. It never
-  // replaces a password someone has already set; change it on /admin/account
-  // and then remove the variable.
+  if (emails.length === 0) return
+  await initialPassword(emails)
+  await setupLinks(emails)
+}
+
+// A first password so an owner can sign in before email is set up. It never
+// replaces a password someone has already set; change it on /admin/account
+// and then remove the variable.
+async function initialPassword(emails) {
   const initial = process.env.ADMIN_INITIAL_PASSWORD ?? ""
-  if (!initial || emails.length === 0) return
+  if (!initial) return
   if (initial.length < 10) {
     console.warn("migrate: ADMIN_INITIAL_PASSWORD is shorter than 10 characters, ignored")
     return
@@ -65,6 +71,25 @@ async function addOwners() {
     [hashPassword(initial), emails],
   )
   if (r.rowCount) console.log(`migrate: initial password set for ${r.rowCount} owner(s)`)
+}
+
+// For each owner who still has no password, prints a one-time link (valid 24
+// hours) to choose one, so the first sign-in needs neither email nor a shared
+// password. Only the token's hash is stored, as for emailed reset links, and
+// the build log is visible to the Vercel team only.
+async function setupLinks(emails) {
+  const host = process.env.VERCEL_ENV === "production" ? process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.VERCEL_BRANCH_URL || process.env.VERCEL_URL
+  const origin = host ? `https://${host}` : "http://localhost:3000"
+  const { rows } = await pool.query("select email from users where email = any($1) and password_hash is null and disabled_at is null", [emails])
+  for (const { email } of rows) {
+    const token = crypto.randomBytes(32).toString("base64url")
+    const hash = crypto.createHash("sha256").update(token).digest("hex")
+    await pool.query(
+      "insert into login_tokens (token_hash, email, purpose, expires_at) values ($1, $2, 'reset', now() + interval '24 hours')",
+      [hash, email],
+    )
+    console.log(`migrate: ${email} has no password yet. Set one within 24 hours: ${origin}/admin/login/reset?token=${token}`)
+  }
 }
 
 /** Same format as lib/password.ts: scrypt$N$r$p$salt$hash. */
