@@ -5,12 +5,12 @@ import { uploadPresigned } from "@vercel/blob/client"
 import { ImagePlus, Loader2, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { controlCls } from "./control"
 import { finishUpload } from "./media-actions"
 
 // Form controls shared by the dashboard editors.
 
-const inputCls =
-  "w-full rounded-md border border-input bg-white px-3 py-2 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:opacity-60"
+const inputCls = cn(controlCls, "w-full py-2")
 
 type Base = { label: string; hint?: string; required?: boolean; className?: string; id: string }
 

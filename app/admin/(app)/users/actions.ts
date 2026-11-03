@@ -22,7 +22,7 @@ export async function inviteUser(_prev: UserFormState, form: FormData): Promise<
   } else {
     await db().insert(schema.users).values({ email, name, role })
   }
-  await audit(me.email, "invite", "user", email, email)
+  await audit(me.email, "invite", "user", email, `invited ${email}`)
 
   const sent = form.get("send") === "on" ? await sendLoginLink(email) : null
   revalidatePath("/admin/users")
@@ -44,7 +44,7 @@ export async function setRole(form: FormData): Promise<void> {
   const role = form.get("role") === "owner" ? "owner" : "editor"
   if (role === "editor" && (await activeOwners(id)) === 0) return
   const [u] = await db().update(schema.users).set({ role }).where(eq(schema.users.id, id)).returning()
-  if (u) await audit(me.email, "update", "user", u.email, `${u.email} is now ${role}`)
+  if (u) await audit(me.email, "update", "user", u.email, `made ${u.email} ${role === "owner" ? "an owner" : "an editor"}`)
   revalidatePath("/admin/users")
 }
 
@@ -60,7 +60,7 @@ export async function setDisabled(form: FormData): Promise<void> {
     .returning()
   if (u) {
     if (disable) await db().delete(schema.sessions).where(eq(schema.sessions.userId, u.id))
-    await audit(me.email, "update", "user", u.email, `${u.email} ${disable ? "removed" : "restored"}`)
+    await audit(me.email, "update", "user", u.email, `${disable ? "removed access for" : "restored access for"} ${u.email}`)
   }
   revalidatePath("/admin/users")
 }

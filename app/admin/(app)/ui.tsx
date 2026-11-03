@@ -60,3 +60,13 @@ export function formatDate(d: Date | string, withTime = false): string {
     timeZone: "America/New_York",
   })
 }
+
+/** "just now", "5 min ago", "3 h ago", "yesterday", then the date. */
+export function timeAgo(d: Date): string {
+  const s = Math.round((Date.now() - d.getTime()) / 1000)
+  if (s < 60) return "just now"
+  if (s < 3600) return `${Math.floor(s / 60)} min ago`
+  if (s < 86_400) return `${Math.floor(s / 3600)} h ago`
+  if (s < 172_800) return "yesterday"
+  return formatDate(d)
+}

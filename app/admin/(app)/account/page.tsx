@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import { requireUser } from "@/lib/auth"
 import { formatDate, PageHeader, Panel } from "../ui"
+import { cn } from "@/lib/utils"
+import { controlCls } from "../control"
 import { saveName } from "./actions"
 import { PasswordForm } from "./password-form"
 
@@ -15,7 +17,7 @@ export default async function AccountPage() {
       <div className="space-y-6">
         <Panel title="Name">
           <form action={saveName} className="flex max-w-md gap-2">
-            <input name="name" defaultValue={me.name} placeholder="Your name" aria-label="Your name" maxLength={120} className="h-9 flex-1 rounded-md border bg-white px-3 text-sm" />
+            <input name="name" defaultValue={me.name} placeholder="Your name" aria-label="Your name" maxLength={120} className={cn(controlCls, "h-9 flex-1")} />
             <Button type="submit" variant="outline">
               Save
             </Button>

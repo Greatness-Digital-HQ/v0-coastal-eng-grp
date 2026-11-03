@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { Barlow, Inter } from "next/font/google"
 import { Toaster } from "sonner"
 import "../globals.css"
+import "./admin.css"
 
 // The dashboard's own root layout: none of the public site's stylesheets,
 // analytics or review widget, and never indexed.
@@ -27,7 +28,7 @@ const brand = {
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${barlow.variable} ${inter.variable}`}>
-      <body className="min-h-screen font-sans antialiased" style={brand}>
+      <body className="ceg-admin min-h-screen font-sans antialiased" style={brand}>
         {children}
         <Toaster position="top-center" richColors />
       </body>

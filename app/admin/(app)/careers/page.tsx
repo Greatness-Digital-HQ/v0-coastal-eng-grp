@@ -5,7 +5,10 @@ import { db, schema } from "@/db"
 import type { JobOpening } from "@/db/schema"
 import { requireUser } from "@/lib/auth"
 import { DIVISION_LABELS } from "@/lib/taxonomy"
+import { cn } from "@/lib/utils"
+import { controlCls } from "../control"
 import { Button } from "@/components/ui/button"
+import { ConfirmAction } from "../confirm"
 import { DeletedItems } from "../deleted-items"
 import { Empty, PageHeader, Panel, StatusPill } from "../ui"
 import { addRole, deleteRole, moveRole, restoreRole, toggleRole, updateRole } from "./actions"
@@ -13,7 +16,7 @@ import { addRole, deleteRole, moveRole, restoreRole, toggleRole, updateRole } fr
 export const metadata: Metadata = { title: "Careers" }
 
 const TYPES = ["Full-time", "Part-time", "Seasonal", "Contract", "Internship"]
-const input = "h-9 w-full rounded-md border bg-white px-3 text-sm"
+const input = cn(controlCls, "h-9 w-full")
 
 function RoleFields({ r }: { r?: JobOpening }) {
   return (
@@ -81,12 +84,15 @@ export default async function CareersPage() {
                     {r.status === "published" ? "Hide" : "Show"}
                   </button>
                 </form>
-                <form action={deleteRole}>
-                  <input type="hidden" name="id" value={r.id} />
-                  <button type="submit" className="text-rose-700 hover:underline">
-                    Delete
-                  </button>
-                </form>
+                <ConfirmAction
+                  action={deleteRole}
+                  fields={{ id: r.id }}
+                  title="Delete this open role?"
+                  description={`“${r.title}” will be removed from the Careers page. To take it down for a while instead, use Hide.`}
+                  confirmLabel="Delete role"
+                >
+                  Delete
+                </ConfirmAction>
               </div>
             </li>
           ))}

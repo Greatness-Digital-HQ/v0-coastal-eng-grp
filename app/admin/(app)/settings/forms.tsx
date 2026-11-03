@@ -4,6 +4,8 @@ import { useState, useTransition } from "react"
 import { Plus, X } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { controlCls } from "../control"
 import { TextField } from "../fields"
 import { saveContact, saveRouting, type ContactInput } from "./actions"
 
@@ -35,9 +37,9 @@ export function ContactForm({ initial }: { initial: ContactInput }) {
         <div className="space-y-3">
           {c.locations.map((l, i) => (
             <div key={i} className="grid gap-2 rounded-lg border p-3 sm:grid-cols-[1fr_1fr_1fr_auto]">
-              <input aria-label="Location name" placeholder="e.g. New York Headquarters" value={l.name} onChange={(e) => setLoc(i, "name", e.target.value)} className="h-9 rounded-md border px-3 text-sm" />
-              <input aria-label="Street" placeholder="Street" value={l.line1} onChange={(e) => setLoc(i, "line1", e.target.value)} className="h-9 rounded-md border px-3 text-sm" />
-              <input aria-label="City, state, ZIP" placeholder="City, State ZIP" value={l.line2} onChange={(e) => setLoc(i, "line2", e.target.value)} className="h-9 rounded-md border px-3 text-sm" />
+              <input aria-label="Location name" placeholder="e.g. New York Headquarters" value={l.name} onChange={(e) => setLoc(i, "name", e.target.value)} className={cn(controlCls, "h-9")} />
+              <input aria-label="Street" placeholder="Street" value={l.line1} onChange={(e) => setLoc(i, "line1", e.target.value)} className={cn(controlCls, "h-9")} />
+              <input aria-label="City, state, ZIP" placeholder="City, State ZIP" value={l.line2} onChange={(e) => setLoc(i, "line2", e.target.value)} className={cn(controlCls, "h-9")} />
               <Button type="button" variant="ghost" size="icon" aria-label="Remove location" onClick={() => setC({ ...c, locations: c.locations.filter((_, j) => j !== i) })}>
                 <X />
               </Button>

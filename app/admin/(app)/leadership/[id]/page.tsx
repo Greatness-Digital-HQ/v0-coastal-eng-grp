@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react"
 import { db, schema } from "@/db"
 import { requireUser } from "@/lib/auth"
 import { latestRevision } from "@/lib/revisions"
+import { ConfirmAction } from "../../confirm"
 import { formatDate, PageHeader } from "../../ui"
 import { deleteLeader, restoreLeader } from "../actions"
 import { LeaderEditor } from "../editor"
@@ -39,12 +40,15 @@ export default async function EditLeaderPage({ params }: { params: Promise<{ id:
             </button>
           </form>
         )}
-        <form action={deleteLeader}>
-          <input type="hidden" name="id" value={l.id} />
-          <button type="submit" className="text-rose-700 hover:underline">
-            Delete this profile
-          </button>
-        </form>
+        <ConfirmAction
+          action={deleteLeader}
+          fields={{ id: l.id }}
+          title="Delete this profile?"
+          description={`${l.name} will be removed from the Leadership page. You can restore the profile later from “Recently deleted”.`}
+          confirmLabel="Delete profile"
+        >
+          Delete this profile
+        </ConfirmAction>
       </div>
     </>
   )

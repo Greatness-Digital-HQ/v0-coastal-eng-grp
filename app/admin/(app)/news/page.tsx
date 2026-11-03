@@ -45,6 +45,10 @@ export default async function NewsPage() {
                   {formatDate(a.publishedOn)} · {a.category}
                   {a.author && ` · ${a.author}`}
                 </p>
+                <div className="mt-1.5 flex flex-wrap gap-1.5 sm:hidden">
+                  <StatusPill status={a.status} />
+                  {a.needsReview && <Pill tone="amber">Needs review</Pill>}
+                </div>
               </div>
               <div className="hidden shrink-0 gap-1.5 sm:flex">
                 {a.needsReview && <Pill tone="amber">Needs review</Pill>}

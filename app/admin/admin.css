@@ -1,0 +1,17 @@
+/* Browser-drawn details in the dashboard's colours: text selection, native
+   checkboxes and radios, and the caret. */
+.ceg-admin ::selection {
+  background: #cfe2f7;
+  color: #0a2540;
+}
+.ceg-admin {
+  accent-color: #0a2540;
+  caret-color: #1c6fbf;
+}
+.ceg-admin h1,
+.ceg-admin h2 {
+  text-wrap: balance;
+}
+.ceg-admin a {
+  text-underline-offset: 3px;
+}

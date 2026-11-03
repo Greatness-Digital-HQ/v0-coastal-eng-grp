@@ -7,6 +7,7 @@ import { db, schema } from "@/db"
 import { requireUser } from "@/lib/auth"
 import { latestRevision } from "@/lib/revisions"
 import { Button } from "@/components/ui/button"
+import { ConfirmAction } from "../../confirm"
 import { formatDate, PageHeader } from "../../ui"
 import { deleteProject, restoreProject } from "../actions"
 import { ProjectEditor } from "../editor"
@@ -70,12 +71,15 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
             </button>
           </form>
         )}
-        <form action={deleteProject}>
-          <input type="hidden" name="id" value={p.id} />
-          <button type="submit" className="text-rose-700 hover:underline">
-            Delete this project
-          </button>
-        </form>
+        <ConfirmAction
+          action={deleteProject}
+          fields={{ id: p.id }}
+          title="Delete this project?"
+          description={`“${p.title}” will be removed from the website and the dashboard. You can restore it later from “Recently deleted” on the Projects page.`}
+          confirmLabel="Delete project"
+        >
+          Delete this project
+        </ConfirmAction>
       </div>
     </>
   )
