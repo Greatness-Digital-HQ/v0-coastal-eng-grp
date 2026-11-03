@@ -16,7 +16,7 @@ export async function setInquiryStatus(form: FormData): Promise<void> {
   const status = String(form.get("status")) as (typeof INQUIRY_STATUSES)[number]
   if (!INQUIRY_STATUSES.includes(status)) return
   const [q] = await db().update(schema.inquiries).set({ status, updatedAt: new Date() }).where(eq(schema.inquiries.id, id)).returning()
-  if (q) await audit(me.email, "status", "inquiry", q.id, `#${q.ref} → ${LABELS[status]}`)
+  if (q) await audit(me.email, "status", "inquiry", q.id, `#${q.ref} as ${LABELS[status].toLowerCase()}`)
   revalidatePath("/admin/inquiries")
   revalidatePath(`/admin/inquiries/${id}`)
 }

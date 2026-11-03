@@ -51,6 +51,11 @@ export default async function ProjectsPage() {
                 <p className="truncate text-xs text-muted-foreground">
                   {[p.client, marketName(p.market), p.services.map((s) => SERVICES.find((x) => x.key === s)?.tag ?? s).join(", "), p.state, p.year].filter(Boolean).join(" · ")}
                 </p>
+                <div className="mt-1.5 flex flex-wrap gap-1.5 sm:hidden">
+                  <StatusPill status={p.status} />
+                  {p.id === firstPublished && <Pill tone="blue">Homepage feature</Pill>}
+                  {p.needsReview && <Pill tone="amber">Needs review</Pill>}
+                </div>
               </div>
               <div className="hidden shrink-0 flex-wrap justify-end gap-1.5 sm:flex">
                 {p.id === firstPublished && <Pill tone="blue">Homepage feature</Pill>}

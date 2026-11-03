@@ -8,6 +8,9 @@ import { INQUIRY_STATUSES } from "@/db/schema"
 import { requireUser } from "@/lib/auth"
 import { inquiryRows } from "@/lib/inquiries"
 import { Button } from "@/components/ui/button"
+import { ConfirmAction } from "../../confirm"
+import { cn } from "@/lib/utils"
+import { controlCls } from "../../control"
 import { formatDate, Panel } from "../../ui"
 import { deleteInquiry, saveInquiryNotes, setInquiryStatus } from "../actions"
 import { InquiryStatus, STATUS_LABELS } from "../status"
@@ -91,19 +94,22 @@ export default async function InquiryPage({ params }: { params: Promise<{ id: st
           <Panel title="Internal notes">
             <form action={saveInquiryNotes} className="space-y-3">
               <input type="hidden" name="id" value={q.id} />
-              <textarea name="notes" defaultValue={q.notes} rows={6} placeholder="Only your team sees these." className="w-full rounded-md border px-3 py-2 text-sm" />
+              <textarea name="notes" defaultValue={q.notes} rows={6} placeholder="Only your team sees these." className={cn(controlCls, "w-full py-2")} />
               <Button type="submit" size="sm">
                 Save notes
               </Button>
             </form>
           </Panel>
 
-          <form action={deleteInquiry}>
-            <input type="hidden" name="id" value={q.id} />
-            <button type="submit" className="text-sm text-rose-700 hover:underline">
-              Delete this inquiry
-            </button>
-          </form>
+          <ConfirmAction
+            action={deleteInquiry}
+            fields={{ id: q.id }}
+            title="Delete this inquiry?"
+            description={`The message from ${q.name} will be deleted for good. To keep it out of the list instead, mark it closed or spam.`}
+            confirmLabel="Delete for good"
+          >
+            Delete this inquiry
+          </ConfirmAction>
         </div>
       </div>
     </>

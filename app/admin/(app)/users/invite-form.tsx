@@ -5,6 +5,8 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
+import { controlCls } from "../control"
 import { inviteUser, type UserFormState } from "./actions"
 
 export function InviteForm() {
@@ -29,7 +31,7 @@ export function InviteForm() {
       </div>
       <div className="space-y-2">
         <Label htmlFor="inv-role">Role</Label>
-        <select id="inv-role" name="role" defaultValue="editor" className="h-9 w-full rounded-md border bg-white px-3 text-sm">
+        <select id="inv-role" name="role" defaultValue="editor" className={cn(controlCls, "h-9 w-full")}>
           <option value="editor">Editor: content and inquiries</option>
           <option value="owner">Owner: also manages users</option>
         </select>

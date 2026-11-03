@@ -4,7 +4,10 @@ import { db, schema } from "@/db"
 import { requireOwner } from "@/lib/auth"
 import { formatDate, PageHeader, Panel, Pill } from "../ui"
 import { setDisabled, setRole } from "./actions"
+import { cn } from "@/lib/utils"
+import { controlCls } from "../control"
 import { InviteForm } from "./invite-form"
+import { ConfirmAction } from "../confirm"
 
 export const metadata: Metadata = { title: "Users" }
 
@@ -41,7 +44,7 @@ export default async function UsersPage() {
                   ) : (
                     <form action={setRole} className="flex items-center gap-2">
                       <input type="hidden" name="id" value={u.id} />
-                      <select name="role" defaultValue={u.role} className="h-8 rounded-md border bg-white px-2 text-sm" aria-label={`Role for ${u.email}`}>
+                      <select name="role" defaultValue={u.role} className={cn(controlCls, "h-8 px-2")} aria-label={`Role for ${u.email}`}>
                         <option value="editor">Editor</option>
                         <option value="owner">Owner</option>
                       </select>
@@ -53,15 +56,26 @@ export default async function UsersPage() {
                 </td>
                 <td className="px-4 py-3 text-muted-foreground">{u.lastLoginAt ? formatDate(u.lastLoginAt, true) : "Never"}</td>
                 <td className="px-4 py-3 text-right">
-                  {u.id !== me.id && (
-                    <form action={setDisabled}>
-                      <input type="hidden" name="id" value={u.id} />
-                      <input type="hidden" name="disable" value={u.disabledAt ? "0" : "1"} />
-                      <button type="submit" className={u.disabledAt ? "text-sm text-sky-700 hover:underline" : "text-sm text-rose-700 hover:underline"}>
-                        {u.disabledAt ? "Restore access" : "Remove access"}
-                      </button>
-                    </form>
-                  )}
+                  {u.id !== me.id &&
+                    (u.disabledAt ? (
+                      <form action={setDisabled}>
+                        <input type="hidden" name="id" value={u.id} />
+                        <input type="hidden" name="disable" value="0" />
+                        <button type="submit" className="text-sm text-sky-700 hover:underline">
+                          Restore access
+                        </button>
+                      </form>
+                    ) : (
+                      <ConfirmAction
+                        action={setDisabled}
+                        fields={{ id: u.id, disable: "1" }}
+                        title={`Remove ${u.name || u.email}'s access?`}
+                        description="They are signed out right away and can no longer sign in. You can restore their access later."
+                        confirmLabel="Remove access"
+                      >
+                        Remove access
+                      </ConfirmAction>
+                    ))}
                 </td>
               </tr>
             ))}

@@ -32,7 +32,7 @@ export async function saveContact(raw: ContactInput): Promise<{ ok: boolean; err
   const c = { ...parsed.data, locations: parsed.data.locations.filter((l) => l.name || l.line1) }
   if (c.locations.length === 0) return { ok: false, error: "Keep at least one location." }
   await put("contact", c, me.email)
-  await audit(me.email, "update", "settings", "contact", "contact details")
+  await audit(me.email, "update", "settings", "contact", "updated the contact details")
   contentChanged()
   revalidatePath("/admin/settings")
   return { ok: true }
@@ -51,7 +51,7 @@ export async function saveRouting(raw: { default: string; byType: Record<string,
   const bad = [...routing.default, ...Object.values(routing.byType).flat()].find((e) => !valid(e))
   if (bad) return { ok: false, error: `“${bad}” is not a valid email address.` }
   await put("routing", routing, me.email)
-  await audit(me.email, "update", "settings", "routing", "inquiry routing")
+  await audit(me.email, "update", "settings", "routing", "changed who inquiries are emailed to")
   revalidatePath("/admin/settings")
   return { ok: true }
 }

@@ -8,6 +8,7 @@ import { requireUser } from "@/lib/auth"
 import { latestRevision } from "@/lib/revisions"
 import { NEWS_CATEGORIES } from "@/lib/taxonomy"
 import { Button } from "@/components/ui/button"
+import { ConfirmAction } from "../../confirm"
 import { formatDate, PageHeader } from "../../ui"
 import { deleteArticle, restoreArticle, type ArticleInput } from "../actions"
 import { ArticleEditor } from "../editor"
@@ -67,12 +68,15 @@ export default async function EditArticlePage({ params }: { params: Promise<{ id
             </button>
           </form>
         )}
-        <form action={deleteArticle}>
-          <input type="hidden" name="id" value={a.id} />
-          <button type="submit" className="text-rose-700 hover:underline">
-            Delete this article
-          </button>
-        </form>
+        <ConfirmAction
+          action={deleteArticle}
+          fields={{ id: a.id }}
+          title="Delete this article?"
+          description={`“${a.title}” will be removed from the website and the dashboard. You can restore it later from “Recently deleted” on the News page.`}
+          confirmLabel="Delete article"
+        >
+          Delete this article
+        </ConfirmAction>
       </div>
     </>
   )

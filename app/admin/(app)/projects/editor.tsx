@@ -3,18 +3,25 @@
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
 import { MARKETS, SERVICES, slugify, US_STATES } from "@/lib/taxonomy"
 import { CheckboxGroup, ImageField, LinesField, SelectField, TextArea, TextField } from "../fields"
+import { cn } from "@/lib/utils"
+import { controlCls } from "../control"
+import { EditorActions } from "../editor-actions"
 import { Panel } from "../ui"
+import { useUnsavedGuard } from "../unsaved"
 import { saveProject, type ProjectInput } from "./actions"
 
+const snapshot = (p: ProjectInput) => JSON.stringify({ ...p, scopeStats: [0, 1, 2].map((i) => p.scopeStats[i] ?? { value: "", label: "" }) })
 
 export function ProjectEditor({ id, initial }: { id: string | null; initial: ProjectInput }) {
   const [p, setP] = useState(initial)
   const [slugTouched, setSlugTouched] = useState(Boolean(id))
   const [pending, start] = useTransition()
   const [error, setError] = useState("")
+  const [saved, setSaved] = useState(() => snapshot(initial))
+  const dirty = snapshot(p) !== saved
+  useUnsavedGuard(dirty)
   const router = useRouter()
   const set = <K extends keyof ProjectInput>(k: K, v: ProjectInput[K]) => setP((prev) => ({ ...prev, [k]: v }))
   const stats = [0, 1, 2].map((i) => p.scopeStats[i] ?? { value: "", label: "" })
@@ -33,6 +40,7 @@ export function ProjectEditor({ id, initial }: { id: string | null; initial: Pro
         return
       }
       setP((prev) => ({ ...prev, status }))
+      setSaved(snapshot({ ...p, status, scopeStats: stats }))
       toast.success(status === "published" ? (initial.status === "published" ? "Saved. The website is updated." : "Published. It's live on the website.") : "Saved as a draft. It's not on the website.")
       if (!id) router.replace(`/admin/projects/${res.id}`)
       else router.refresh()
@@ -45,7 +53,7 @@ export function ProjectEditor({ id, initial }: { id: string | null; initial: Pro
         e.preventDefault()
         save(p.status)
       }}
-      className="grid gap-6 xl:grid-cols-[1fr_300px]"
+      className="grid gap-6 pb-32 xl:grid-cols-[1fr_300px] xl:pb-0"
     >
       <div className="min-w-0 space-y-6">
         <Panel title="Basics">
@@ -123,8 +131,8 @@ export function ProjectEditor({ id, initial }: { id: string | null; initial: Pro
               <div className="grid gap-3 sm:grid-cols-3">
                 {stats.map((s, i) => (
                   <div key={i} className="space-y-2 rounded-lg border p-3">
-                    <input aria-label={`Number ${i + 1}`} placeholder="e.g. 47" maxLength={30} value={s.value} onChange={(e) => setStat(i, "value", e.target.value)} className="w-full rounded-md border px-2 py-1.5 text-sm font-semibold" />
-                    <input aria-label={`Label ${i + 1}`} placeholder="e.g. Piles inspected" maxLength={40} value={s.label} onChange={(e) => setStat(i, "label", e.target.value)} className="w-full rounded-md border px-2 py-1.5 text-sm" />
+                    <input aria-label={`Number ${i + 1}`} placeholder="e.g. 47" maxLength={30} value={s.value} onChange={(e) => setStat(i, "value", e.target.value)} className={cn(controlCls, "w-full py-1.5 font-semibold")} />
+                    <input aria-label={`Label ${i + 1}`} placeholder="e.g. Piles inspected" maxLength={40} value={s.label} onChange={(e) => setStat(i, "label", e.target.value)} className={cn(controlCls, "w-full py-1.5")} />
                   </div>
                 ))}
               </div>
@@ -133,46 +141,15 @@ export function ProjectEditor({ id, initial }: { id: string | null; initial: Pro
         </Panel>
       </div>
 
-      <aside className="space-y-4 xl:sticky xl:top-8 xl:self-start">
-        <Panel title="Publish">
-          <p className="mb-4 text-sm text-muted-foreground">
-            {p.status === "published" ? "Live on the website. Saving updates it within seconds." : "Draft: only visible here in the dashboard."}
-          </p>
-          {error && (
-            <p role="alert" className="mb-3 rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-800">
-              {error}
-            </p>
-          )}
-          <div className="flex flex-col gap-2">
-            {p.status === "published" ? (
-              <>
-                <Button type="button" disabled={pending} onClick={() => save("published")}>
-                  {pending ? "Saving…" : "Save changes"}
-                </Button>
-                <Button type="button" variant="outline" disabled={pending} onClick={() => save("draft")}>
-                  Unpublish
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button type="button" disabled={pending} onClick={() => save("published")}>
-                  {pending ? "Saving…" : "Publish"}
-                </Button>
-                <Button type="button" variant="outline" disabled={pending} onClick={() => save("draft")}>
-                  Save draft
-                </Button>
-              </>
-            )}
-          </div>
-          <label className="mt-4 flex items-start gap-2 text-sm">
-            <input type="checkbox" className="mt-0.5 size-4" checked={p.needsReview} onChange={(e) => set("needsReview", e.target.checked)} />
-            <span>
-              Needs review
-              <span className="block text-xs text-muted-foreground">A reminder for your team only; never shown on the site.</span>
-            </span>
-          </label>
-        </Panel>
-      </aside>
+      <EditorActions status={p.status} pending={pending} dirty={dirty} error={error} onSave={save}>
+        <label className="mt-4 flex items-start gap-2 text-sm">
+          <input type="checkbox" className="mt-0.5 size-4" checked={p.needsReview} onChange={(e) => set("needsReview", e.target.checked)} />
+          <span>
+            Needs review
+            <span className="block text-xs text-muted-foreground">A reminder for your team only; never shown on the site.</span>
+          </span>
+        </label>
+      </EditorActions>
     </form>
   )
 }
