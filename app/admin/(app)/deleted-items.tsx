@@ -1,5 +1,4 @@
 import { and, desc, eq, notInArray } from "drizzle-orm"
-import type { PgTable } from "drizzle-orm/pg-core"
 import { db, schema } from "@/db"
 import { formatDate } from "./ui"
 
@@ -11,11 +10,11 @@ export async function DeletedItems({
   titleKey,
 }: {
   entity: string
-  table: PgTable & { id: typeof schema.projects.id }
+  table: typeof schema.projects | typeof schema.newsArticles | typeof schema.jobOpenings | typeof schema.leaders
   restore: (form: FormData) => Promise<void>
   titleKey: string
 }) {
-  const live = (await db().select({ id: table.id }).from(table)).map((r) => r.id)
+  const live = (await db().select({ id: table.id }).from(table as typeof schema.projects)).map((r) => r.id)
   const revs = await db()
     .select()
     .from(schema.revisions)
