@@ -152,6 +152,9 @@ importers:
       recharts:
         specifier: 2.15.0
         version: 2.15.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      sharp:
+        specifier: 0.34.5
+        version: 0.34.5
       sonner:
         specifier: ^1.7.1
         version: 1.7.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -201,9 +204,6 @@ importers:
       react-dom-18:
         specifier: npm:react-dom@18.3.1
         version: react-dom@18.3.1(react@19.2.4)
-      sharp:
-        specifier: 0.34.5
-        version: 0.34.5
       tailwindcss:
         specifier: ^4.2.0
         version: 4.2.0

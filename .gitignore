@@ -32,3 +32,4 @@ next-env.d.ts
 # dashboard: local Postgres and the local email outbox
 /.local-db
 /.mail
+/public/uploads
