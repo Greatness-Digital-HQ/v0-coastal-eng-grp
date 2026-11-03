@@ -2,16 +2,16 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { eq } from "drizzle-orm"
-import { ArrowLeft, ExternalLink } from "lucide-react"
+import { ArrowLeft, Eye } from "lucide-react"
 import { db, schema } from "@/db"
 import { requireUser } from "@/lib/auth"
 import { latestRevision } from "@/lib/revisions"
 import { NEWS_CATEGORIES } from "@/lib/taxonomy"
-import { Button } from "@/components/ui/button"
 import { ConfirmAction } from "../../confirm"
 import { formatDate, PageHeader } from "../../ui"
 import { deleteArticle, restoreArticle, type ArticleInput } from "../actions"
 import { ArticleEditor } from "../editor"
+import { ViewLink } from "../../view-link"
 
 export const metadata: Metadata = { title: "Edit article" }
 
@@ -33,12 +33,12 @@ export default async function EditArticlePage({ params }: { params: Promise<{ id
         title={a.title}
         description={`Last saved ${formatDate(a.updatedAt, true)}${a.updatedBy && a.updatedBy !== "import" ? ` by ${a.updatedBy}` : ""}`}
         actions={
-          a.status === "published" && (
-            <Button asChild variant="outline" size="sm">
-              <a href={`/insights/news/${a.slug}`} target="_blank" rel="noreferrer">
-                <ExternalLink /> View on site
-              </a>
-            </Button>
+          a.status === "published" ? (
+            <ViewLink href={`/insights/news/${a.slug}`} label="View on site" />
+          ) : (
+            <ViewLink href={`/admin/preview/news/${a.slug}`} label="Preview draft">
+              <Eye />
+            </ViewLink>
           )
         }
       />
@@ -53,6 +53,9 @@ export default async function EditArticlePage({ params }: { params: Promise<{ id
           author: a.author,
           excerpt: a.excerpt,
           image: a.image,
+          imageAlt: a.imageAlt,
+          seoTitle: a.seoTitle,
+          seoDescription: a.seoDescription,
           body: a.body,
           tags: a.tags,
           status: a.status,
@@ -60,6 +63,9 @@ export default async function EditArticlePage({ params }: { params: Promise<{ id
         }}
       />
       <div className="mt-8 flex flex-wrap items-center gap-6 border-t pt-6 text-sm">
+        <Link href={`/admin/history/news/${a.id}`} className="text-sky-700 hover:underline">
+          Version history
+        </Link>
         {rev && (
           <form action={restoreArticle}>
             <input type="hidden" name="id" value={a.id} />

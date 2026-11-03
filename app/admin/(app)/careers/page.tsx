@@ -10,6 +10,8 @@ import { controlCls } from "../control"
 import { Button } from "@/components/ui/button"
 import { ConfirmAction } from "../confirm"
 import { DeletedItems } from "../deleted-items"
+import { SortableList } from "../sortable"
+import { ViewLink } from "../view-link"
 import { Empty, PageHeader, Panel, StatusPill } from "../ui"
 import { addRole, deleteRole, moveRole, restoreRole, toggleRole, updateRole } from "./actions"
 
@@ -44,7 +46,11 @@ export default async function CareersPage() {
 
   return (
     <>
-      <PageHeader title="Careers" description="The Open Roles list on /careers. Each role's Apply button opens your Paylocity job board." />
+      <PageHeader
+        title="Careers"
+        description="The Open Roles list on /careers. Each role's Apply button opens your Paylocity job board."
+        actions={<ViewLink href="/careers" label="View page" />}
+      />
       <Panel title="Add an open role" className="mb-6">
         <form action={addRole} className="grid gap-3 sm:grid-cols-[2fr_1fr_1fr_1fr_auto]">
           <RoleFields />
@@ -55,48 +61,59 @@ export default async function CareersPage() {
       {roles.length === 0 ? (
         <Empty>No open roles. The Careers page shows only the general “send us your résumé” line.</Empty>
       ) : (
-        <ul className="space-y-3">
-          {roles.map((r, i) => (
-            <li key={r.id} className="flex items-start gap-3 rounded-xl border bg-white p-4">
-              <div className="flex flex-col pt-1">
-                {(["up", "down"] as const).map((dir) => (
-                  <form key={dir} action={moveRole}>
+        <SortableList
+          entity="job"
+          className="space-y-3"
+          itemClassName="rounded-xl border bg-white"
+          items={roles.map((r, i) => ({
+            id: r.id,
+            content: (
+              <div className="flex items-start gap-3 p-4 md:pl-1">
+                <div className="flex flex-col pt-1">
+                  {(["up", "down"] as const).map((dir) => (
+                    <form key={dir} action={moveRole}>
+                      <input type="hidden" name="id" value={r.id} />
+                      <input type="hidden" name="dir" value={dir} />
+                      <button
+                        type="submit"
+                        aria-label={`Move ${dir}`}
+                        disabled={dir === "up" ? i === 0 : i === roles.length - 1}
+                        className="rounded p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-800 disabled:invisible"
+                      >
+                        {dir === "up" ? <ArrowUp className="size-4" /> : <ArrowDown className="size-4" />}
+                      </button>
+                    </form>
+                  ))}
+                </div>
+                <form key={r.updatedAt.toISOString()} action={updateRole} className="grid min-w-0 flex-1 gap-3 sm:grid-cols-[2fr_1fr_1fr_1fr_auto]">
+                  <input type="hidden" name="id" value={r.id} />
+                  <RoleFields r={r} />
+                  <Button type="submit" variant="outline">
+                    Save
+                  </Button>
+                </form>
+                <div className="flex shrink-0 flex-col items-end gap-2 pt-1 text-sm">
+                  <StatusPill status={r.status} />
+                  <form action={toggleRole}>
                     <input type="hidden" name="id" value={r.id} />
-                    <input type="hidden" name="dir" value={dir} />
-                    <button type="submit" aria-label={`Move ${dir}`} disabled={dir === "up" ? i === 0 : i === roles.length - 1} className="rounded p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-800 disabled:invisible">
-                      {dir === "up" ? <ArrowUp className="size-4" /> : <ArrowDown className="size-4" />}
+                    <button type="submit" className="text-sky-700 hover:underline">
+                      {r.status === "published" ? "Hide" : "Show"}
                     </button>
                   </form>
-                ))}
+                  <ConfirmAction
+                    action={deleteRole}
+                    fields={{ id: r.id }}
+                    title="Delete this open role?"
+                    description={`“${r.title}” will be removed from the Careers page. To take it down for a while instead, use Hide.`}
+                    confirmLabel="Delete role"
+                  >
+                    Delete
+                  </ConfirmAction>
+                </div>
               </div>
-              <form action={updateRole} className="grid min-w-0 flex-1 gap-3 sm:grid-cols-[2fr_1fr_1fr_1fr_auto]">
-                <input type="hidden" name="id" value={r.id} />
-                <RoleFields r={r} />
-                <Button type="submit" variant="outline">
-                  Save
-                </Button>
-              </form>
-              <div className="flex shrink-0 flex-col items-end gap-2 pt-1 text-sm">
-                <StatusPill status={r.status} />
-                <form action={toggleRole}>
-                  <input type="hidden" name="id" value={r.id} />
-                  <button type="submit" className="text-sky-700 hover:underline">
-                    {r.status === "published" ? "Hide" : "Show"}
-                  </button>
-                </form>
-                <ConfirmAction
-                  action={deleteRole}
-                  fields={{ id: r.id }}
-                  title="Delete this open role?"
-                  description={`“${r.title}” will be removed from the Careers page. To take it down for a while instead, use Hide.`}
-                  confirmLabel="Delete role"
-                >
-                  Delete
-                </ConfirmAction>
-              </div>
-            </li>
-          ))}
-        </ul>
+            ),
+          }))}
+        />
       )}
       <DeletedItems entity="job" table={schema.jobOpenings} restore={restoreRole} titleKey="title" />
     </>

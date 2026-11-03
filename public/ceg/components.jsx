@@ -402,6 +402,24 @@ function HeroPhoto({ theme, data }) {
   );
 }
 
+// Home hero and intro copy: the dashboard's saved page text, else the built-in copy.
+const HOME_TEXT_DEFAULT = {
+  heroLine1: "Marine Infrastructure.",
+  heroLine2: "Engineered, Built, and Maintained.",
+  heroEmphasis: "Engineered",
+  heroLede: "Coastal Engineering Group self-performs marine construction, dredging, commercial diving, underwater inspection, and waterfront engineering throughout the Eastern United States.",
+  heroButton: "Learn More",
+  introHeading: "One Team Above and Below the Waterline.",
+  introParagraphs: [
+    "Marine infrastructure problems rarely fit within a single discipline. Coastal combines engineering judgment, specialty field crews, marine equipment, dredging capability, and commercial diving so clients can move from investigation to repair with fewer gaps between design and execution.",
+    "Our teams work in active waterways, restricted-access facilities, industrial environments, transportation corridors, and federal installations where planning, documentation, safety, and constructability are essential.",
+  ],
+};
+function homeText() {
+  const saved = window.CEG_DB && window.CEG_DB.text && window.CEG_DB.text.home;
+  return Object.assign({}, HOME_TEXT_DEFAULT, saved || {});
+}
+
 // HERO B — stats-led editorial, full-bleed image background.
 // Restructured per Kevin's "identical to Ballard" ask: Ballard's hero is a
 // left-aligned two-line headline (one word emphasized), a short paragraph,
@@ -410,19 +428,22 @@ function HeroPhoto({ theme, data }) {
 // intro section and the final CTA chips elsewhere, so it isn't lost, just
 // not duplicated here.
 function HeroStats({ theme, data }) {
+  const t = homeText();
+  const [before, after] = t.heroEmphasis && t.heroLine2.includes(t.heroEmphasis)
+    ? t.heroLine2.split(t.heroEmphasis, 2)
+    : [t.heroLine2, null];
   return (
     <section className="ceg-hero hero-stats">
       <div className="ceg-hero-background" aria-hidden style={{backgroundImage: "url('/assets/hero-background.webp')"}} />
       <div className="ceg-hero-video-scrim" />
       <div className="ceg-container ceg-hero-stats-center">
         <h1 className="ceg-h1 serif">
-          Marine Infrastructure.<br /><em>Engineered</em>, Built, and Maintained.
+          {t.heroLine1}<br />
+          {after === null ? before : <>{before}<em>{t.heroEmphasis}</em>{after}</>}
         </h1>
-        <p className="ceg-hero-lede">
-          Coastal Engineering Group self-performs marine construction, dredging, commercial diving, underwater inspection, and waterfront engineering throughout the Eastern United States.
-        </p>
+        <p className="ceg-hero-lede">{t.heroLede}</p>
         <div className="ceg-hero-ctas">
-          <Btn href="/services" variant="hero-accent">Learn More</Btn>
+          <Btn href="/services" variant="hero-accent">{t.heroButton}</Btn>
         </div>
       </div>
     </section>
@@ -1867,15 +1888,12 @@ function NarrativeIntro({ data }) {
       <div className="ceg-container">
         <div className="ceg-narrative-split">
           <h2 className="ceg-h2 ceg-narrative-statement">
-            One Team Above and Below the Waterline.
+            {homeText().introHeading}
           </h2>
           <div className="ceg-narrative-copy">
-            <p className="ceg-narrative-p">
-              Marine infrastructure problems rarely fit within a single discipline. Coastal combines engineering judgment, specialty field crews, marine equipment, dredging capability, and commercial diving so clients can move from investigation to repair with fewer gaps between design and execution.
-            </p>
-            <p className="ceg-narrative-p">
-              Our teams work in active waterways, restricted-access facilities, industrial environments, transportation corridors, and federal installations where planning, documentation, safety, and constructability are essential.
-            </p>
+            {homeText().introParagraphs.map((p, i) => (
+              <p key={i} className="ceg-narrative-p">{p}</p>
+            ))}
           </div>
         </div>
 

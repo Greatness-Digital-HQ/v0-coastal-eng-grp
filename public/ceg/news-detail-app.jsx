@@ -30,7 +30,7 @@ function RelatedArticles({ current, all }) {
               return (
                 <a key={a.slug} href={`/insights/news/${a.slug}`} className="nws-related-item">
                   <div className="nws-related-img">
-                    <img src={a.image} alt={a.title} loading="lazy" />
+                    <img src={a.image} alt={a.imageAlt || a.title} loading="lazy" />
                   </div>
                   <div className="nws-related-text">
                     <span className="nws-cat-badge nws-cat-badge-sm" style={{ background: cc.bg, color: cc.text }}>{a.category}</span>
@@ -117,7 +117,7 @@ function NewsDetailApp() {
   useNDE(() => {
     document.body.dataset.concept = "drydock";
     document.body.dataset.page = "news-detail";
-    if (article) document.title = `${article.title} | Coastal Engineering Group`;
+    if (article) document.title = article.seoTitle || `${article.title} | Coastal Engineering Group`;
   }, []);
 
   return (

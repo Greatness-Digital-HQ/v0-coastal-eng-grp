@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { desc } from "drizzle-orm"
-import { Plus } from "lucide-react"
+import { ExternalLink, Eye, Plus } from "lucide-react"
 import { db, schema } from "@/db"
 import { requireUser } from "@/lib/auth"
+import { todayInNewYork } from "@/lib/content"
 import { Button } from "@/components/ui/button"
 import { DeletedItems } from "../deleted-items"
 import { Empty, formatDate, PageHeader, Pill, StatusPill } from "../ui"
@@ -14,11 +15,12 @@ export const metadata: Metadata = { title: "News" }
 export default async function NewsPage() {
   await requireUser()
   const rows = await db().select().from(schema.newsArticles).orderBy(desc(schema.newsArticles.publishedOn))
+  const today = todayInNewYork()
   return (
     <>
       <PageHeader
         title="News"
-        description="Articles on /insights/news, newest first."
+        description="Articles on /insights/news, newest first. Publish an article with a future date to schedule it: it appears on the website that day."
         actions={
           <Button asChild>
             <Link href="/admin/news/new">
@@ -46,14 +48,24 @@ export default async function NewsPage() {
                   {a.author && ` · ${a.author}`}
                 </p>
                 <div className="mt-1.5 flex flex-wrap gap-1.5 sm:hidden">
-                  <StatusPill status={a.status} />
+                  {a.status === "published" && a.publishedOn > today ? <Pill tone="blue">Scheduled</Pill> : <StatusPill status={a.status} />}
                   {a.needsReview && <Pill tone="amber">Needs review</Pill>}
                 </div>
               </div>
               <div className="hidden shrink-0 gap-1.5 sm:flex">
                 {a.needsReview && <Pill tone="amber">Needs review</Pill>}
-                <StatusPill status={a.status} />
+                {a.status === "published" && a.publishedOn > today ? <Pill tone="blue">Scheduled</Pill> : <StatusPill status={a.status} />}
               </div>
+              <a
+                href={a.status === "published" ? `/insights/news/${a.slug}` : `/admin/preview/news/${a.slug}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${a.status === "published" ? "View" : "Preview"} ${a.title} (opens in a new tab)`}
+                title={a.status === "published" ? "View on the website" : "Preview the draft"}
+                className="flex size-8 shrink-0 items-center justify-center rounded-md text-slate-500 ring-1 ring-slate-200 ring-inset hover:bg-slate-50 hover:text-slate-900"
+              >
+                {a.status === "published" ? <ExternalLink className="size-4" /> : <Eye className="size-4" />}
+              </a>
             </li>
           ))}
         </ul>

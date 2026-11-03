@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { and, desc, eq, ilike, ne, or, type SQL } from "drizzle-orm"
+import { and, desc, eq, ilike, isNull, ne, or, type SQL } from "drizzle-orm"
 import { Download, Search } from "lucide-react"
 import { db, schema } from "@/db"
 import { INQUIRY_STATUSES } from "@/db/schema"
@@ -15,11 +15,11 @@ import { InquiryStatus, STATUS_LABELS } from "./status"
 
 export const metadata: Metadata = { title: "Inquiries" }
 
-type Search = { status?: string; type?: string; q?: string }
+type Search = { status?: string; type?: string; q?: string; who?: string }
 
 export default async function InquiriesPage({ searchParams }: { searchParams: Promise<Search> }) {
-  await requireUser()
-  const { status = "", type = "", q = "" } = await searchParams
+  const me = await requireUser()
+  const { status = "", type = "", q = "", who = "" } = await searchParams
 
   const where: SQL[] = []
   if ((INQUIRY_STATUSES as readonly string[]).includes(status)) where.push(eq(schema.inquiries.status, status as (typeof INQUIRY_STATUSES)[number]))
@@ -29,7 +29,16 @@ export default async function InquiriesPage({ searchParams }: { searchParams: Pr
     const like = `%${q.trim()}%`
     where.push(or(ilike(schema.inquiries.name, like), ilike(schema.inquiries.org, like), ilike(schema.inquiries.email, like), ilike(schema.inquiries.ref, like), ilike(schema.inquiries.description, like))!)
   }
-  const rows = await db().select().from(schema.inquiries).where(and(...where)).orderBy(desc(schema.inquiries.createdAt)).limit(300)
+  if (who === "me") where.push(eq(schema.inquiries.assignedTo, me.id))
+  if (who === "none") where.push(isNull(schema.inquiries.assignedTo))
+  const [rows, team] = await Promise.all([
+    db().select().from(schema.inquiries).where(and(...where)).orderBy(desc(schema.inquiries.createdAt)).limit(300),
+    db().select({ id: schema.users.id, name: schema.users.name, email: schema.users.email }).from(schema.users),
+  ])
+  const nameOf = (uid: string | null) => {
+    const u = uid ? team.find((t) => t.id === uid) : undefined
+    return u ? (u.id === me.id ? "You" : u.name || u.email.split("@")[0]) : ""
+  }
 
   const exportHref = `/admin/inquiries/export?${new URLSearchParams({ status, type, q }).toString()}`
 
@@ -69,10 +78,15 @@ export default async function InquiriesPage({ searchParams }: { searchParams: Pr
           ))}
           <option value="short">Short form (other pages)</option>
         </AutoSelect>
+        <AutoSelect name="who" defaultValue={who} aria-label="Assigned to">
+          <option value="">Anyone</option>
+          <option value="me">Assigned to me</option>
+          <option value="none">Not assigned</option>
+        </AutoSelect>
         <Button type="submit" size="sm" variant="outline" className="h-9 bg-white">
           Search
         </Button>
-        {(status || type || q) && (
+        {(status || type || q || who) && (
           <Button asChild size="sm" variant="ghost" className="h-9">
             <Link href="/admin/inquiries">Clear</Link>
           </Button>
@@ -100,6 +114,7 @@ export default async function InquiriesPage({ searchParams }: { searchParams: Pr
                     </span>
                     <InquiryStatus status={r.status} />
                   </span>
+                  {r.assignedTo && <span className="mt-1 block text-xs text-muted-foreground">Assigned: {nameOf(r.assignedTo)}</span>}
                   <span className="mt-2 block text-sm">{r.inquiryType || "Short form"}</span>
                   {r.description && <span className="mt-0.5 line-clamp-2 block text-sm text-muted-foreground">{r.description}</span>}
                   <span className="mt-2 block text-xs text-muted-foreground tabular-nums">
@@ -137,6 +152,7 @@ export default async function InquiriesPage({ searchParams }: { searchParams: Pr
                     </td>
                     <td className="px-4 py-3">
                       <InquiryStatus status={r.status} />
+                      {r.assignedTo && <p className="mt-1 text-xs text-muted-foreground">{nameOf(r.assignedTo)}</p>}
                     </td>
                     <td className="whitespace-nowrap px-4 py-3 text-right text-muted-foreground tabular-nums">
                       <span title={formatDate(r.createdAt, true)}>{timeAgo(r.createdAt)}</span>

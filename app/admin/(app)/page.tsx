@@ -5,6 +5,7 @@ import { db, schema } from "@/db"
 import { requireUser } from "@/lib/auth"
 import { mailTransport } from "@/lib/mail"
 import { Button } from "@/components/ui/button"
+import { InquiryTrend } from "./inquiry-trend"
 import { formatDate, Panel, Pill, timeAgo } from "./ui"
 
 function greeting(): string {
@@ -40,7 +41,12 @@ export default async function DashboardHome() {
   const reviewArticles = n(review[1])
 
   const live = [
-    { label: "Projects", value: n(projects), note: n(projectDrafts) ? `${n(projectDrafts)} draft${n(projectDrafts) > 1 ? "s" : ""}` : "", href: "/admin/projects" },
+    {
+      label: "Projects",
+      value: n(projects),
+      note: n(projectDrafts) ? `${n(projectDrafts)} draft${n(projectDrafts) > 1 ? "s" : ""}` : "",
+      href: "/admin/projects",
+    },
     { label: "News articles", value: n(articles), note: "", href: "/admin/news" },
     { label: "Open roles", value: n(roles), note: "", href: "/admin/careers" },
     { label: "Leadership profiles", value: n(leaders), note: "", href: "/admin/leadership" },
@@ -84,45 +90,48 @@ export default async function DashboardHome() {
       )}
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-        <Panel
-          title={n(newCount) ? `${n(newCount)} new ${n(newCount) === 1 ? "inquiry" : "inquiries"} waiting` : "Inquiries"}
-          actions={
-            <Link href="/admin/inquiries" className="flex items-center gap-1 text-sm text-sky-700 hover:underline">
-              All inquiries <ArrowRight className="size-3.5" aria-hidden />
-            </Link>
-          }
-        >
-          {newOnes.length === 0 && (
-            <div className="mb-4 flex items-center gap-3 rounded-lg bg-slate-50 px-4 py-3 text-sm">
-              <Inbox className="size-5 text-slate-400" aria-hidden />
-              <span>
-                <strong className="font-semibold">You're all caught up.</strong> New messages from the website's contact forms show up here.
-              </span>
-            </div>
-          )}
-          {(newOnes.length ? newOnes : latest).length > 0 && (
-            <ul className="-mx-5 -mb-5 divide-y border-t">
-              {(newOnes.length ? newOnes : latest).map((q) => (
-                <li key={q.id}>
-                  <Link href={`/admin/inquiries/${q.id}`} className="flex items-start gap-4 px-5 py-3.5 hover:bg-slate-50">
-                    <span className={q.status === "new" ? "mt-1.5 size-2 shrink-0 rounded-full bg-sky-500" : "mt-1.5 size-2 shrink-0"} aria-hidden />
-                    <span className="min-w-0 flex-1">
-                      <span className="flex items-baseline justify-between gap-3">
-                        <span className="truncate font-medium">
-                          {q.name}
-                          {q.org && <span className="font-normal text-muted-foreground"> · {q.org}</span>}
+        <div className="min-w-0 space-y-6">
+          <Panel
+            title={n(newCount) ? `${n(newCount)} new ${n(newCount) === 1 ? "inquiry" : "inquiries"} waiting` : "Inquiries"}
+            actions={
+              <Link href="/admin/inquiries" className="flex items-center gap-1 text-sm text-sky-700 hover:underline">
+                All inquiries <ArrowRight className="size-3.5" aria-hidden />
+              </Link>
+            }
+          >
+            {newOnes.length === 0 && (
+              <div className="mb-4 flex items-center gap-3 rounded-lg bg-slate-50 px-4 py-3 text-sm">
+                <Inbox className="size-5 text-slate-400" aria-hidden />
+                <span>
+                  <strong className="font-semibold">You're all caught up.</strong> New messages from the website's contact forms show up here.
+                </span>
+              </div>
+            )}
+            {(newOnes.length ? newOnes : latest).length > 0 && (
+              <ul className="-mx-5 -mb-5 divide-y border-t">
+                {(newOnes.length ? newOnes : latest).map((q) => (
+                  <li key={q.id}>
+                    <Link href={`/admin/inquiries/${q.id}`} className="flex items-start gap-4 px-5 py-3.5 hover:bg-slate-50">
+                      <span className={q.status === "new" ? "mt-1.5 size-2 shrink-0 rounded-full bg-sky-500" : "mt-1.5 size-2 shrink-0"} aria-hidden />
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-baseline justify-between gap-3">
+                          <span className="truncate font-medium">
+                            {q.name}
+                            {q.org && <span className="font-normal text-muted-foreground"> · {q.org}</span>}
+                          </span>
+                          <span className="shrink-0 text-xs text-muted-foreground tabular-nums">{timeAgo(q.createdAt)}</span>
                         </span>
-                        <span className="shrink-0 text-xs text-muted-foreground tabular-nums">{timeAgo(q.createdAt)}</span>
+                        <span className="mt-0.5 block text-xs font-medium text-slate-600">{q.inquiryType || "Short form"}</span>
+                        {q.description && <span className="mt-1 line-clamp-1 block text-sm text-muted-foreground">{q.description}</span>}
                       </span>
-                      <span className="mt-0.5 block text-xs font-medium text-slate-600">{q.inquiryType || "Short form"}</span>
-                      {q.description && <span className="mt-1 line-clamp-1 block text-sm text-muted-foreground">{q.description}</span>}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Panel>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Panel>
+          <InquiryTrend />
+        </div>
 
         <div className="space-y-6">
           <Panel title="On the website now">
@@ -144,7 +153,10 @@ export default async function DashboardHome() {
                 <Pill tone="amber" className="mr-1.5 align-[1px]">
                   Needs review
                 </Pill>
-                {[reviewProjects && `${reviewProjects} project${reviewProjects > 1 ? "s" : ""}`, reviewArticles && `${reviewArticles} article${reviewArticles > 1 ? "s" : ""}`]
+                {[
+                  reviewProjects && `${reviewProjects} project${reviewProjects > 1 ? "s" : ""}`,
+                  reviewArticles && `${reviewArticles} article${reviewArticles > 1 ? "s" : ""}`,
+                ]
                   .filter(Boolean)
                   .join(" and ")}{" "}
                 came from the first version of the site. Check the facts in each, then untick Needs review.
@@ -179,7 +191,8 @@ function who(actor: string, me: string): string {
 
 function describe(action: string, entity: string, summary: string): React.ReactNode {
   if (entity === "user" || entity === "settings") return summary
-  const what = { project: "project", news: "article", job: "open role", leader: "profile", inquiry: "inquiry" }[entity] ?? entity
+  if (summary === "changed the order") return `changed the order of the ${({ project: "projects", job: "open roles", leader: "leadership profiles" } as Record<string, string>)[entity] ?? entity}`
+  const what = { project: "project", news: "article", job: "open role", leader: "profile", inquiry: "inquiry", media: "photo" }[entity] ?? entity
   const verb =
     {
       create: `added the ${what}`,

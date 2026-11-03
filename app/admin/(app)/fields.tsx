@@ -1,14 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { uploadPresigned } from "@vercel/blob/client"
-import { ImagePlus, Loader2, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { controlCls } from "./control"
-import { finishUpload } from "./media-actions"
 
-// Form controls shared by the dashboard editors.
+// Form controls shared by the dashboard editors. Photo controls: photo-fields.tsx.
+export { GalleryField, ImageField } from "./photo-fields"
 
 const inputCls = cn(controlCls, "w-full py-2")
 
@@ -122,94 +119,42 @@ export function CheckboxGroup({ value, onChange, options, ...base }: Base & { va
   )
 }
 
-/** Photo picker: uploads, optimizes and previews. `value` is the stored URL. */
-export function ImageField({ value, onChange, kind, ...base }: Base & { value: string; onChange: (v: string) => void; kind: "project" | "news" | "leader" }) {
-  const [busy, setBusy] = useState<string | null>(null)
-  const [error, setError] = useState("")
-  const [mode, setMode] = useState<"blob" | "local" | null>(null)
-  const input = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    fetch("/admin/api/upload")
-      .then((r) => r.json())
-      .then((b) => setMode(b.mode ?? "blob"))
-      .catch(() => setMode("blob"))
-  }, [])
-
-  async function pick(file: File) {
-    setError("")
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) return setError("Upload a JPG, PNG or WebP photo.")
-    if (file.size > 25 * 1024 * 1024) return setError("Photos can be up to 25 MB.")
-    try {
-      if (mode === "local") {
-        setBusy("Uploading…")
-        const fd = new FormData()
-        fd.set("file", file)
-        fd.set("kind", kind)
-        const res = await fetch("/admin/api/upload/local", { method: "POST", body: fd })
-        const body = await res.json()
-        if (!res.ok) throw new Error(body.error)
-        onChange(body.url)
-      } else {
-        setBusy("Uploading 0%")
-        const safe = file.name.toLowerCase().replace(/[^a-z0-9.]+/g, "-")
-        const blob = await uploadPresigned(`incoming/${safe}`, file, {
-          access: "public",
-          handleUploadUrl: "/admin/api/upload",
-          contentType: file.type,
-          onUploadProgress: (p) => setBusy(`Uploading ${Math.round(p.percentage)}%`),
-        })
-        setBusy("Optimizing…")
-        const done = await finishUpload(blob.url, kind)
-        if ("error" in done) throw new Error(done.error)
-        onChange(done.url)
-      }
-    } catch (e) {
-      setError((e as Error).message || "The upload failed. Please try again.")
-    } finally {
-      setBusy(null)
-      if (input.current) input.current.value = ""
-    }
-  }
-
+/** Search-result title and description, with a preview of how Google shows them. */
+export function SeoFields({
+  title,
+  description,
+  onTitle,
+  onDescription,
+  fallbackTitle,
+  fallbackDescription,
+  path,
+}: {
+  title: string
+  description: string
+  onTitle: (v: string) => void
+  onDescription: (v: string) => void
+  fallbackTitle: string
+  fallbackDescription: string
+  path: string
+}) {
   return (
-    <div className={cn("space-y-1.5", base.className)}>
-      <p className="text-sm font-medium">
-        {base.label}
-        {base.required && <span className="text-rose-600"> *</span>}
-      </p>
-      <div className="flex flex-wrap items-start gap-4">
-        <div className={cn("relative flex aspect-[4/3] w-56 items-center justify-center overflow-hidden rounded-lg border bg-slate-50", kind === "leader" && "aspect-square w-40")}>
-          {value ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt="" className="size-full object-cover" />
-          ) : (
-            <ImagePlus className="size-8 text-slate-300" aria-hidden />
-          )}
-          {busy && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-white/85 text-sm font-medium">
-              <Loader2 className="size-5 animate-spin" aria-hidden />
-              {busy}
-            </div>
-          )}
-        </div>
-        <div className="space-y-2">
-          <input ref={input} id={base.id} type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => e.target.files?.[0] && pick(e.target.files[0])} />
-          <Button type="button" variant="outline" size="sm" disabled={!!busy || !mode} onClick={() => input.current?.click()}>
-            <ImagePlus /> {value ? "Replace photo" : "Upload photo"}
-          </Button>
-          {value && (
-            <Button type="button" variant="ghost" size="sm" disabled={!!busy} onClick={() => onChange("")}>
-              <X /> Remove
-            </Button>
-          )}
-          <p className="max-w-56 text-xs text-muted-foreground">{base.hint ?? "JPG, PNG or WebP up to 25 MB. Resized and compressed automatically, with no visible quality loss."}</p>
-          {error && (
-            <p role="alert" className="max-w-64 text-xs text-destructive">
-              {error}
-            </p>
-          )}
-        </div>
+    <div className="space-y-4">
+      <TextField id="seo-title" label="Search title" max={70} value={title} onChange={onTitle} placeholder={fallbackTitle} hint="Leave empty to use the title. About 50–60 characters show in full." />
+      <TextArea
+        id="seo-desc"
+        label="Search description"
+        max={170}
+        rows={3}
+        value={description}
+        onChange={onDescription}
+        placeholder={fallbackDescription}
+        hint="Leave empty to use the summary. About 150 characters show in full."
+      />
+      <div className="rounded-lg border bg-white p-4">
+        <p className="mb-2 text-[11px] font-medium tracking-wide text-muted-foreground uppercase">How it may look in Google</p>
+        <p className="truncate text-xs text-slate-600">coastalengineeringgroup.com{path}</p>
+        <p className="mt-0.5 line-clamp-1 text-lg leading-snug text-[#1a0dab]">{title || fallbackTitle || "Page title"}</p>
+        <p className="mt-0.5 line-clamp-2 text-sm text-slate-600">{description || fallbackDescription || "Add a summary or a search description."}</p>
       </div>
     </div>
   )

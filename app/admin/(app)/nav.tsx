@@ -2,16 +2,18 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Briefcase, Building2, FolderKanban, Home, Inbox, Newspaper, Settings, UserRound, Users } from "lucide-react"
+import { Briefcase, Building2, FileText, FolderKanban, Home, Images, Inbox, Newspaper, Settings, UserRound, Users } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const ITEMS = [
   { href: "/admin", label: "Home", icon: Home, exact: true },
   { href: "/admin/inquiries", label: "Inquiries", icon: Inbox },
+  { href: "/admin/pages", label: "Pages", icon: FileText },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/news", label: "News", icon: Newspaper },
   { href: "/admin/careers", label: "Careers", icon: Briefcase },
   { href: "/admin/leadership", label: "Leadership", icon: Building2 },
+  { href: "/admin/media", label: "Photos", icon: Images },
   { href: "/admin/settings", label: "Site info", icon: Settings },
 ]
 

@@ -42,7 +42,7 @@ export default async function UsersPage() {
                   {u.disabledAt ? (
                     <Pill tone="red">Removed</Pill>
                   ) : (
-                    <form action={setRole} className="flex items-center gap-2">
+                    <form key={u.role} action={setRole} className="flex items-center gap-2">
                       <input type="hidden" name="id" value={u.id} />
                       <select name="role" defaultValue={u.role} className={cn(controlCls, "h-8 px-2")} aria-label={`Role for ${u.email}`}>
                         <option value="editor">Editor</option>

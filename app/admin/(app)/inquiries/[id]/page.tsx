@@ -1,28 +1,35 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { eq } from "drizzle-orm"
+import { asc, eq, isNull } from "drizzle-orm"
 import { ArrowLeft, Mail, Phone } from "lucide-react"
 import { db, schema } from "@/db"
 import { INQUIRY_STATUSES } from "@/db/schema"
 import { requireUser } from "@/lib/auth"
 import { inquiryRows } from "@/lib/inquiries"
+import { mailTransport } from "@/lib/mail"
 import { Button } from "@/components/ui/button"
 import { ConfirmAction } from "../../confirm"
 import { cn } from "@/lib/utils"
 import { controlCls } from "../../control"
 import { formatDate, Panel } from "../../ui"
-import { deleteInquiry, saveInquiryNotes, setInquiryStatus } from "../actions"
+import { AutoSelect } from "../../auto-select"
+import { assignInquiry, deleteInquiry, saveInquiryNotes, setInquiryStatus } from "../actions"
+import { ReplyForm } from "./reply-form"
 import { InquiryStatus, STATUS_LABELS } from "../status"
 
 export const metadata: Metadata = { title: "Inquiry" }
 
 export default async function InquiryPage({ params }: { params: Promise<{ id: string }> }) {
-  await requireUser()
+  const me = await requireUser()
   const { id } = await params
   if (!/^[0-9a-f-]{36}$/.test(id)) notFound()
   const [q] = await db().select().from(schema.inquiries).where(eq(schema.inquiries.id, id))
   if (!q) notFound()
+  const [messages, team] = await Promise.all([
+    db().select().from(schema.inquiryMessages).where(eq(schema.inquiryMessages.inquiryId, q.id)).orderBy(asc(schema.inquiryMessages.createdAt)),
+    db().select({ id: schema.users.id, name: schema.users.name, email: schema.users.email }).from(schema.users).where(isNull(schema.users.disabledAt)).orderBy(asc(schema.users.email)),
+  ])
 
   return (
     <>
@@ -53,16 +60,38 @@ export default async function InquiryPage({ params }: { params: Promise<{ id: st
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-        <Panel title="Details">
-          <dl className="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[160px_1fr]">
-            {inquiryRows(q).map(([k, v]) => (
-              <div key={k} className="contents">
-                <dt className="text-muted-foreground">{k}</dt>
-                <dd className="whitespace-pre-wrap break-words">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </Panel>
+        <div className="min-w-0 space-y-6">
+          <Panel title="Details">
+            <dl className="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[160px_1fr]">
+              {inquiryRows(q).map(([k, v]) => (
+                <div key={k} className="contents">
+                  <dt className="text-muted-foreground">{k}</dt>
+                  <dd className="break-words whitespace-pre-wrap">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </Panel>
+
+          <Panel title={messages.length ? `Replies (${messages.length})` : "Reply"}>
+            {messages.length > 0 && (
+              <ol className="mb-6 space-y-4">
+                {messages.map((m) => (
+                  <li key={m.id} className="rounded-lg border bg-slate-50/60 p-4">
+                    <p className="mb-2 flex flex-wrap items-baseline justify-between gap-2 text-xs text-muted-foreground">
+                      <span>
+                        <strong className="font-semibold text-slate-800">{m.author === me.email ? "You" : m.author}</strong> to {m.sentTo}
+                      </span>
+                      <span>{formatDate(m.createdAt, true)}</span>
+                    </p>
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{m.body}</p>
+                    {m.emailError && <p className="mt-2 text-xs text-rose-700">Not sent: {m.emailError}</p>}
+                  </li>
+                ))}
+              </ol>
+            )}
+            <ReplyForm id={q.id} to={q.email} disabledReason={mailTransport() === "off" ? "Email isn't set up yet, so replies can't be sent from here. Use Reply by email for now." : undefined} />
+          </Panel>
+        </div>
 
         <div className="space-y-6">
           <Panel title="Status">
@@ -91,8 +120,28 @@ export default async function InquiryPage({ params }: { params: Promise<{ id: st
             </p>
           </Panel>
 
+          <Panel title="Assigned to">
+            <form key={q.assignedTo ?? "none"} action={assignInquiry}>
+              <input type="hidden" name="id" value={q.id} />
+              <AutoSelect name="userId" defaultValue={q.assignedTo ?? ""} aria-label="Assigned to" className="w-full">
+                <option value="">Nobody yet</option>
+                {team.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.id === me.id ? `Me (${u.name || u.email})` : u.name || u.email}
+                  </option>
+                ))}
+              </AutoSelect>
+              <noscript>
+                <Button type="submit" size="sm" className="mt-2">
+                  Save
+                </Button>
+              </noscript>
+            </form>
+            <p className="mt-2 text-xs text-muted-foreground">They get an email with a link to this inquiry.</p>
+          </Panel>
+
           <Panel title="Internal notes">
-            <form action={saveInquiryNotes} className="space-y-3">
+            <form key={q.updatedAt.toISOString()} action={saveInquiryNotes} className="space-y-3">
               <input type="hidden" name="id" value={q.id} />
               <textarea name="notes" defaultValue={q.notes} rows={6} placeholder="Only your team sees these." className={cn(controlCls, "w-full py-2")} />
               <Button type="submit" size="sm">
