@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { currentUser, devLoginEnabled } from "@/lib/auth"
 import { devLogin } from "./actions"
 import { AuthCard } from "./auth-card"
-import { LoginForm } from "./login-form"
+import { LinkForm, PasswordForm } from "./login-form"
 
 export const metadata: Metadata = { title: "Sign in" }
 
@@ -13,9 +13,9 @@ const ERRORS: Record<string, string> = {
   unknown: "That email has no dashboard access.",
 }
 
-export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string; error?: string }> }) {
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string; error?: string; mode?: string }> }) {
   if (await currentUser()) redirect("/admin")
-  const { next, error } = await searchParams
+  const { next, error, mode } = await searchParams
 
   return (
     <AuthCard title="Sign in">
@@ -24,7 +24,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           {ERRORS[error]}
         </p>
       )}
-      <LoginForm next={next} />
+      {mode === "link" || error === "expired" ? <LinkForm next={next} /> : <PasswordForm next={next} />}
       {devLoginEnabled() && (
         <form action={devLogin} className="mt-6 space-y-2 border-t pt-4">
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Local development only</p>

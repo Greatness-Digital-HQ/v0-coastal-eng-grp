@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Briefcase, Building2, FolderKanban, Home, Inbox, LogOut, Newspaper, Settings, Users } from "lucide-react"
+import { Briefcase, Building2, FolderKanban, Home, Inbox, LogOut, Newspaper, Settings, UserRound, Users } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { signOut } from "../login/actions"
 
@@ -38,6 +38,10 @@ export function AdminNav({ isOwner }: { isOwner: boolean }) {
           </Link>
         )
       })}
+      <Link href="/admin/account" className="flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-slate-600 md:hidden">
+        <UserRound className="size-4" aria-hidden />
+        Account
+      </Link>
       <form action={signOut} className="md:hidden">
         <button type="submit" className="flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-slate-600">
           <LogOut className="size-4" aria-hidden />

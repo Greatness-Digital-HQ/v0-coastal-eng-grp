@@ -1,5 +1,6 @@
 // Brings the database up to date: applies drizzle/ migrations, adds the owners
-// named in OWNER_EMAILS, and on a brand-new database imports the content that
+// named in OWNER_EMAILS (and gives any of them without a password the one in
+// ADMIN_INITIAL_PASSWORD, if set), and on a brand-new database imports the content that
 // used to be hard-coded in public/ceg (8 projects, 6 articles, open roles,
 // Kevin's leadership card, contact details).
 //
@@ -7,6 +8,7 @@
 //
 // The import runs once per database (settings.seeded_at), so deleting every
 // project in the dashboard never brings the prototype ones back.
+import crypto from "node:crypto"
 import fs from "node:fs"
 import path from "node:path"
 import vm from "node:vm"
@@ -49,6 +51,27 @@ async function addOwners() {
       [email],
     )
   }
+  // A first password so an owner can sign in before email is set up. It never
+  // replaces a password someone has already set; change it on /admin/account
+  // and then remove the variable.
+  const initial = process.env.ADMIN_INITIAL_PASSWORD ?? ""
+  if (!initial || emails.length === 0) return
+  if (initial.length < 10) {
+    console.warn("migrate: ADMIN_INITIAL_PASSWORD is shorter than 10 characters, ignored")
+    return
+  }
+  const r = await pool.query(
+    "update users set password_hash = $1, password_changed_at = now() where email = any($2) and password_hash is null",
+    [hashPassword(initial), emails],
+  )
+  if (r.rowCount) console.log(`migrate: initial password set for ${r.rowCount} owner(s)`)
+}
+
+/** Same format as lib/password.ts: scrypt$N$r$p$salt$hash. */
+function hashPassword(password) {
+  const salt = crypto.randomBytes(16)
+  const key = crypto.scryptSync(password.normalize("NFKC"), salt, 64, { N: 16384, r: 8, p: 1, maxmem: 64 * 1024 * 1024 })
+  return `scrypt$16384$8$1$${salt.toString("base64url")}$${key.toString("base64url")}`
 }
 
 /** Runs a public/ceg data file the way the browser would and returns its window globals. */

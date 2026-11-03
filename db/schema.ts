@@ -16,14 +16,18 @@ export const users = pgTable("users", {
   /** owner: everything, including Users. editor: content and inquiries. */
   role: text("role", { enum: ["owner", "editor"] }).notNull().default("editor"),
   disabledAt: timestamp("disabled_at", { withTimezone: true }),
+  /** scrypt hash (lib/password.ts); null until the person sets a password. */
+  passwordHash: text("password_hash"),
+  passwordChangedAt: timestamp("password_changed_at", { withTimezone: true }),
   lastLoginAt: timestamp("last_login_at", { withTimezone: true }),
   createdAt: createdAt(),
 })
 
-/** Emailed sign-in links. Only the SHA-256 of the token is stored. */
+/** Emailed sign-in and password-reset links. Only the SHA-256 of the token is stored. */
 export const loginTokens = pgTable("login_tokens", {
   tokenHash: text("token_hash").primaryKey(),
   email: text("email").notNull(),
+  purpose: text("purpose", { enum: ["login", "reset"] }).notNull().default("login"),
   next: text("next"),
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   usedAt: timestamp("used_at", { withTimezone: true }),

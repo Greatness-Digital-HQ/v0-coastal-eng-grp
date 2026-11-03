@@ -20,7 +20,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
             {user.name || user.email}
           </p>
           <p className="text-xs capitalize text-muted-foreground">{user.role}</p>
-          <div className="mt-3 flex gap-3 text-xs">
+          <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+            <a href="/admin/account" className="text-muted-foreground underline-offset-2 hover:underline">
+              My account
+            </a>
             <a href="/" target="_blank" rel="noreferrer" className="text-muted-foreground underline-offset-2 hover:underline">
               View site
             </a>
