@@ -268,7 +268,7 @@ function Step2({ form, onChange, onNext, onBack }) {
 }
 
 // ─── Step 3: Contact info ─────────────────────────────────────────────────────
-function Step3({ form, onChange, onSubmit, onBack, submitting }) {
+function Step3({ form, onChange, onSubmit, onBack, submitting, error }) {
   const canSubmit = form.name.trim() && form.email.trim() && form.org.trim();
   return (
     <div className="bid-step-panel">
@@ -303,6 +303,11 @@ function Step3({ form, onChange, onSubmit, onBack, submitting }) {
           </div>
         </div>
 
+        {/* Spam trap: hidden from people, filled in by bots. */}
+        <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" value={form.website}
+          onChange={e => onChange("website", e.target.value)}
+          style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
+
         <div className="bid-field">
           <label className="bid-label">How did you find CEG?</label>
           <select className="bid-select" value={form.referral} onChange={e => onChange("referral", e.target.value)}>
@@ -311,6 +316,8 @@ function Step3({ form, onChange, onSubmit, onBack, submitting }) {
           </select>
         </div>
       </div>
+
+      {error && <p className="bid-error" role="alert">{error}</p>}
 
       <div className="bid-nav">
         <button className="bid-btn-back" type="button" onClick={onBack}>← Back</button>
@@ -436,11 +443,14 @@ function BidRequestApp() {
   const [projectTypes, setProjectTypes] = useB([]);
   const [submitted,    setSubmitted]    = useB(false);
   const [submitting,   setSubmitting]   = useB(false);
-  const [refNum]                        = useB(() => Math.random().toString(36).slice(2, 8).toUpperCase());
+  const [refNum,       setRefNum]       = useB("");
+  const [submitError,  setSubmitError]  = useB("");
+  const [startedAt]                     = useB(() => Date.now());
   const [form, setForm] = useB({
     inquiryType: "",
     market: "", state: "", timeline: "", description: "",
     name: "", title: "", org: "", email: "", phone: "", referral: "",
+    website: "",
   });
 
   function toggleType(key) {
@@ -449,14 +459,17 @@ function BidRequestApp() {
   function updateForm(key, val) {
     setForm(prev => ({ ...prev, [key]: val }));
   }
-  // ⚠ PROTOTYPE STUB — this does not transmit the submission anywhere. It fakes
-  // a network round-trip and shows the success screen. A real handler (server
-  // endpoint, validation, spam protection, routing by inquiry type, and a
-  // confirmation email) is required before launch — see Section 18 and the
-  // launch checklist, Section 19-E.
+  // Saved to the dashboard's inquiries inbox and emailed to whoever handles
+  // this inquiry type (app/api/inquiry/route.ts). The reference number comes
+  // back from the server.
   function handleSubmit() {
     setSubmitting(true);
-    setTimeout(() => { setSubmitting(false); setSubmitted(true); }, 1600);
+    setSubmitError("");
+    window.submitInquiry({ source: "contact_page", ...form, projectTypes, startedAt }).then((result) => {
+      setSubmitting(false);
+      if (result.ok) { setRefNum(result.ref); setSubmitted(true); }
+      else setSubmitError(result.error);
+    });
   }
 
   useBE(() => {
@@ -510,7 +523,7 @@ function BidRequestApp() {
                     <Step2 form={form} onChange={updateForm} onNext={() => setStep(3)} onBack={() => setStep(1)} />
                   )}
                   {step === 3 && (
-                    <Step3 form={form} onChange={updateForm} onSubmit={handleSubmit} onBack={() => setStep(2)} submitting={submitting} />
+                    <Step3 form={form} onChange={updateForm} onSubmit={handleSubmit} onBack={() => setStep(2)} submitting={submitting} error={submitError} />
                   )}
                 </div>
               </div>

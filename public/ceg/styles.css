@@ -5775,6 +5775,9 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 
 /* ─── Nav buttons ────────────────────────────────────────────────────────── */
 .bid-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 44px; }
+/* Shown when an inquiry could not be sent (bid-app.jsx, ContactBand). */
+.bid-error, .ceg-form-error { margin: 20px 0 0; padding: 12px 14px; border-left: 3px solid #b42318; background: #fef3f2; color: #912018; font-size: 14px; line-height: 1.5; }
+.ceg-form-error { margin: 0 0 16px; }
 .bid-nav-end { justify-content: flex-end; }
 .bid-btn-back {
   background: transparent; border: 1.5px solid var(--rule); color: var(--ink-soft);

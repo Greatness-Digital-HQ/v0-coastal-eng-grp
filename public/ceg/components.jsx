@@ -1197,8 +1197,41 @@ function ClientsStrip({ theme, data }) {
 }
 
 // ─── Contact band + Footer �����─────────────────────────────────────────────────
+// Sends a form to the dashboard's inquiries inbox (app/api/inquiry/route.ts).
+// Resolves to { ok: true, ref } or { ok: false, error } and never rejects, so
+// callers only have to show the message.
+function submitInquiry(payload) {
+  return fetch("/api/inquiry", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...payload, pageUrl: window.location.pathname }),
+  })
+    .then((res) => res.json().catch(() => ({})).then((body) =>
+      res.ok && body.ok ? { ok: true, ref: body.ref }
+        : { ok: false, error: body.error || "Something went wrong sending your message. Please try again, or call us." }))
+    .catch(() => ({ ok: false, error: "We couldn't reach the server. Check your connection and try again, or call us." }));
+}
+
 function ContactBand({ theme, data }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [startedAt] = useState(() => Date.now());
+  function handleSubmit(e) {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    setSubmitting(true);
+    setError("");
+    submitInquiry({
+      source: "contact_band", startedAt,
+      name: f.get("name"), org: f.get("company"), email: f.get("email"), phone: f.get("phone"),
+      market: f.get("market"), description: f.get("summary"), website: f.get("website"),
+    }).then((result) => {
+      setSubmitting(false);
+      if (result.ok) setSubmitted(true);
+      else setError(result.error);
+    });
+  }
   const textRef = useReveal(0.15);
   const formRef = useReveal(0.15);
   return (
@@ -1235,7 +1268,7 @@ function ContactBand({ theme, data }) {
           </div>
         </div>
 
-        <form className="ceg-contact-form ceg-reveal-slide-right" ref={formRef} onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
+        <form className="ceg-contact-form ceg-reveal-slide-right" ref={formRef} onSubmit={handleSubmit}>
           {submitted ? (
             <div className="ceg-contact-thanks">
               <div className="ceg-contact-thanks-icon">
@@ -1259,10 +1292,14 @@ function ContactBand({ theme, data }) {
                 <Field label="Email" name="email" type="email" required />
                 <Field label="Phone" name="phone" type="tel" />
               </div>
-              <Field label="Project type" name="market" select options={["Federal", "State & Local", "Energy", "Commercial", "Industrial"]} />
+              <Field label="Market" name="market" select options={data.MARKETS.map((m) => m.name)} />
               <Field label="Scope summary" name="summary" textarea required />
-              <button className="ceg-btn ceg-btn-primary ceg-btn-full" type="submit">
-                <span>Send to opportunity team</span>
+              {/* Spam trap: hidden from people, filled in by bots. */}
+              <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true"
+                style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
+              {error && <p className="ceg-form-error" role="alert">{error}</p>}
+              <button className="ceg-btn ceg-btn-primary ceg-btn-full" type="submit" disabled={submitting}>
+                <span>{submitting ? "Sending…" : "Send to opportunity team"}</span>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square"/>
                 </svg>
@@ -1961,6 +1998,7 @@ function IntegratedDelivery() {
 }
 
 Object.assign(window, {
+  submitInquiry,
   applyThemeVars,
   Eyebrow, Btn, UtilityBar, Nav, Hero, PlaceholderPhoto, MarketPhoto,
   Capabilities, WhyCEG, FeaturedProjects, Careers, CertificationsBar, Locations, Divisions, Projects, VOSBBand, ClientsStrip, ContactBand, FinalCTA, Footer, MobileMenu,
