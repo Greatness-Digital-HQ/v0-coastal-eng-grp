@@ -1,5 +1,6 @@
 // Brings the database up to date: applies drizzle/ migrations, adds the owners
-// named in OWNER_EMAILS, and on a brand-new database imports the content that
+// named in OWNER_EMAILS (and gives any of them without a password the one in
+// ADMIN_INITIAL_PASSWORD, if set), and on a brand-new database imports the content that
 // used to be hard-coded in public/ceg (8 projects, 6 articles, open roles,
 // Kevin's leadership card, contact details).
 //
@@ -7,6 +8,7 @@
 //
 // The import runs once per database (settings.seeded_at), so deleting every
 // project in the dashboard never brings the prototype ones back.
+import crypto from "node:crypto"
 import fs from "node:fs"
 import path from "node:path"
 import vm from "node:vm"
@@ -49,6 +51,52 @@ async function addOwners() {
       [email],
     )
   }
+  if (emails.length === 0) return
+  await initialPassword(emails)
+  await setupLinks(emails)
+}
+
+// A first password so an owner can sign in before email is set up. It never
+// replaces a password someone has already set; change it on /admin/account
+// and then remove the variable.
+async function initialPassword(emails) {
+  const initial = process.env.ADMIN_INITIAL_PASSWORD ?? ""
+  if (!initial) return
+  if (initial.length < 10) {
+    console.warn("migrate: ADMIN_INITIAL_PASSWORD is shorter than 10 characters, ignored")
+    return
+  }
+  const r = await pool.query(
+    "update users set password_hash = $1, password_changed_at = now() where email = any($2) and password_hash is null",
+    [hashPassword(initial), emails],
+  )
+  if (r.rowCount) console.log(`migrate: initial password set for ${r.rowCount} owner(s)`)
+}
+
+// For each owner who still has no password, prints a one-time link (valid 24
+// hours) to choose one, so the first sign-in needs neither email nor a shared
+// password. Only the token's hash is stored, as for emailed reset links, and
+// the build log is visible to the Vercel team only.
+async function setupLinks(emails) {
+  const host = process.env.VERCEL_ENV === "production" ? process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.VERCEL_BRANCH_URL || process.env.VERCEL_URL
+  const origin = host ? `https://${host}` : "http://localhost:3000"
+  const { rows } = await pool.query("select email from users where email = any($1) and password_hash is null and disabled_at is null", [emails])
+  for (const { email } of rows) {
+    const token = crypto.randomBytes(32).toString("base64url")
+    const hash = crypto.createHash("sha256").update(token).digest("hex")
+    await pool.query(
+      "insert into login_tokens (token_hash, email, purpose, expires_at) values ($1, $2, 'reset', now() + interval '24 hours')",
+      [hash, email],
+    )
+    console.log(`migrate: ${email} has no password yet. Set one within 24 hours: ${origin}/admin/login/reset?token=${token}`)
+  }
+}
+
+/** Same format as lib/password.ts: scrypt$N$r$p$salt$hash. */
+function hashPassword(password) {
+  const salt = crypto.randomBytes(16)
+  const key = crypto.scryptSync(password.normalize("NFKC"), salt, 64, { N: 16384, r: 8, p: 1, maxmem: 64 * 1024 * 1024 })
+  return `scrypt$16384$8$1$${salt.toString("base64url")}$${key.toString("base64url")}`
 }
 
 /** Runs a public/ceg data file the way the browser would and returns its window globals. */
