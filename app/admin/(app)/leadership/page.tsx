@@ -6,6 +6,7 @@ import { db, schema } from "@/db"
 import { requireUser } from "@/lib/auth"
 import { Button } from "@/components/ui/button"
 import { DeletedItems } from "../deleted-items"
+import { ViewLink } from "../view-link"
 import { Empty, PageHeader, StatusPill } from "../ui"
 import { moveLeader, restoreLeader } from "./actions"
 
@@ -20,11 +21,14 @@ export default async function LeadershipPage() {
         title="Leadership"
         description="Profiles on /leadership, in this order: CEO first, then operations, then division leaders."
         actions={
-          <Button asChild>
-            <Link href="/admin/leadership/new">
-              <Plus /> Add a leader
-            </Link>
-          </Button>
+          <>
+            <ViewLink href="/leadership" label="View page" />
+            <Button asChild>
+              <Link href="/admin/leadership/new">
+                <Plus /> Add a leader
+              </Link>
+            </Button>
+          </>
         }
       />
       {rows.length === 0 ? (
@@ -38,7 +42,12 @@ export default async function LeadershipPage() {
                   <form key={dir} action={moveLeader}>
                     <input type="hidden" name="id" value={l.id} />
                     <input type="hidden" name="dir" value={dir} />
-                    <button type="submit" aria-label={`Move ${dir}`} disabled={dir === "up" ? i === 0 : i === rows.length - 1} className="rounded p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-800 disabled:invisible">
+                    <button
+                      type="submit"
+                      aria-label={`Move ${dir}`}
+                      disabled={dir === "up" ? i === 0 : i === rows.length - 1}
+                      className="rounded p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-800 disabled:invisible"
+                    >
                       {dir === "up" ? <ArrowUp className="size-4" /> : <ArrowDown className="size-4" />}
                     </button>
                   </form>

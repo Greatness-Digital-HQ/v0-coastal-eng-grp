@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { desc } from "drizzle-orm"
-import { Plus } from "lucide-react"
+import { ExternalLink, Eye, Plus } from "lucide-react"
 import { db, schema } from "@/db"
 import { requireUser } from "@/lib/auth"
 import { Button } from "@/components/ui/button"
@@ -54,6 +54,16 @@ export default async function NewsPage() {
                 {a.needsReview && <Pill tone="amber">Needs review</Pill>}
                 <StatusPill status={a.status} />
               </div>
+              <a
+                href={a.status === "published" ? `/insights/news/${a.slug}` : `/admin/preview/news/${a.slug}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${a.status === "published" ? "View" : "Preview"} ${a.title} (opens in a new tab)`}
+                title={a.status === "published" ? "View on the website" : "Preview the draft"}
+                className="flex size-8 shrink-0 items-center justify-center rounded-md text-slate-500 ring-1 ring-slate-200 ring-inset hover:bg-slate-50 hover:text-slate-900"
+              >
+                {a.status === "published" ? <ExternalLink className="size-4" /> : <Eye className="size-4" />}
+              </a>
             </li>
           ))}
         </ul>

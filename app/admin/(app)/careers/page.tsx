@@ -10,6 +10,7 @@ import { controlCls } from "../control"
 import { Button } from "@/components/ui/button"
 import { ConfirmAction } from "../confirm"
 import { DeletedItems } from "../deleted-items"
+import { ViewLink } from "../view-link"
 import { Empty, PageHeader, Panel, StatusPill } from "../ui"
 import { addRole, deleteRole, moveRole, restoreRole, toggleRole, updateRole } from "./actions"
 
@@ -44,7 +45,7 @@ export default async function CareersPage() {
 
   return (
     <>
-      <PageHeader title="Careers" description="The Open Roles list on /careers. Each role's Apply button opens your Paylocity job board." />
+      <PageHeader title="Careers" description="The Open Roles list on /careers. Each role's Apply button opens your Paylocity job board." actions={<ViewLink href="/careers" label="View page" />} />
       <Panel title="Add an open role" className="mb-6">
         <form action={addRole} className="grid gap-3 sm:grid-cols-[2fr_1fr_1fr_1fr_auto]">
           <RoleFields />

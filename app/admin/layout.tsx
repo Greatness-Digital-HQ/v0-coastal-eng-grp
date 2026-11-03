@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Barlow, Inter } from "next/font/google"
 import { Toaster } from "sonner"
+import { SITE_ICONS } from "../icons"
 import "../globals.css"
 import "./admin.css"
 
@@ -13,7 +14,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 export const metadata: Metadata = {
   title: { default: "Website dashboard | Coastal Engineering Group", template: "%s | Coastal dashboard" },
   robots: { index: false, follow: false },
-  icons: { icon: "/icon.svg" },
+  icons: SITE_ICONS,
 }
 
 export const viewport: Viewport = { themeColor: "#0a2540", width: "device-width", initialScale: 1 }

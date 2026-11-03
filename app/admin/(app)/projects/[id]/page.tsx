@@ -2,15 +2,15 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { eq } from "drizzle-orm"
-import { ArrowLeft, ExternalLink } from "lucide-react"
+import { ArrowLeft, Eye } from "lucide-react"
 import { db, schema } from "@/db"
 import { requireUser } from "@/lib/auth"
 import { latestRevision } from "@/lib/revisions"
-import { Button } from "@/components/ui/button"
 import { ConfirmAction } from "../../confirm"
 import { formatDate, PageHeader } from "../../ui"
 import { deleteProject, restoreProject } from "../actions"
 import { ProjectEditor } from "../editor"
+import { ViewLink } from "../../view-link"
 
 export const metadata: Metadata = { title: "Edit project" }
 
@@ -31,12 +31,12 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
         title={p.title}
         description={`Last saved ${formatDate(p.updatedAt, true)}${p.updatedBy && p.updatedBy !== "import" ? ` by ${p.updatedBy}` : ""}`}
         actions={
-          p.status === "published" && (
-            <Button asChild variant="outline" size="sm">
-              <a href={`/projects/${p.slug}`} target="_blank" rel="noreferrer">
-                <ExternalLink /> View on site
-              </a>
-            </Button>
+          p.status === "published" ? (
+            <ViewLink href={`/projects/${p.slug}`} label="View on site" />
+          ) : (
+            <ViewLink href={`/admin/preview/projects/${p.slug}`} label="Preview draft">
+              <Eye />
+            </ViewLink>
           )
         }
       />

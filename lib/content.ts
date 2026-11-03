@@ -1,6 +1,7 @@
 import { unstable_cache, updateTag } from "next/cache"
 import { asc, desc, eq, inArray } from "drizzle-orm"
 import { db, hasDatabase, schema } from "@/db"
+import type { NewsArticle, Project } from "@/db/schema"
 import { marketName, SERVICES } from "./taxonomy"
 
 // The published site content, in the shapes public/ceg/*.jsx already use.
@@ -61,6 +62,43 @@ function readTime(body: string[]): string {
   return `${Math.max(1, Math.ceil(words / 200))} min read`
 }
 
+/** A project row as the site's scripts expect it. Also used by the dashboard's draft preview. */
+export function toSiteProject(p: Project): SiteProject {
+  return {
+    slug: p.slug,
+    title: p.title,
+    client: p.client,
+    market: marketName(p.market),
+    services: p.services,
+    state: p.state,
+    year: p.year,
+    tag: SERVICES.find((s) => s.key === p.services[0])?.tag ?? "",
+    blurb: p.blurb,
+    image: p.image,
+    scope: p.scope,
+    scopeStats: p.scopeStats,
+    challenge: p.challenge,
+    approach: p.approach,
+    outcome: p.outcome,
+  }
+}
+
+export function toSiteArticle(a: NewsArticle): SiteArticle {
+  return {
+    slug: a.slug,
+    title: a.title,
+    date: longDate(a.publishedOn),
+    dateISO: a.publishedOn,
+    category: a.category,
+    author: a.author,
+    readTime: readTime(a.body),
+    excerpt: a.excerpt,
+    image: a.image,
+    tags: a.tags,
+    body: a.body,
+  }
+}
+
 async function load(): Promise<SiteContent> {
   const d = db()
   const published = "published" as const
@@ -72,36 +110,8 @@ async function load(): Promise<SiteContent> {
     d.select().from(schema.settings).where(inArray(schema.settings.key, ["contact"])),
   ])
   return {
-    projects: projects.map((p) => ({
-      slug: p.slug,
-      title: p.title,
-      client: p.client,
-      market: marketName(p.market),
-      services: p.services,
-      state: p.state,
-      year: p.year,
-      tag: SERVICES.find((s) => s.key === p.services[0])?.tag ?? "",
-      blurb: p.blurb,
-      image: p.image,
-      scope: p.scope,
-      scopeStats: p.scopeStats,
-      challenge: p.challenge,
-      approach: p.approach,
-      outcome: p.outcome,
-    })),
-    news: news.map((a) => ({
-      slug: a.slug,
-      title: a.title,
-      date: longDate(a.publishedOn),
-      dateISO: a.publishedOn,
-      category: a.category,
-      author: a.author,
-      readTime: readTime(a.body),
-      excerpt: a.excerpt,
-      image: a.image,
-      tags: a.tags,
-      body: a.body,
-    })),
+    projects: projects.map(toSiteProject),
+    news: news.map(toSiteArticle),
     openRoles: roles.map((r) => ({ title: r.title, division: r.division, location: r.location, type: r.type })),
     leaders: leaders.map((l) => ({ name: l.name, title: l.title, image: l.image || null, bio: l.bio, responsibility: l.responsibility })),
     contact: (contact.find((c) => c.key === "contact")?.value as SiteContact | undefined) ?? null,

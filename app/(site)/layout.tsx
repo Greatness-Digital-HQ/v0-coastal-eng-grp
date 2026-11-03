@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { Barlow, Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "../globals.css"
+import { SITE_ICONS } from "@/app/icons"
 import { SITE } from "@/app/seo"
 import { getSiteContent } from "@/lib/content"
 
@@ -26,23 +27,9 @@ export const metadata: Metadata = {
   description:
     "Marine construction, dredging, commercial diving, underwater inspection and waterfront engineering throughout the Eastern United States.",
   generator: "v0.app",
-  icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
-  },
+  // The logo's C mark on a white tile (public/favicon.ico, icon-*.png), so it
+  // reads on light and dark browser tabs alike.
+  icons: SITE_ICONS,
 }
 
 export const viewport: Viewport = {

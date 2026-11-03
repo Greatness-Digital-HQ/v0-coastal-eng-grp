@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { asc } from "drizzle-orm"
-import { ArrowDown, ArrowUp, Plus } from "lucide-react"
+import { ArrowDown, ArrowUp, ExternalLink, Eye, Plus } from "lucide-react"
 import { db, schema } from "@/db"
 import { requireUser } from "@/lib/auth"
 import { marketName, SERVICES } from "@/lib/taxonomy"
@@ -62,6 +62,16 @@ export default async function ProjectsPage() {
                 {p.needsReview && <Pill tone="amber">Needs review</Pill>}
                 <StatusPill status={p.status} />
               </div>
+              <a
+                href={p.status === "published" ? `/projects/${p.slug}` : `/admin/preview/projects/${p.slug}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${p.status === "published" ? "View" : "Preview"} ${p.title} (opens in a new tab)`}
+                title={p.status === "published" ? "View on the website" : "Preview the draft"}
+                className="flex size-8 shrink-0 items-center justify-center rounded-md text-slate-500 ring-1 ring-slate-200 ring-inset hover:bg-slate-50 hover:text-slate-900"
+              >
+                {p.status === "published" ? <ExternalLink className="size-4" /> : <Eye className="size-4" />}
+              </a>
             </li>
           ))}
         </ul>
