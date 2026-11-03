@@ -1,6 +1,21 @@
 // Shared content data for all three concepts
 // Sourced from meeting notes + coastalengineeringllc.com
 
+// Content managed in the website dashboard (/admin): the server renders the
+// published projects, articles, open roles, leaders and contact details into
+// every page as JSON (app/(site)/layout.tsx, lib/content.ts). The copies in
+// these files are the built-in fallback, used only when that JSON is missing
+// (no database, or it could not be reached). Edit content in the dashboard.
+const CEG_DB = (function () {
+  try {
+    const el = document.getElementById("ceg-content");
+    return el ? JSON.parse(el.textContent) : null;
+  } catch (e) {
+    return null;
+  }
+})();
+window.CEG_DB = CEG_DB;
+
 // Card copy and order per the client edit package (homepage capabilities
 // section). Marine construction and engineering lead; commercial diving is a
 // prominent differentiating capability, not the whole identity. Badges renumber
@@ -110,7 +125,7 @@ const MARKETS = [
 // `market` is one of MARKETS[].name and `services` lists DIVISIONS[].key — both
 // drive the filters on /projects/featured-work. TODO(client): the round 1
 // re-tag below was mapped from each project's own scope; Kevin to confirm.
-const PROJECTS = [
+const BUILTIN_PROJECTS = [
   {
     slug: "railroad-bridge-inspection",
     title: "Railroad Bridge Inspection Over Open Water",
@@ -249,6 +264,8 @@ const PROJECTS = [
   },
 ];
 
+const PROJECTS = CEG_DB ? CEG_DB.projects : BUILTIN_PROJECTS;
+
 // Derived: states where we've actually performed work — drives projects filter.
 const STATES_WORKED = Array.from(new Set(PROJECTS.map(p => p.state))).sort();
 
@@ -359,6 +376,15 @@ const CONTACT = {
   linkedin: "https://www.linkedin.com/company/coastal-engineering-llc/",
 };
 
+if (CEG_DB && CEG_DB.contact) {
+  const c = CEG_DB.contact;
+  Object.assign(CONTACT, { phone: c.phone, email: c.email, linkedin: c.linkedin, locations: c.locations });
+  if (c.locations[0]) {
+    CONTACT.addressLine1 = c.locations[0].line1;
+    CONTACT.addressLine2 = c.locations[0].line2;
+  }
+}
+
 // Careers — benefits + open roles teaser (JMT-leaning, talent-as-priority).
 const CAREERS = {
   pitch: "Build Your Career on the Water",
@@ -396,5 +422,7 @@ const CAREERS = {
     { title: "Tugboat Captain", division: "Marine Services", location: "Mid-Atlantic", type: "Full-time" },
   ],
 };
+
+if (CEG_DB) CAREERS.openRoles = CEG_DB.openRoles;
 
 window.CEG_DATA = { CAPABILITIES, DIVISIONS, MARKETS, PROJECTS, STATES_WORKED, CERTS, CLIENTS, STATS, LICENSED_STATES, NAV, CONTACT, CAREERS };

@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next"
 import { SITE } from "./seo"
-import { PROJECT_SEO, NEWS_SEO } from "./content-seo"
+import { newsSeo, projectSeo } from "./content-seo"
 
 // Canonical, indexable URLs only (Section 19-A). /request-a-bid is deliberately
 // absent — it 301s to /contact and a redirect target must not be listed.
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [projects, news] = await Promise.all([projectSeo(), newsSeo()])
   const staticPaths = [
     "/",
     "/about",
@@ -24,7 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticPaths.map((path) => ({ url: `${SITE}${path}` })),
-    ...PROJECT_SEO.map((p) => ({ url: `${SITE}/projects/${p.slug}` })),
-    ...NEWS_SEO.map((n) => ({ url: `${SITE}/insights/news/${n.slug}` })),
+    ...projects.map((p) => ({ url: `${SITE}/projects/${p.slug}` })),
+    ...news.map((n) => ({ url: `${SITE}/insights/news/${n.slug}` })),
   ]
 }

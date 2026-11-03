@@ -3,6 +3,7 @@ import { Barlow, Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "../globals.css"
 import { SITE } from "@/app/seo"
+import { getSiteContent } from "@/lib/content"
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -50,11 +51,14 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Dashboard content for public/ceg/data.jsx and friends; without it they
+  // show their built-in copy.
+  const content = await getSiteContent()
   return (
     <html lang="en" className={`${barlow.variable} ${inter.variable}`}>
       <head>
@@ -63,6 +67,13 @@ export default function RootLayout({
         <link rel="stylesheet" href="/ceg/drydock-body.css" />
       </head>
       <body className="antialiased" data-concept="drydock">
+        {content && (
+          <script
+            id="ceg-content"
+            type="application/json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(content).replace(/</g, "\\u003c") }}
+          />
+        )}
         {children}
         {process.env.NODE_ENV === "production" && <Analytics />}
         {/* Greatness Digital client-review widget, for the client's site review pass. */}

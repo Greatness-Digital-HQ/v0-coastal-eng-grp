@@ -7,7 +7,7 @@ type Params = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params
-  const a = findArticle(slug)
+  const a = await findArticle(slug)
   if (!a) return detailMetadata({ title: PAGE_SEO.news.title, description: PAGE_SEO.news.description, path: `/insights/news/${slug}` })
   return detailMetadata({
     title: `${a.title} | Coastal Engineering Group`,
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function NewsDetailPage({ params }: Params) {
   const { slug } = await params
-  const a = findArticle(slug)
+  const a = await findArticle(slug)
   const jsonLd = breadcrumbJsonLd([
     { name: "Home", path: "/" },
     { name: "News & Insights", path: "/insights/news" },

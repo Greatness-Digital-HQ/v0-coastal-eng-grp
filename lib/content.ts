@@ -58,7 +58,7 @@ function longDate(iso: string): string {
 
 function readTime(body: string[]): string {
   const words = body.join(" ").split(/\s+/).filter(Boolean).length
-  return `${Math.max(1, Math.round(words / 200))} min read`
+  return `${Math.max(1, Math.ceil(words / 200))} min read`
 }
 
 async function load(): Promise<SiteContent> {
