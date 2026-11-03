@@ -75,7 +75,7 @@ function ProjectCard({ p, data }) {
   return (
     <a href={`/projects/${p.slug}`} className="prj-card">
       <div className="prj-card-media">
-        <img src={imgFor(p)} alt={p.title} loading="lazy" />
+        <img src={imgFor(p)} alt={p.imageAlt || p.title} loading="lazy" />
         <span
           className="prj-card-market"
           style={{ background: mc.bg, color: mc.text }}

@@ -20,7 +20,7 @@ export default async function ArticlePreview({ params }: { params: Promise<{ slu
   const merged = news.some((x) => x.slug === slug) ? news.map((x) => (x.slug === slug ? draft : x)) : [draft, ...news]
   return (
     <PreviewPage
-      content={content ? { ...content, news: merged } : { projects: [], news: [draft], openRoles: [], leaders: [], contact: null }}
+      content={content ? { ...content, news: merged } : { projects: [], news: [draft], openRoles: [], leaders: [], contact: null, text: null }}
       app="news-detail-app"
       extraData={["news-data"]}
       editHref={`/admin/news/${a.id}`}

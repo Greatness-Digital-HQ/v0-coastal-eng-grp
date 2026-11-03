@@ -37,6 +37,7 @@ try {
   await migrate(drizzle(pool), { migrationsFolder: path.join(ROOT, "drizzle") })
   await addOwners()
   await seedOnce()
+  await syncLibrary()
   console.log(`migrate: up to date (${new URL(url).host})`)
 } finally {
   await pool.end()
@@ -97,6 +98,20 @@ function hashPassword(password) {
   const salt = crypto.randomBytes(16)
   const key = crypto.scryptSync(password.normalize("NFKC"), salt, 64, { N: 16384, r: 8, p: 1, maxmem: 64 * 1024 * 1024 })
   return `scrypt$16384$8$1$${salt.toString("base64url")}$${key.toString("base64url")}`
+}
+
+/** Adds every photo the content uses to the photo library, so "From library" offers them too. */
+async function syncLibrary() {
+  await pool.query(`
+    insert into media (url, kind, name, uploaded_by)
+    select distinct on (url) url, kind, regexp_replace(url, '^.*/', ''), 'import' from (
+      select image as url, 'project' as kind from projects where image <> ''
+      union all select g->>'url', 'project' from projects, jsonb_array_elements(gallery) g
+      union all select image, 'news' from news_articles where image <> ''
+      union all select image, 'leader' from leaders where image <> ''
+    ) u
+    where url is not null and url <> ''
+    on conflict (url) do nothing`)
 }
 
 /** Runs a public/ceg data file the way the browser would and returns its window globals. */

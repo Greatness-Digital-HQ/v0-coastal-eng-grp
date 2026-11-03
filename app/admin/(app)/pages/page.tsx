@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { asc, desc } from "drizzle-orm"
-import { Eye } from "lucide-react"
+import { Eye, PenLine } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { db, schema } from "@/db"
 import { requireUser } from "@/lib/auth"
 import { PAGE_GROUPS, SECTION_LABELS } from "@/lib/site-pages"
@@ -20,6 +21,13 @@ export default async function PagesPage() {
   return (
     <>
       <PageHeader
+        actions={
+          <Button asChild>
+            <Link href="/admin/pages/text">
+              <PenLine /> Edit page text
+            </Link>
+          </Button>
+        }
         title="Pages"
         description="Every page on the website and the dashboard sections that change it. The phone, email and addresses in every header and footer come from Site info. Other page text is part of the design; ask your web team to change it."
       />

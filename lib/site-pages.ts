@@ -2,7 +2,7 @@
 // dashboard sections feed it. Site info (phone, email, addresses) also feeds
 // every page's header and footer. Keep in step with app/(site) and app/sitemap.ts.
 
-export type Section = "projects" | "news" | "careers" | "leadership" | "settings" | "inquiries"
+export type Section = "projects" | "news" | "careers" | "leadership" | "settings" | "inquiries" | "text"
 
 export type SitePage = { name: string; path: string; feeds: Section[]; note?: string }
 
@@ -10,11 +10,11 @@ export const PAGE_GROUPS: { title: string; pages: SitePage[] }[] = [
   {
     title: "Main pages",
     pages: [
-      { name: "Home", path: "/", feeds: ["projects"], note: "Project photos and the featured project come from Projects." },
-      { name: "About", path: "/about", feeds: [] },
+      { name: "Home", path: "/", feeds: ["text", "projects"], note: "Project photos and the featured project come from Projects." },
+      { name: "About", path: "/about", feeds: ["text"], note: "Certifications and clients come from Page text." },
       { name: "Leadership", path: "/leadership", feeds: ["leadership"] },
       { name: "Safety & Quality", path: "/safety-quality", feeds: [] },
-      { name: "Careers", path: "/careers", feeds: ["careers"], note: "Apply buttons open your Paylocity job board." },
+      { name: "Careers", path: "/careers", feeds: ["text", "careers"], note: "Apply buttons open your Paylocity job board." },
       { name: "Contact", path: "/contact", feeds: ["settings", "inquiries"], note: "The form's messages arrive in Inquiries." },
     ],
   },
@@ -52,4 +52,5 @@ export const SECTION_LABELS: Record<Section, { label: string; href: string }> = 
   leadership: { label: "Leadership", href: "/admin/leadership" },
   settings: { label: "Site info", href: "/admin/settings" },
   inquiries: { label: "Inquiries", href: "/admin/inquiries" },
+  text: { label: "Page text", href: "/admin/pages/text" },
 }

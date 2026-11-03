@@ -106,6 +106,8 @@ export function detailMetadata(opts: {
   description: string
   path: string
   type?: "article" | "website"
+  /** Share image (a site path or full URL). */
+  image?: string
 }): Metadata {
   const url = `${SITE}${opts.path}`
   return {
@@ -118,6 +120,7 @@ export function detailMetadata(opts: {
       url,
       siteName: ORG_NAME,
       type: opts.type ?? "website",
+      ...(opts.image ? { images: [{ url: opts.image }] } : {}),
     },
   }
 }

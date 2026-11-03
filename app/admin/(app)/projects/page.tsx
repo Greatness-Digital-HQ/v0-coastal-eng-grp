@@ -7,6 +7,7 @@ import { requireUser } from "@/lib/auth"
 import { marketName, SERVICES } from "@/lib/taxonomy"
 import { Button } from "@/components/ui/button"
 import { DeletedItems } from "../deleted-items"
+import { SortableList } from "../sortable"
 import { Empty, PageHeader, Pill, StatusPill } from "../ui"
 import { moveProject, restoreProject } from "./actions"
 
@@ -21,7 +22,7 @@ export default async function ProjectsPage() {
     <>
       <PageHeader
         title="Projects"
-        description="The portfolio on /projects/featured-work, the service pages and the homepage. The first published project is the homepage feature; use the arrows to change the order."
+        description="The portfolio on /projects/featured-work, the service pages and the homepage. The first published project is the homepage feature. Drag the grip, or use the arrows, to change the order."
         actions={
           <Button asChild>
             <Link href="/admin/projects/new">
@@ -33,48 +34,55 @@ export default async function ProjectsPage() {
       {rows.length === 0 ? (
         <Empty>No projects yet.</Empty>
       ) : (
-        <ul className="divide-y overflow-hidden rounded-xl border bg-white">
-          {rows.map((p, i) => (
-            <li key={p.id} className="flex items-center gap-4 px-4 py-3">
-              <div className="flex flex-col">
-                <MoveButton id={p.id} dir="up" disabled={i === 0} />
-                <MoveButton id={p.id} dir="down" disabled={i === rows.length - 1} />
-              </div>
-              <div className="h-14 w-20 shrink-0 overflow-hidden rounded-md bg-slate-100">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                {p.image && <img src={p.image} alt="" className="size-full object-cover" loading="lazy" />}
-              </div>
-              <div className="min-w-0 flex-1">
-                <Link href={`/admin/projects/${p.id}`} className="font-medium hover:text-sky-800 hover:underline">
-                  {p.title}
-                </Link>
-                <p className="truncate text-xs text-muted-foreground">
-                  {[p.client, marketName(p.market), p.services.map((s) => SERVICES.find((x) => x.key === s)?.tag ?? s).join(", "), p.state, p.year].filter(Boolean).join(" · ")}
-                </p>
-                <div className="mt-1.5 flex flex-wrap gap-1.5 sm:hidden">
-                  <StatusPill status={p.status} />
+        <SortableList
+          entity="project"
+          className="divide-y overflow-hidden rounded-xl border bg-white"
+          items={rows.map((p, i) => ({
+            id: p.id,
+            content: (
+              <div className="flex items-center gap-4 px-4 py-3 md:pl-1">
+                <div className="flex flex-col">
+                  <MoveButton id={p.id} dir="up" disabled={i === 0} />
+                  <MoveButton id={p.id} dir="down" disabled={i === rows.length - 1} />
+                </div>
+                <div className="h-14 w-20 shrink-0 overflow-hidden rounded-md bg-slate-100">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  {p.image && <img src={p.image} alt="" className="size-full object-cover" loading="lazy" />}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <Link href={`/admin/projects/${p.id}`} className="font-medium hover:text-sky-800 hover:underline">
+                    {p.title}
+                  </Link>
+                  <p className="truncate text-xs text-muted-foreground">
+                    {[p.client, marketName(p.market), p.services.map((s) => SERVICES.find((x) => x.key === s)?.tag ?? s).join(", "), p.state, p.year]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                  <div className="mt-1.5 flex flex-wrap gap-1.5 sm:hidden">
+                    <StatusPill status={p.status} />
+                    {p.id === firstPublished && <Pill tone="blue">Homepage feature</Pill>}
+                    {p.needsReview && <Pill tone="amber">Needs review</Pill>}
+                  </div>
+                </div>
+                <div className="hidden shrink-0 flex-wrap justify-end gap-1.5 sm:flex">
                   {p.id === firstPublished && <Pill tone="blue">Homepage feature</Pill>}
                   {p.needsReview && <Pill tone="amber">Needs review</Pill>}
+                  <StatusPill status={p.status} />
                 </div>
+                <a
+                  href={p.status === "published" ? `/projects/${p.slug}` : `/admin/preview/projects/${p.slug}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${p.status === "published" ? "View" : "Preview"} ${p.title} (opens in a new tab)`}
+                  title={p.status === "published" ? "View on the website" : "Preview the draft"}
+                  className="flex size-8 shrink-0 items-center justify-center rounded-md text-slate-500 ring-1 ring-slate-200 ring-inset hover:bg-slate-50 hover:text-slate-900"
+                >
+                  {p.status === "published" ? <ExternalLink className="size-4" /> : <Eye className="size-4" />}
+                </a>
               </div>
-              <div className="hidden shrink-0 flex-wrap justify-end gap-1.5 sm:flex">
-                {p.id === firstPublished && <Pill tone="blue">Homepage feature</Pill>}
-                {p.needsReview && <Pill tone="amber">Needs review</Pill>}
-                <StatusPill status={p.status} />
-              </div>
-              <a
-                href={p.status === "published" ? `/projects/${p.slug}` : `/admin/preview/projects/${p.slug}`}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${p.status === "published" ? "View" : "Preview"} ${p.title} (opens in a new tab)`}
-                title={p.status === "published" ? "View on the website" : "Preview the draft"}
-                className="flex size-8 shrink-0 items-center justify-center rounded-md text-slate-500 ring-1 ring-slate-200 ring-inset hover:bg-slate-50 hover:text-slate-900"
-              >
-                {p.status === "published" ? <ExternalLink className="size-4" /> : <Eye className="size-4" />}
-              </a>
-            </li>
-          ))}
-        </ul>
+            ),
+          }))}
+        />
       )}
       <DeletedItems entity="project" table={schema.projects} restore={restoreProject} titleKey="title" />
     </>
@@ -87,7 +95,12 @@ function MoveButton({ id, dir, disabled }: { id: string; dir: "up" | "down"; dis
     <form action={moveProject}>
       <input type="hidden" name="id" value={id} />
       <input type="hidden" name="dir" value={dir} />
-      <button type="submit" disabled={disabled} aria-label={`Move ${dir}`} className="rounded p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-800 disabled:invisible">
+      <button
+        type="submit"
+        disabled={disabled}
+        aria-label={`Move ${dir}`}
+        className="rounded p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-800 disabled:invisible"
+      >
         <Icon className="size-4" />
       </button>
     </form>

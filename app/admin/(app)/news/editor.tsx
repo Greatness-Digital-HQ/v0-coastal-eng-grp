@@ -4,13 +4,15 @@ import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { NEWS_CATEGORIES, slugify } from "@/lib/taxonomy"
-import { ImageField, ParagraphsField, SelectField, TextArea, TextField } from "../fields"
+import { ImageField, ParagraphsField, SelectField, SeoFields, TextArea, TextField } from "../fields"
 import { cn } from "@/lib/utils"
 import { controlCls } from "../control"
 import { EditorActions } from "../editor-actions"
 import { Panel } from "../ui"
 import { useUnsavedGuard } from "../unsaved"
 import { saveArticle, type ArticleInput } from "./actions"
+
+const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" })
 
 export function ArticleEditor({ id, initial }: { id: string | null; initial: ArticleInput }) {
   const [a, setA] = useState(initial)
@@ -35,7 +37,15 @@ export function ArticleEditor({ id, initial }: { id: string | null; initial: Art
       }
       set("status", status)
       setSaved(JSON.stringify([{ ...a, status }, tags]))
-      toast.success(status === "published" ? (initial.status === "published" ? "Saved. The website is updated." : "Published. It's live on the website.") : "Saved as a draft. It's not on the website.")
+      toast.success(
+        status !== "published"
+          ? "Saved as a draft. It's not on the website."
+          : a.publishedOn > today
+            ? `Scheduled. It appears on the website on ${a.publishedOn}.`
+            : initial.status === "published"
+              ? "Saved. The website is updated."
+              : "Published. It's live on the website.",
+      )
       if (!id) router.replace(`/admin/news/${res.id}`)
       else router.refresh()
     })
@@ -76,6 +86,7 @@ export function ArticleEditor({ id, initial }: { id: string | null; initial: Art
                 Date<span className="text-rose-600"> *</span>
               </label>
               <input id="date" type="date" required value={a.publishedOn} onChange={(e) => set("publishedOn", e.target.value)} className={cn(controlCls, "h-9 w-full")} />
+              {a.publishedOn > today && <p className="text-xs font-medium text-sky-800">A future date schedules it: once published, it appears on the website on {a.publishedOn}.</p>}
             </div>
             <SelectField id="category" label="Category" required value={a.category} onChange={(v) => set("category", v as ArticleInput["category"])} options={NEWS_CATEGORIES.map((c) => ({ value: c, label: c }))} />
             <TextField id="author" label="Author" max={80} value={a.author} onChange={(v) => set("author", v)} placeholder="e.g. CEG Communications" />
@@ -84,7 +95,18 @@ export function ArticleEditor({ id, initial }: { id: string | null; initial: Art
           </div>
         </Panel>
         <Panel title="Cover photo">
-          <ImageField id="image" label="Cover photo" kind="news" required value={a.image} onChange={(v) => set("image", v)} />
+          <ImageField id="image" label="Cover photo" kind="news" required value={a.image} onChange={(v) => set("image", v)} alt={a.imageAlt} onAltChange={(v) => set("imageAlt", v)} />
+        </Panel>
+        <Panel title="Search results">
+          <SeoFields
+            title={a.seoTitle}
+            description={a.seoDescription}
+            onTitle={(v) => set("seoTitle", v)}
+            onDescription={(v) => set("seoDescription", v)}
+            fallbackTitle={a.title ? `${a.title} | Coastal Engineering Group` : ""}
+            fallbackDescription={a.excerpt}
+            path={`/insights/news/${a.slug || "…"}`}
+          />
         </Panel>
         <Panel title="Body">
           <ParagraphsField id="body" label="Article text" hint="Leave a blank line between paragraphs." value={a.body} onChange={(v) => set("body", v)} />

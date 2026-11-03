@@ -10,9 +10,10 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const p = await findProject(slug)
   if (!p) return detailMetadata({ title: PAGE_SEO.projects.title, description: PAGE_SEO.projects.description, path: `/projects/${slug}` })
   return detailMetadata({
-    title: `${p.title} | Coastal Engineering Group`,
+    title: p.metaTitle ?? `${p.title} | Coastal Engineering Group`,
     description: p.description,
     path: `/projects/${p.slug}`,
+    image: p.image,
   })
 }
 

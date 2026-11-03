@@ -16,7 +16,7 @@ export default async function AccountPage() {
       <PageHeader title="My account" description={`${me.email} · ${me.role === "owner" ? "Owner" : "Editor"}`} />
       <div className="space-y-6">
         <Panel title="Name">
-          <form action={saveName} className="flex max-w-md gap-2">
+          <form key={me.name} action={saveName} className="flex max-w-md gap-2">
             <input name="name" defaultValue={me.name} placeholder="Your name" aria-label="Your name" maxLength={120} className={cn(controlCls, "h-9 flex-1")} />
             <Button type="submit" variant="outline">
               Save

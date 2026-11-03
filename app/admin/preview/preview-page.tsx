@@ -7,7 +7,7 @@ import type { SiteContent } from "@/lib/content"
 // site's own stylesheets and scripts; only the data differs. The banner forces
 // its link colour because the site's stylesheet styles every <a>.
 
-const EMPTY: SiteContent = { projects: [], news: [], openRoles: [], leaders: [], contact: null }
+const EMPTY: SiteContent = { projects: [], news: [], openRoles: [], leaders: [], contact: null, text: null }
 
 export function PreviewPage({
   content,

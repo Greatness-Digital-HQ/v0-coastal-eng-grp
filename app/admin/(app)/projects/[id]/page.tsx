@@ -53,6 +53,10 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
           year: p.year,
           blurb: p.blurb,
           image: p.image,
+          imageAlt: p.imageAlt,
+          gallery: p.gallery,
+          seoTitle: p.seoTitle,
+          seoDescription: p.seoDescription,
           scope: p.scope,
           scopeStats: p.scopeStats,
           challenge: p.challenge,
@@ -63,6 +67,9 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
         }}
       />
       <div className="mt-8 flex flex-wrap items-center gap-6 border-t pt-6 text-sm">
+        <Link href={`/admin/history/project/${p.id}`} className="text-sky-700 hover:underline">
+          Version history
+        </Link>
         {rev && (
           <form action={restoreProject}>
             <input type="hidden" name="id" value={p.id} />

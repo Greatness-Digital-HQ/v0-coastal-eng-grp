@@ -53,6 +53,9 @@ export default async function EditArticlePage({ params }: { params: Promise<{ id
           author: a.author,
           excerpt: a.excerpt,
           image: a.image,
+          imageAlt: a.imageAlt,
+          seoTitle: a.seoTitle,
+          seoDescription: a.seoDescription,
           body: a.body,
           tags: a.tags,
           status: a.status,
@@ -60,6 +63,9 @@ export default async function EditArticlePage({ params }: { params: Promise<{ id
         }}
       />
       <div className="mt-8 flex flex-wrap items-center gap-6 border-t pt-6 text-sm">
+        <Link href={`/admin/history/news/${a.id}`} className="text-sky-700 hover:underline">
+          Version history
+        </Link>
         {rev && (
           <form action={restoreArticle}>
             <input type="hidden" name="id" value={a.id} />

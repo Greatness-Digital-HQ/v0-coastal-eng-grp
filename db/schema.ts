@@ -51,6 +51,7 @@ export const sessions = pgTable(
 const status = () => text("status", { enum: ["draft", "published"] }).notNull().default("draft")
 
 export type ScopeStat = { value: string; label: string }
+export type GalleryPhoto = { url: string; alt: string }
 
 export const projects = pgTable("projects", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -65,6 +66,12 @@ export const projects = pgTable("projects", {
   year: text("year").notNull().default(""),
   blurb: text("blurb").notNull().default(""),
   image: text("image").notNull().default(""),
+  imageAlt: text("image_alt").notNull().default(""),
+  /** More photos shown on the project page, in order. */
+  gallery: jsonb("gallery").$type<GalleryPhoto[]>().notNull().default([]),
+  /** Search-result title and description; empty uses the title and summary. */
+  seoTitle: text("seo_title").notNull().default(""),
+  seoDescription: text("seo_description").notNull().default(""),
   scope: text("scope").array().notNull().default([]),
   scopeStats: jsonb("scope_stats").$type<ScopeStat[]>().notNull().default([]),
   challenge: text("challenge").notNull().default(""),
@@ -91,7 +98,10 @@ export const newsArticles = pgTable("news_articles", {
   /** One entry per paragraph. */
   body: text("body").array().notNull().default([]),
   image: text("image").notNull().default(""),
+  imageAlt: text("image_alt").notNull().default(""),
   tags: text("tags").array().notNull().default([]),
+  seoTitle: text("seo_title").notNull().default(""),
+  seoDescription: text("seo_description").notNull().default(""),
   status: status(),
   needsReview: boolean("needs_review").notNull().default(false),
   createdAt: createdAt(),
@@ -175,6 +185,8 @@ export const inquiries = pgTable(
     pageUrl: text("page_url").notNull().default(""),
     status: text("status", { enum: INQUIRY_STATUSES }).notNull().default("new"),
     notes: text("notes").notNull().default(""),
+    /** The team member handling it. */
+    assignedTo: uuid("assigned_to").references(() => users.id, { onDelete: "set null" }),
     /** Who it was emailed to, and whether that worked. */
     notifiedTo: text("notified_to").array().notNull().default([]),
     emailError: text("email_error"),
@@ -184,6 +196,40 @@ export const inquiries = pgTable(
     updatedAt: updatedAt(),
   },
   (t) => [index("inquiries_created_idx").on(t.createdAt), index("inquiries_status_idx").on(t.status)],
+)
+
+/** Replies sent from the dashboard, and the record of them. */
+export const inquiryMessages = pgTable(
+  "inquiry_messages",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    inquiryId: uuid("inquiry_id").notNull().references(() => inquiries.id, { onDelete: "cascade" }),
+    body: text("body").notNull(),
+    author: text("author").notNull(),
+    sentTo: text("sent_to").notNull(),
+    emailError: text("email_error"),
+    createdAt: createdAt(),
+  },
+  (t) => [index("inquiry_messages_inquiry_idx").on(t.inquiryId, t.createdAt)],
+)
+
+// ─── Media ───────────────────────────────────────────────────────────────────
+
+/** Every photo uploaded through the dashboard, for the photo library. */
+export const media = pgTable(
+  "media",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    url: text("url").notNull().unique(),
+    kind: text("kind").notNull(),
+    name: text("name").notNull().default(""),
+    width: integer("width"),
+    height: integer("height"),
+    bytes: integer("bytes"),
+    uploadedBy: text("uploaded_by"),
+    createdAt: createdAt(),
+  },
+  (t) => [index("media_created_idx").on(t.createdAt)],
 )
 
 // ─── Housekeeping ────────────────────────────────────────────────────────────
@@ -215,3 +261,5 @@ export type JobOpening = typeof jobOpenings.$inferSelect
 export type Leader = typeof leaders.$inferSelect
 export type Inquiry = typeof inquiries.$inferSelect
 export type User = typeof users.$inferSelect
+export type InquiryMessage = typeof inquiryMessages.$inferSelect
+export type Media = typeof media.$inferSelect

@@ -4,7 +4,7 @@ import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { MARKETS, SERVICES, slugify, US_STATES } from "@/lib/taxonomy"
-import { CheckboxGroup, ImageField, LinesField, SelectField, TextArea, TextField } from "../fields"
+import { CheckboxGroup, GalleryField, ImageField, LinesField, SelectField, SeoFields, TextArea, TextField } from "../fields"
 import { cn } from "@/lib/utils"
 import { controlCls } from "../control"
 import { EditorActions } from "../editor-actions"
@@ -111,8 +111,26 @@ export function ProjectEditor({ id, initial }: { id: string | null; initial: Pro
           </div>
         </Panel>
 
-        <Panel title="Photo">
-          <ImageField id="image" label="Main photo" kind="project" required value={p.image} onChange={(v) => set("image", v)} />
+        <Panel title="Photos">
+          <div className="space-y-8">
+            <ImageField
+              id="image"
+              label="Main photo"
+              kind="project"
+              required
+              value={p.image}
+              onChange={(v) => set("image", v)}
+              alt={p.imageAlt}
+              onAltChange={(v) => set("imageAlt", v)}
+            />
+            <GalleryField
+              id="gallery"
+              label="More photos"
+              hint="Shown in a gallery on the project page. Upload several at once; the first comes first."
+              value={p.gallery}
+              onChange={(v) => set("gallery", v)}
+            />
+          </div>
         </Panel>
 
         <Panel title="Project story">
@@ -121,6 +139,18 @@ export function ProjectEditor({ id, initial }: { id: string | null; initial: Pro
             <TextArea id="approach" label="Our approach" rows={4} max={3000} value={p.approach} onChange={(v) => set("approach", v)} />
             <TextArea id="outcome" label="The outcome" rows={4} max={3000} value={p.outcome} onChange={(v) => set("outcome", v)} />
           </div>
+        </Panel>
+
+        <Panel title="Search results">
+          <SeoFields
+            title={p.seoTitle}
+            description={p.seoDescription}
+            onTitle={(v) => set("seoTitle", v)}
+            onDescription={(v) => set("seoDescription", v)}
+            fallbackTitle={p.title ? `${p.title} | Coastal Engineering Group` : ""}
+            fallbackDescription={p.blurb}
+            path={`/projects/${p.slug || "…"}`}
+          />
         </Panel>
 
         <Panel title="Scope and numbers">

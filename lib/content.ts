@@ -1,7 +1,8 @@
 import { unstable_cache, updateTag } from "next/cache"
-import { asc, desc, eq, inArray } from "drizzle-orm"
+import { and, asc, desc, eq, inArray, lte } from "drizzle-orm"
 import { db, hasDatabase, schema } from "@/db"
 import type { NewsArticle, Project } from "@/db/schema"
+import { withDefaults, type PageText } from "./page-text"
 import { marketName, SERVICES } from "./taxonomy"
 
 // The published site content, in the shapes public/ceg/*.jsx already use.
@@ -14,6 +15,10 @@ export const CONTENT_TAG = "ceg-content"
 export type SiteProject = {
   slug: string
   title: string
+  seoTitle: string
+  seoDescription: string
+  imageAlt: string
+  gallery: { url: string; alt: string }[]
   client: string
   market: string
   services: string[]
@@ -32,6 +37,9 @@ export type SiteProject = {
 export type SiteArticle = {
   slug: string
   title: string
+  seoTitle: string
+  seoDescription: string
+  imageAlt: string
   date: string
   dateISO: string
   category: string
@@ -51,6 +59,8 @@ export type SiteContent = {
   openRoles: { title: string; division: string; location: string; type: string }[]
   leaders: { name: string; title: string; image: string | null; bio: string; responsibility: string }[]
   contact: SiteContact | null
+  /** Editable page text; null until someone saves it (the site then keeps its built-in copy). */
+  text: PageText | null
 }
 
 function longDate(iso: string): string {
@@ -67,6 +77,10 @@ export function toSiteProject(p: Project): SiteProject {
   return {
     slug: p.slug,
     title: p.title,
+    seoTitle: p.seoTitle,
+    seoDescription: p.seoDescription,
+    imageAlt: p.imageAlt,
+    gallery: p.gallery,
     client: p.client,
     market: marketName(p.market),
     services: p.services,
@@ -87,6 +101,9 @@ export function toSiteArticle(a: NewsArticle): SiteArticle {
   return {
     slug: a.slug,
     title: a.title,
+    seoTitle: a.seoTitle,
+    seoDescription: a.seoDescription,
+    imageAlt: a.imageAlt,
     date: longDate(a.publishedOn),
     dateISO: a.publishedOn,
     category: a.category,
@@ -104,10 +121,15 @@ async function load(): Promise<SiteContent> {
   const published = "published" as const
   const [projects, news, roles, leaders, contact] = await Promise.all([
     d.select().from(schema.projects).where(eq(schema.projects.status, published)).orderBy(asc(schema.projects.sortOrder), asc(schema.projects.createdAt)),
-    d.select().from(schema.newsArticles).where(eq(schema.newsArticles.status, published)).orderBy(desc(schema.newsArticles.publishedOn)),
+    // An article dated in the future is scheduled: it appears on its date.
+    d
+      .select()
+      .from(schema.newsArticles)
+      .where(and(eq(schema.newsArticles.status, published), lte(schema.newsArticles.publishedOn, todayInNewYork())))
+      .orderBy(desc(schema.newsArticles.publishedOn)),
     d.select().from(schema.jobOpenings).where(eq(schema.jobOpenings.status, published)).orderBy(asc(schema.jobOpenings.sortOrder)),
     d.select().from(schema.leaders).where(eq(schema.leaders.status, published)).orderBy(asc(schema.leaders.sortOrder)),
-    d.select().from(schema.settings).where(inArray(schema.settings.key, ["contact"])),
+    d.select().from(schema.settings).where(inArray(schema.settings.key, ["contact", "page_text"])),
   ])
   return {
     projects: projects.map(toSiteProject),
@@ -115,10 +137,18 @@ async function load(): Promise<SiteContent> {
     openRoles: roles.map((r) => ({ title: r.title, division: r.division, location: r.location, type: r.type })),
     leaders: leaders.map((l) => ({ name: l.name, title: l.title, image: l.image || null, bio: l.bio, responsibility: l.responsibility })),
     contact: (contact.find((c) => c.key === "contact")?.value as SiteContact | undefined) ?? null,
+    text: contact.some((c) => c.key === "page_text") ? withDefaults(contact.find((c) => c.key === "page_text")?.value) : null,
   }
 }
 
-const cached = unstable_cache(load, ["ceg-site-content-v1"], { tags: [CONTENT_TAG] })
+/** YYYY-MM-DD in Coastal's time zone. */
+export function todayInNewYork(): string {
+  return new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" })
+}
+
+// Also refreshed hourly, so a scheduled article goes live on its date
+// without anyone saving anything.
+const cached = unstable_cache(load, ["ceg-site-content-v2"], { tags: [CONTENT_TAG], revalidate: 3600 })
 
 /**
  * The published content, or null when there is no database or it can't be

@@ -425,4 +425,14 @@ const CAREERS = {
 
 if (CEG_DB) CAREERS.openRoles = CEG_DB.openRoles;
 
+// Page text edited in the dashboard (Pages → Edit page text).
+const CEG_TEXT = (CEG_DB && CEG_DB.text) || null;
+if (CEG_TEXT) {
+  STATS.splice(0, STATS.length, ...CEG_TEXT.stats);
+  CERTS.splice(0, CERTS.length, ...CEG_TEXT.certs);
+  CLIENTS.splice(0, CLIENTS.length, ...CEG_TEXT.clients);
+  Object.assign(CAREERS, { pitch: CEG_TEXT.careers.pitch, lede: CEG_TEXT.careers.lede, benefits: CEG_TEXT.careers.benefits });
+  CONTACT.hours = CEG_TEXT.hours;
+}
+
 window.CEG_DATA = { CAPABILITIES, DIVISIONS, MARKETS, PROJECTS, STATES_WORKED, CERTS, CLIENTS, STATS, LICENSED_STATES, NAV, CONTACT, CAREERS };

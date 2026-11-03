@@ -20,7 +20,7 @@ export default async function ProjectPreview({ params }: { params: Promise<{ slu
   const merged = projects.some((x) => x.slug === slug) ? projects.map((x) => (x.slug === slug ? draft : x)) : [...projects, draft]
   return (
     <PreviewPage
-      content={content ? { ...content, projects: merged } : { projects: [draft], news: [], openRoles: [], leaders: [], contact: null }}
+      content={content ? { ...content, projects: merged } : { projects: [draft], news: [], openRoles: [], leaders: [], contact: null, text: null }}
       app="project-detail-app"
       editHref={`/admin/projects/${p.id}`}
       status={p.status}

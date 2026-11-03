@@ -140,6 +140,67 @@ function DetailContent({ project }) {
   );
 }
 
+// ─── Photo gallery ────────────────────────────────────────────────────────────
+// Extra project photos added in the dashboard. A click opens the photo large
+// in a native <dialog>; arrow keys step through, Escape closes.
+function DetailGallery({ project }) {
+  const photos = project.gallery || [];
+  const [open, setOpen] = usePD(-1);
+  const dialogRef = React.useRef(null);
+
+  usePDE(() => {
+    const d = dialogRef.current;
+    if (!d) return;
+    if (open >= 0 && !d.open) d.showModal();
+    if (open < 0 && d.open) d.close();
+  }, [open]);
+
+  usePDE(() => {
+    if (open < 0) return;
+    const onKey = (e) => {
+      if (e.key === "ArrowRight") setOpen((i) => (i + 1) % photos.length);
+      if (e.key === "ArrowLeft") setOpen((i) => (i - 1 + photos.length) % photos.length);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, photos.length]);
+
+  if (!photos.length) return null;
+  const current = photos[open];
+  return (
+    <section className="prj-gallery" aria-labelledby="prj-gallery-h">
+      <div className="ceg-container">
+        <div className="ceg-eyebrow fed-eyebrow-blue"><span className="ceg-eyebrow-mark" /><span id="prj-gallery-h">Project Photos</span></div>
+        <div className="prj-gallery-grid">
+          {photos.map((ph, i) => (
+            <button key={ph.url} type="button" className="prj-gallery-item" onClick={() => setOpen(i)} aria-label={`Open photo ${i + 1} of ${photos.length}${ph.alt ? ": " + ph.alt : ""}`}>
+              <img src={ph.url} alt={ph.alt || `${project.title}, photo ${i + 1}`} loading="lazy" />
+            </button>
+          ))}
+        </div>
+      </div>
+      <dialog ref={dialogRef} className="prj-lightbox" onClose={() => setOpen(-1)} onClick={(e) => { if (e.target === e.currentTarget) setOpen(-1); }}>
+        {current && (
+          <figure>
+            <img src={current.url} alt={current.alt || `${project.title}, photo ${open + 1}`} />
+            <figcaption>
+              <span>{current.alt}</span>
+              <span>{open + 1} / {photos.length}</span>
+            </figcaption>
+          </figure>
+        )}
+        {photos.length > 1 && (
+          <>
+            <button type="button" className="prj-lightbox-nav prev" aria-label="Previous photo" onClick={() => setOpen((i) => (i - 1 + photos.length) % photos.length)}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg></button>
+            <button type="button" className="prj-lightbox-nav next" aria-label="Next photo" onClick={() => setOpen((i) => (i + 1) % photos.length)}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></button>
+          </>
+        )}
+        <button type="button" className="prj-lightbox-close" aria-label="Close" onClick={() => setOpen(-1)}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg></button>
+      </dialog>
+    </section>
+  );
+}
+
 // ─── Related projects ─────────────────────────────────────────────────────────
 function RelatedProjects({ project, allProjects }) {
   const related = allProjects
@@ -158,7 +219,7 @@ function RelatedProjects({ project, allProjects }) {
           {related.map((p) => (
             <a key={p.slug} href={`/projects/${p.slug}`} className="prj-card prj-card-sm">
               <div className="prj-card-media">
-                <img src={imgFor(p)} alt={p.title} loading="lazy" />
+                <img src={imgFor(p)} alt={p.imageAlt || p.title} loading="lazy" />
               </div>
               <div className="prj-card-body">
                 <div className="prj-card-meta">
@@ -190,7 +251,7 @@ function ProjectDetailApp() {
   usePDE(() => {
     document.body.dataset.concept = "drydock";
     document.body.dataset.page = "project-detail";
-    if (project) document.title = `${project.title} — Coastal Engineering Group`;
+    if (project) document.title = project.seoTitle || `${project.title} — Coastal Engineering Group`;
   }, []);
 
   return (
@@ -203,6 +264,7 @@ function ProjectDetailApp() {
             <DetailHero project={project} />
             <DetailStatBand project={project} />
             <DetailContent project={project} />
+            <DetailGallery project={project} />
             <RelatedProjects project={project} allProjects={data.PROJECTS} />
           </>
         ) : (

@@ -12,7 +12,7 @@
 
 import { getSiteContent } from "@/lib/content"
 
-export type DetailSeo = { slug: string; title: string; description: string }
+export type DetailSeo = { slug: string; title: string; description: string; metaTitle?: string; image?: string }
 
 export const PROJECT_SEO: DetailSeo[] = [
   { slug: "railroad-bridge-inspection", title: "Railroad Bridge Inspection Over Open Water", description: "Underwater inspection of timber pile substructure on active overwater railroad bridge crossing." },
@@ -36,12 +36,16 @@ export const NEWS_SEO: DetailSeo[] = [
 
 export async function projectSeo(): Promise<DetailSeo[]> {
   const c = await getSiteContent()
-  return c ? c.projects.map((p) => ({ slug: p.slug, title: p.title, description: p.blurb })) : PROJECT_SEO
+  return c
+    ? c.projects.map((p) => ({ slug: p.slug, title: p.title, description: p.seoDescription || p.blurb, metaTitle: p.seoTitle || undefined, image: p.image || undefined }))
+    : PROJECT_SEO
 }
 
 export async function newsSeo(): Promise<DetailSeo[]> {
   const c = await getSiteContent()
-  return c ? c.news.map((a) => ({ slug: a.slug, title: a.title, description: a.excerpt })) : NEWS_SEO
+  return c
+    ? c.news.map((a) => ({ slug: a.slug, title: a.title, description: a.seoDescription || a.excerpt, metaTitle: a.seoTitle || undefined, image: a.image || undefined }))
+    : NEWS_SEO
 }
 
 export async function findProject(slug: string): Promise<DetailSeo | undefined> {

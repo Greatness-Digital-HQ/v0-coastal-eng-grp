@@ -15,7 +15,7 @@ function FeaturedArticle({ article }) {
   return (
     <a href={`/insights/news/${article.slug}`} className="nws-featured">
       <div className="nws-featured-media">
-        <img src={article.image} alt={article.title} loading="eager" />
+        <img src={article.image} alt={article.imageAlt || article.title} loading="eager" />
       </div>
       <div className="nws-featured-body">
         <div className="nws-featured-top">
@@ -36,7 +36,7 @@ function NewsCard({ article }) {
   return (
     <a href={`/insights/news/${article.slug}`} className="nws-card">
       <div className="nws-card-media">
-        <img src={article.image} alt={article.title} loading="lazy" />
+        <img src={article.image} alt={article.imageAlt || article.title} loading="lazy" />
         <span className="nws-cat-badge nws-cat-badge-abs" style={{ background: cc.bg, color: cc.text }}>{article.category}</span>
       </div>
       <div className="nws-card-body">

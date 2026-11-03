@@ -32,6 +32,9 @@ export default async function EditLeaderPage({ params }: { params: Promise<{ id:
         initial={{ name: l.name, title: l.title, bio: l.bio, responsibility: l.responsibility, image: l.image, status: l.status }}
       />
       <div className="mt-8 flex flex-wrap items-center gap-6 border-t pt-6 text-sm">
+        <Link href={`/admin/history/leader/${l.id}`} className="text-sky-700 hover:underline">
+          Version history
+        </Link>
         {rev && (
           <form action={restoreLeader}>
             <input type="hidden" name="id" value={l.id} />
