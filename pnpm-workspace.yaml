@@ -1,0 +1,5 @@
+onlyBuiltDependencies:
+  - esbuild
+ignoredBuiltDependencies:
+  - '@embedded-postgres/windows-x64'
+  - sharp

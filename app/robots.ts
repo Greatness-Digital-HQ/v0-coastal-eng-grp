@@ -6,7 +6,7 @@ import { SITE } from "./seo"
 // Vercel's deployment protection rather than by a blanket disallow here.
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [{ userAgent: "*", allow: "/" }],
+    rules: [{ userAgent: "*", allow: "/", disallow: "/admin" }],
     sitemap: `${SITE}/sitemap.xml`,
   }
 }

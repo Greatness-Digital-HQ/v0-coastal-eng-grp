@@ -1,14 +1,16 @@
-// Metadata source for the two detail-page templates.
+// Metadata source for the two detail-page templates and the sitemap.
 //
-// Mirrors /public/ceg/data.jsx (PROJECTS) and /public/ceg/news-data.jsx so the
-// server can emit a unique title and description per project and article. Keep
-// the two in sync when either list changes.
+// Projects and articles come from the dashboard (lib/content.ts). The lists
+// below are the fallback for when the database can't be reached, and mirror
+// the built-in copies in /public/ceg/data.jsx and /public/ceg/news-data.jsx.
 //
 // ⚠ PROVENANCE: the client-named projects and dated announcements below were
 // authored during the original v0 prototype build and have NOT been confirmed
 // against Coastal's project record. Every client name, quantity, and award
 // claim must be verified — or the entry removed — before production launch.
 // See the Final Verification Gate in the client edit package.
+
+import { getSiteContent } from "@/lib/content"
 
 export type DetailSeo = { slug: string; title: string; description: string }
 
@@ -32,10 +34,20 @@ export const NEWS_SEO: DetailSeo[] = [
   { slug: "csx-bridge-inspection-complete", title: "Railroad Bridge Inspection for CSX Delivered with Zero Rail Service Disruption", description: "CEG completed a full structural underwater inspection of a CSX overwater railroad bridge in New York, delivering a PE-stamped condition report in 10 business days with no interruption to daily freight operations." },
 ]
 
-export function findProject(slug: string): DetailSeo | undefined {
-  return PROJECT_SEO.find((p) => p.slug === slug)
+export async function projectSeo(): Promise<DetailSeo[]> {
+  const c = await getSiteContent()
+  return c ? c.projects.map((p) => ({ slug: p.slug, title: p.title, description: p.blurb })) : PROJECT_SEO
 }
 
-export function findArticle(slug: string): DetailSeo | undefined {
-  return NEWS_SEO.find((n) => n.slug === slug)
+export async function newsSeo(): Promise<DetailSeo[]> {
+  const c = await getSiteContent()
+  return c ? c.news.map((a) => ({ slug: a.slug, title: a.title, description: a.excerpt })) : NEWS_SEO
+}
+
+export async function findProject(slug: string): Promise<DetailSeo | undefined> {
+  return (await projectSeo()).find((p) => p.slug === slug)
+}
+
+export async function findArticle(slug: string): Promise<DetailSeo | undefined> {
+  return (await newsSeo()).find((n) => n.slug === slug)
 }

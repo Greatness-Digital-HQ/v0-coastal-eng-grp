@@ -28,3 +28,8 @@ next-env.d.ts
 # compiled site scripts (scripts/build-ceg.mjs)
 /public/ceg-dist
 /app/ceg-manifest.json
+
+# dashboard: local Postgres and the local email outbox
+/.local-db
+/.mail
+/public/uploads

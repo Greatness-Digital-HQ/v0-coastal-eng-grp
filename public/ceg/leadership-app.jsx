@@ -28,6 +28,8 @@ const LEADERSHIP_DATA = {
   ],
   pending: "Additional division and shared-services leadership profiles are being finalized.",
 };
+// Profiles published in the dashboard replace the built-in card (see data.jsx).
+if (window.CEG_DB) LEADERSHIP_DATA.leaders = window.CEG_DB.leaders;
 
 function LeadershipHero() {
   return (

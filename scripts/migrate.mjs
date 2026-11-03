@@ -1,0 +1,127 @@
+// Brings the database up to date: applies drizzle/ migrations, adds the owners
+// named in OWNER_EMAILS, and on a brand-new database imports the content that
+// used to be hard-coded in public/ceg (8 projects, 6 articles, open roles,
+// Kevin's leadership card, contact details).
+//
+//   node scripts/migrate.mjs     (also run by vercel.json before next build)
+//
+// The import runs once per database (settings.seeded_at), so deleting every
+// project in the dashboard never brings the prototype ones back.
+import fs from "node:fs"
+import path from "node:path"
+import vm from "node:vm"
+import { fileURLToPath } from "node:url"
+import { config } from "dotenv"
+import pg from "pg"
+import { drizzle } from "drizzle-orm/node-postgres"
+import { migrate } from "drizzle-orm/node-postgres/migrator"
+
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..")
+config({ path: path.join(ROOT, ".env.local"), quiet: true })
+
+const url = process.env.DATABASE_URL
+if (!url) {
+  if (process.env.VERCEL) {
+    console.error("migrate: DATABASE_URL is not set on this deployment")
+    process.exit(1)
+  }
+  console.log("migrate: no DATABASE_URL, skipped (the site uses its built-in content)")
+  process.exit(0)
+}
+
+const pool = new pg.Pool({ connectionString: url.replace(/sslmode=require\b/, "sslmode=verify-full"), max: 1 })
+
+try {
+  await migrate(drizzle(pool), { migrationsFolder: path.join(ROOT, "drizzle") })
+  await addOwners()
+  await seedOnce()
+  console.log(`migrate: up to date (${new URL(url).host})`)
+} finally {
+  await pool.end()
+}
+
+async function addOwners() {
+  const emails = (process.env.OWNER_EMAILS ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean)
+  for (const email of emails) {
+    await pool.query(
+      `insert into users (email, role) values ($1, 'owner')
+       on conflict (email) do update set role = 'owner', disabled_at = null`,
+      [email],
+    )
+  }
+}
+
+/** Runs a public/ceg data file the way the browser would and returns its window globals. */
+function loadSiteData(file) {
+  const window = {}
+  vm.runInNewContext(fs.readFileSync(path.join(ROOT, "public", "ceg", file), "utf8"), { window })
+  return window
+}
+
+/** The LEADERSHIP_DATA object literal from leadership-app.jsx (the rest of that file is JSX). */
+function loadLeadership() {
+  const src = fs.readFileSync(path.join(ROOT, "public", "ceg", "leadership-app.jsx"), "utf8")
+  const m = src.match(/const LEADERSHIP_DATA = (\{[\s\S]*?\n\});/)
+  return m ? vm.runInNewContext(`(${m[1]})`) : { leaders: [] }
+}
+
+async function seedOnce() {
+  const done = await pool.query("select 1 from settings where key = 'seeded_at'")
+  if (done.rowCount) return
+
+  const { CEG_DATA } = loadSiteData("data.jsx")
+  const { CEG_NEWS } = loadSiteData("news-data.jsx")
+  const marketKey = Object.fromEntries(CEG_DATA.MARKETS.map((m) => [m.name, m.key]))
+
+  const client = await pool.connect()
+  try {
+    await client.query("begin")
+    for (const [i, p] of CEG_DATA.PROJECTS.entries()) {
+      await client.query(
+        `insert into projects (slug, title, client, market, services, state, year, blurb, image, scope, scope_stats,
+           challenge, approach, outcome, status, sort_order, needs_review, updated_by)
+         values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,'published',$15,true,'import')
+         on conflict (slug) do nothing`,
+        [p.slug, p.title, p.client ?? "", marketKey[p.market] ?? p.market, p.services ?? [], p.state ?? "", p.year ?? "",
+          p.blurb ?? "", p.image ?? "", p.scope ?? [], JSON.stringify(p.scopeStats ?? []), p.challenge ?? "", p.approach ?? "",
+          p.outcome ?? "", (i + 1) * 10],
+      )
+    }
+    for (const a of CEG_NEWS) {
+      await client.query(
+        `insert into news_articles (slug, title, published_on, category, author, excerpt, body, image, tags, status, needs_review, updated_by)
+         values ($1,$2,$3,$4,$5,$6,$7,$8,$9,'published',true,'import')
+         on conflict (slug) do nothing`,
+        [a.slug, a.title, a.dateISO, a.category, a.author ?? "", a.excerpt ?? "", a.body ?? [], a.image ?? "", a.tags ?? []],
+      )
+    }
+    for (const [i, r] of CEG_DATA.CAREERS.openRoles.entries()) {
+      await client.query(
+        `insert into job_openings (title, division, location, type, status, sort_order, updated_by)
+         values ($1,$2,$3,$4,'published',$5,'import')`,
+        [r.title, r.division ?? "", r.location ?? "", r.type ?? "Full-time", (i + 1) * 10],
+      )
+    }
+    for (const [i, l] of loadLeadership().leaders.entries()) {
+      await client.query(
+        `insert into leaders (name, title, bio, responsibility, image, status, sort_order, updated_by)
+         values ($1,$2,$3,$4,$5,'published',$6,'import')`,
+        [l.name, l.title ?? "", l.bio ?? "", l.responsibility ?? "", l.image ?? "", (i + 1) * 10],
+      )
+    }
+    const c = CEG_DATA.CONTACT
+    const contact = { phone: c.phone, email: c.email, locations: c.locations, linkedin: c.linkedin ?? "" }
+    await client.query(
+      `insert into settings (key, value, updated_by) values ('contact', $1, 'import') on conflict (key) do nothing`,
+      [JSON.stringify(contact)],
+    )
+    await client.query(`insert into settings (key, value) values ('seeded_at', $1)`, [JSON.stringify(new Date().toISOString())])
+    await client.query("commit")
+    console.log(`migrate: imported ${CEG_DATA.PROJECTS.length} projects, ${CEG_NEWS.length} articles, ${CEG_DATA.CAREERS.openRoles.length} roles`)
+  } catch (e) {
+    await client.query("rollback")
+    throw e
+  } finally {
+    client.release()
+  }
+}

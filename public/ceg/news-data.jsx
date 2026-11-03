@@ -1,7 +1,8 @@
 // CEG — News & Insights content
 // Each article: slug, title, date, category, author, excerpt, body[], image, tags, readTime
 
-const CEG_NEWS = [
+// Built-in fallback; the dashboard's published articles replace it (see data.jsx).
+const BUILTIN_NEWS = [
   {
     slug: "navfac-macc-award-2025",
     title: "Coastal Engineering Group Awarded NAVFAC Mid-Atlantic MACC Task Order",
@@ -114,4 +115,4 @@ const CEG_NEWS = [
   },
 ];
 
-window.CEG_NEWS = CEG_NEWS;
+window.CEG_NEWS = window.CEG_DB ? window.CEG_DB.news : BUILTIN_NEWS;
