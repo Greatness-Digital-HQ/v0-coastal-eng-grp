@@ -6069,18 +6069,42 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; text-decoration: none;
-  transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .4s cubic-bezier(.22,1,.36,1);
+  /* Hover-only transition — deliberately just `transform`, with no delay,
+     so every hex responds at the same speed regardless of its position in
+     the ring (see the bloom-in keyframes below for why this used to not
+     be true). */
+  transition: transform .4s cubic-bezier(.22,1,.36,1);
 }
 /* Entrance animation — hexagons bloom outward from the center on scroll-in,
-   staggered via inline transitionDelay in the JSX. Gated behind
-   prefers-reduced-motion so the base translate(-50%,-50%) positioning
-   (needed for layout, not just animation) is never disturbed for anyone
-   who has motion turned down. */
+   staggered via the --ceg-reveal-delay custom property set inline in the
+   JSX. This is a CSS *animation*, not a *transition*: an element's
+   transition-delay applies to every transition on that element for as
+   long as the inline style exists, which previously made the hover scale
+   above (also a `transform` transition) inherit the same per-hex stagger
+   delay — so hovering a hex further around the ring (a bigger delay)
+   visibly took longer to respond, even though nothing about the hover
+   itself was slower. animation-delay only affects this animation, so
+   hover stays equally fast for every hex once the one-time bloom-in has
+   played. `backwards` holds the "from" keyframe during the delay, then
+   hands control back to the plain cascade (including :hover) once the
+   animation ends — nothing lingers to block the hover transition
+   afterward. Gated behind prefers-reduced-motion so the base
+   translate(-50%,-50%) positioning (needed for layout, not just
+   animation) is never disturbed for anyone who has motion turned down. */
+@keyframes ceg-markets-diagram-bloom {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
 @media (prefers-reduced-motion: no-preference) and (min-width: 721px) {
   .ceg-markets-diagram:not(.is-revealed) .ceg-markets-diagram-center,
   .ceg-markets-diagram:not(.is-revealed) .ceg-markets-diagram-node {
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.5);
+  }
+  .ceg-markets-diagram.is-revealed .ceg-markets-diagram-center,
+  .ceg-markets-diagram.is-revealed .ceg-markets-diagram-node {
+    animation: ceg-markets-diagram-bloom .6s cubic-bezier(.22,1,.36,1) backwards;
+    animation-delay: var(--ceg-reveal-delay, 0s);
   }
 }
 /* One independent connector per market (not one monolithic diagram svg) so
@@ -6156,16 +6180,23 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .ceg-markets-diagram-node-index {
   font-family: var(--font-barlow, "Barlow", sans-serif); font-weight: 800; font-size: 11px;
   letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.72);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
+/* Text-shadow here is two layers: a tight near-zero-blur pass that reads
+   as a thin dark outline hugging the letterforms (what actually fixes
+   legibility against a bright patch of photo), plus a softer wider pass
+   for a bit of lift/depth. One shadow alone was either an outline with no
+   depth or depth with no outline. */
 .ceg-markets-diagram-node-name {
   font-family: var(--font-barlow, "Barlow", sans-serif); font-weight: 800; font-size: 19px; line-height: 1.2;
-  color: #fff; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+  color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75), 0 0 10px rgba(0, 0, 0, 0.45);
   transition: transform .18s ease-out;
 }
 .ceg-markets-diagram-node:hover .ceg-markets-diagram-node-name { transform: translateY(-2px); }
 .ceg-markets-diagram-node-detail {
   font-family: var(--font-inter, "Inter", sans-serif); font-weight: 500; font-size: 12.5px; line-height: 1.4;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75), 0 0 8px rgba(0, 0, 0, 0.45);
   max-width: 92%; max-height: 0; opacity: 0; overflow: hidden; margin-top: 0;
   transition: max-height .2s ease-out, opacity .15s ease-out, margin-top .2s ease-out;
 }
