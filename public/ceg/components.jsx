@@ -1913,10 +1913,35 @@ function FinalCTA({ data }) {
 // Services with a short blurb + link out (their homepage has no services
 // grid, just this), and (3) visualizes Markets as a radial diagram — the
 // piece their homepage actually gives visual weight to, not services.
+
+// Closest-matching project photography on hand for each market, tinted with
+// that market's own MARKETS[].color in the hex itself (see styles.css) — same
+// mapping as the dedicated /markets page (markets-overview-app.jsx).
+const MARKET_HEX_PHOTOS = {
+  federal: "/assets/federal-hero-bg.webp",
+  transportation: "/assets/railroad-bridge-inspection.webp",
+  ports: "/assets/marine-services.webp",
+  water: "/assets/water-tank-repair.webp",
+  dams: "/assets/federal-project-dam.webp",
+  "energy-industrial": "/assets/cable-relocation.webp",
+};
+
+// Rounded-hex outline — same silhouette as the old sharp-pointed polygon,
+// just with each corner eased into a short curve so it reads as a refined
+// shape rather than a flat clip-art hexagon.
+const HEX_PATH = "M4.472,41.056 L20.528,8.944 Q25,0 35,0 L65,0 Q75,0 79.472,8.944 L95.528,41.056 Q100,50 95.528,58.944 L79.472,91.056 Q75,100 65,100 L35,100 Q25,100 20.528,91.056 L4.472,58.944 Q0,50 4.472,41.056 Z";
+
+// Two different center-to-node radii, not one — these hexagons are drawn to
+// fill a *square* bounding box, so the distance from center to edge is
+// shorter on the diagonals than straight up/down. A single uniform radius
+// (the original approach) put the top/bottom hexes almost flush against the
+// center hex while leaving a visibly wider gap on the four diagonals. These
+// two values were solved so the gap reads as equal in all six directions.
+const HEX_RADIUS_VERTICAL = 36;
+const HEX_RADIUS_DIAGONAL = 32.7;
+
 function NarrativeIntro({ data }) {
   const markets = (data && data.MARKETS) || [];
-  const radius = 36;
-  const startAngle = -90;
   const diagramRef = useReveal(0.25);
 
   return (
@@ -1987,16 +2012,47 @@ function NarrativeIntro({ data }) {
             </a>
           </div>
           <div className="ceg-markets-diagram" ref={diagramRef}>
-            <a href="/markets" className="ceg-markets-diagram-center" style={{ transitionDelay: "0.05s" }}>
-              <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                <polygon points="25,0 75,0 100,50 75,100 25,100 0,50" strokeLinejoin="round" />
-              </svg>
-              <span className="ceg-markets-diagram-center-label">Markets<br />We Serve</span>
-            </a>
+
+            {/* Spokes — one independent connector per market, drawn behind
+                the hexes so only the gap between center and node shows. */}
             {markets.map((m, i) => {
-              const angle = (startAngle + (360 / markets.length) * i) * (Math.PI / 180);
+              const isVertical = i === 0 || i === Math.floor(markets.length / 2);
+              const radius = isVertical ? HEX_RADIUS_VERTICAL : HEX_RADIUS_DIAGONAL;
+              const angle = (-90 + (360 / markets.length) * i) * (Math.PI / 180);
               const x = 50 + radius * Math.cos(angle);
               const y = 50 + radius * Math.sin(angle);
+              return (
+                <svg key={`spoke-${m.key}`} className="ceg-markets-diagram-spoke" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <line x1="50" y1="50" x2={x} y2={y} />
+                </svg>
+              );
+            })}
+
+            <a href="/markets" className="ceg-markets-diagram-center" style={{ transitionDelay: "0.05s" }}>
+              <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="ceg-markets-center-grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stopColor="var(--brand-hi, #1f4d8a)" />
+                    <stop offset="1" stopColor="var(--brand, #13386a)" />
+                  </linearGradient>
+                </defs>
+                <path d={HEX_PATH} fill="url(#ceg-markets-center-grad)" />
+                <path d={HEX_PATH} fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+              </svg>
+              <img src="/assets/logo-mark.png" alt="" aria-hidden="true" className="ceg-markets-diagram-center-mark" />
+              <span className="ceg-markets-diagram-center-label">
+                Markets<br />We Serve
+                <span className="ceg-markets-diagram-center-sub">Six Sectors</span>
+              </span>
+            </a>
+
+            {markets.map((m, i) => {
+              const isVertical = i === 0 || i === Math.floor(markets.length / 2);
+              const radius = isVertical ? HEX_RADIUS_VERTICAL : HEX_RADIUS_DIAGONAL;
+              const angle = (-90 + (360 / markets.length) * i) * (Math.PI / 180);
+              const x = 50 + radius * Math.cos(angle);
+              const y = 50 + radius * Math.sin(angle);
+              const clipId = `ceg-markets-hex-clip-${m.key}`;
               return (
                 <a
                   key={m.key}
@@ -2005,10 +2061,21 @@ function NarrativeIntro({ data }) {
                   style={{ left: `${x}%`, top: `${y}%`, transitionDelay: `${0.16 + i * 0.09}s` }}
                 >
                   <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                    <polygon points="25,0 75,0 100,50 75,100 25,100 0,50" strokeLinejoin="round" />
+                    <defs>
+                      <clipPath id={clipId}><path d={HEX_PATH} /></clipPath>
+                    </defs>
+                    <image href={MARKET_HEX_PHOTOS[m.key]} width="100" height="100" preserveAspectRatio="xMidYMid slice" clipPath={`url(#${clipId})`} />
+                    <rect className="ceg-markets-diagram-hex-tint" width="100" height="100" fill={m.color} clipPath={`url(#${clipId})`} />
+                    <path className="ceg-markets-diagram-hex-outline" d={HEX_PATH} fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
                   </svg>
-                  <span className="ceg-markets-diagram-node-name">{m.name}</span>
-                  <span className="ceg-markets-diagram-node-detail">{m.detail}</span>
+                  <div className="ceg-markets-diagram-node-body">
+                    <span className="ceg-markets-diagram-node-index">0{i + 1}</span>
+                    <span className="ceg-markets-diagram-node-name">{m.name}</span>
+                    <span className="ceg-markets-diagram-node-detail">{m.detail}</span>
+                  </div>
+                  <span className="ceg-markets-diagram-node-arrow" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" strokeWidth="1.8" strokeLinecap="square" /></svg>
+                  </span>
                 </a>
               );
             })}
