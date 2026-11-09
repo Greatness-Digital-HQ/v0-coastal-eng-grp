@@ -6042,7 +6042,7 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .ceg-markets-diagram-wrap { padding: 56px 0 24px; border-top: 1px solid var(--rule, #e0d9cb); }
 .ceg-markets-diagram-head { text-align: center; margin-bottom: 40px; }
 .ceg-markets-diagram-h3 {
-  font-family: var(--font-display); font-weight: 700; font-size: 24px;
+  font-family: var(--font-barlow, "Barlow", sans-serif); font-weight: 800; font-size: 28px;
   color: var(--brand); margin: 0; letter-spacing: -0.01em;
 }
 /* Mobile-only "view all" link — see the note by the JSX that renders it. */
@@ -6053,10 +6053,16 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   color: var(--brand); text-decoration: none; margin-top: 10px;
 }
 .ceg-markets-diagram-head-link:hover { color: var(--brand-hi, var(--brand)); }
+
+/* Faint blueprint texture behind the hive — a dot grid plus a soft glow
+   under the center hex, instead of the plain flat backdrop. */
 .ceg-markets-diagram {
-  /* ~50% bigger per Kevin's ask (was max-width: 560px) */
   position: relative; width: 100%; max-width: 840px; aspect-ratio: 1 / 1;
   margin: 0 auto;
+  background-image:
+    radial-gradient(ellipse at 50% 50%, rgba(19, 56, 106, 0.08) 0%, rgba(19, 56, 106, 0) 55%),
+    radial-gradient(rgba(19, 56, 106, 0.14) 1px, transparent 1.4px);
+  background-size: 100% 100%, 22px 22px;
 }
 .ceg-markets-diagram-center,
 .ceg-markets-diagram-node {
@@ -6077,87 +6083,136 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
     transform: translate(-50%, -50%) scale(0.5);
   }
 }
-/* CSS border + clip-path only paints the hexagon's horizontal edges — an SVG
-   polygon with a stroke renders uniformly on every edge, including the
-   diagonals, so the shape itself moved to SVG. A drop-shadow filter (rather
-   than box-shadow, which would box off the corners) follows the hex outline
-   itself for a subtle lift. */
+/* One independent connector per market (not one monolithic diagram svg) so
+   each stays its own placed element — drawn behind the hexes, so only the
+   gap between center and node ever shows. */
+.ceg-markets-diagram-spoke {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+}
+.ceg-markets-diagram-spoke line { stroke: rgba(19, 56, 106, 0.22); stroke-width: 0.6; }
+
+/* Rounded-hex outline (softened corners, same silhouette) with the photo +
+   per-market color tint + stroke all drawn inside — a drop-shadow filter
+   (not box-shadow, which would box off the corners) follows the hex outline
+   for a subtle lift. */
 .ceg-markets-diagram-hex {
   position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;
-  filter: drop-shadow(0 8px 16px rgba(10, 24, 40, 0.10));
-  transition: filter .25s ease;
+  filter: drop-shadow(0 10px 22px rgba(10, 24, 40, 0.14));
+  transition: filter .18s ease-out;
 }
-.ceg-markets-diagram-hex polygon { transition: fill .25s ease, stroke .25s ease; }
-.ceg-markets-diagram-center-label,
-.ceg-markets-diagram-node-name,
-.ceg-markets-diagram-node-detail {
-  position: relative; z-index: 1;
-  max-width: 62%;
+.ceg-markets-diagram-hex-tint,
+.ceg-markets-diagram-hex-outline { transition: opacity .18s ease-out, stroke .18s ease-out, stroke-width .18s ease-out; }
+.ceg-markets-diagram-hex-tint { opacity: 0.62; }
+
+.ceg-markets-diagram-center-label {
+  position: relative; z-index: 2; max-width: 62%;
 }
 .ceg-markets-diagram-center {
   width: 34%; aspect-ratio: 1 / 1;
   color: #fff;
-  font-family: var(--font-display); font-weight: 700; font-size: 22px;
-  line-height: 1.3; z-index: 2; padding: 8px;
+  font-family: var(--font-barlow, "Barlow", sans-serif); font-weight: 800; font-size: 22px;
+  line-height: 1.25; z-index: 2; padding: 8px;
 }
 .ceg-markets-diagram-center .ceg-markets-diagram-hex {
   filter: drop-shadow(0 12px 26px rgba(11, 45, 94, 0.32));
 }
-.ceg-markets-diagram-center .ceg-markets-diagram-hex polygon {
-  fill: var(--brand); stroke: rgba(255, 255, 255, 0.22); stroke-width: 1.5;
-  vector-effect: non-scaling-stroke;
+/* The actual brand mark, faded into the center hex — not a generic icon.
+   brightness(0) invert(1) forces the navy mark to flat white, same trick
+   used on every other dark-background logo placement on this site (footer,
+   mobile flyout, admin header). */
+.ceg-markets-diagram-center-mark {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 58%; height: auto; z-index: 1;
+  filter: brightness(0) invert(1); opacity: 0.3;
 }
+.ceg-markets-diagram-center-sub {
+  display: block; font-family: var(--font-inter, "Inter", sans-serif); font-weight: 500; font-size: 11px;
+  letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.72); margin-top: 7px;
+}
+
 .ceg-markets-diagram-node {
   width: 30%; aspect-ratio: 1 / 1;
-  padding: 14px; gap: 4px; z-index: 1;
+  z-index: 1;
 }
-.ceg-markets-diagram-node .ceg-markets-diagram-hex polygon {
-  fill: var(--bg, #fbfaf7); stroke: var(--rule, #e0d9cb); stroke-width: 1.75;
-  vector-effect: non-scaling-stroke;
-}
-.ceg-markets-diagram-node:hover { transform: translate(-50%, -50%) scale(1.06); }
+.ceg-markets-diagram-node:hover { z-index: 2; transform: translate(-50%, -50%) scale(1.06); }
 .ceg-markets-diagram-node:hover .ceg-markets-diagram-hex {
-  filter: drop-shadow(0 14px 24px rgba(11, 45, 94, 0.20));
+  filter: drop-shadow(0 18px 30px rgba(11, 45, 94, 0.26));
 }
-.ceg-markets-diagram-node:hover .ceg-markets-diagram-hex polygon {
-  fill: var(--brand-soft, #e5ecf6); stroke: var(--brand);
+.ceg-markets-diagram-node:hover .ceg-markets-diagram-hex-tint { opacity: 0.38; }
+.ceg-markets-diagram-node:hover .ceg-markets-diagram-hex-outline { stroke: rgba(255, 255, 255, 0.85); stroke-width: 2.4; }
+
+/* Padding lives here, not on .ceg-markets-diagram-node itself — percentage
+   padding always resolves against the *containing block's* width, and
+   since the node is absolutely positioned, that containing block is the
+   840px hive wrapper, not the node's own ~252px box. Padding there blew
+   past the box's own width and collapsed the content to ~0px. Putting it
+   on this ordinary (non-positioned) child instead makes the percentage
+   resolve against the node's own resolved width, as intended. */
+.ceg-markets-diagram-node-body {
+  position: relative; z-index: 1; width: 100%; height: 100%; box-sizing: border-box;
+  padding: 14% 16%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+}
+.ceg-markets-diagram-node-index {
+  font-family: var(--font-barlow, "Barlow", sans-serif); font-weight: 800; font-size: 11px;
+  letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.72);
 }
 .ceg-markets-diagram-node-name {
-  font-family: var(--font-display); font-weight: 700; font-size: 21px; color: var(--ink);
+  font-family: var(--font-barlow, "Barlow", sans-serif); font-weight: 800; font-size: 19px; line-height: 1.2;
+  color: #fff; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+  transition: transform .18s ease-out;
 }
+.ceg-markets-diagram-node:hover .ceg-markets-diagram-node-name { transform: translateY(-2px); }
 .ceg-markets-diagram-node-detail {
-  font-family: var(--font-inter, "Inter", sans-serif); font-size: 16px;
-  color: var(--ink-soft); line-height: 1.3;
+  font-family: var(--font-inter, "Inter", sans-serif); font-weight: 500; font-size: 12.5px; line-height: 1.4;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 92%; max-height: 0; opacity: 0; overflow: hidden; margin-top: 0;
+  transition: max-height .2s ease-out, opacity .15s ease-out, margin-top .2s ease-out;
 }
-/* Six markets with longer subtitles (round 1) no longer fit inside a hex —
-   the radial view shows names only; the stacked mobile list keeps both. */
-@media (min-width: 721px) {
-  .ceg-markets-diagram-node-detail { display: none; }
-  .ceg-markets-diagram-node-name { font-size: 19px; line-height: 1.2; }
+.ceg-markets-diagram-node:hover .ceg-markets-diagram-node-detail { max-height: 70px; opacity: 1; margin-top: 2px; }
+.ceg-markets-diagram-node-arrow {
+  position: absolute; z-index: 1; bottom: 12%; left: 50%; transform: translate(-50%, 6px);
+  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%; background: rgba(255, 255, 255, 0.16);
+  opacity: 0; transition: opacity .18s ease-out, transform .18s ease-out, background .18s ease-out;
 }
+.ceg-markets-diagram-node:hover .ceg-markets-diagram-node-arrow {
+  opacity: 1; transform: translate(-50%, 0); background: rgba(255, 255, 255, 0.28);
+}
+
 /* Below 720px the radial layout gets too cramped to read — collapse it
    into a plain stacked grid instead of hiding the markets content. The
    center hex is dropped here (it just repeated the "Markets Served by
-   Coastal" heading above it once stacked) in favor of the head-link. */
+   Coastal" heading above it once stacked) in favor of the head-link. The
+   photo hex becomes a flat color-coded card so the detail copy stays the
+   focus at this width. */
 @media (max-width: 720px) {
   .ceg-markets-diagram-head-link { display: inline-flex; }
   .ceg-markets-diagram {
-    max-width: none; aspect-ratio: auto;
+    max-width: none; aspect-ratio: auto; background-image: none;
     display: grid; grid-template-columns: 1fr; gap: 12px;
   }
+  .ceg-markets-diagram-spoke { display: none; }
   .ceg-markets-diagram-center { display: none; }
   .ceg-markets-diagram-node {
     position: static; transform: none; opacity: 1;
     width: 100%; aspect-ratio: auto;
     border-radius: 8px;
-    flex-direction: column; align-items: flex-start; justify-content: center; gap: 3px;
+    flex-direction: row; align-items: center; justify-content: flex-start; gap: 14px;
     padding: 16px 20px; text-align: left;
+    background: var(--brand, #13386a); border: 1px solid var(--rule, #e0d9cb);
   }
-  .ceg-markets-diagram-node-name,
-  .ceg-markets-diagram-node-detail { max-width: none; }
-  .ceg-markets-diagram-hex { display: none; }
-  .ceg-markets-diagram-node { background: var(--bg, #fbfaf7); border: 1px solid var(--rule, #e0d9cb); }
   .ceg-markets-diagram-node:hover { transform: none; }
+  .ceg-markets-diagram-hex { display: none; }
+  .ceg-markets-diagram-node-body { align-items: flex-start; gap: 3px; }
+  .ceg-markets-diagram-node-index { display: none; }
+  .ceg-markets-diagram-node-name { color: #fff; text-shadow: none; }
+  /* Detail text has no hover to reveal it on touch, so show it outright
+     here — same as the original stacked mobile list. */
+  .ceg-markets-diagram-node-detail {
+    max-height: none; opacity: 1; margin-top: 2px; color: rgba(255, 255, 255, 0.82);
+  }
+  .ceg-markets-diagram-node-arrow { display: none; }
 }
 
 /* ─── Integrated delivery — Inspect. Engineer. Build. Maintain. ────────────── */
