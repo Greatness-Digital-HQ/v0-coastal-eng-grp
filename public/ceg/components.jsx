@@ -2053,19 +2053,32 @@ function NarrativeIntro({ data }) {
               const x = 50 + radius * Math.cos(angle);
               const y = 50 + radius * Math.sin(angle);
               const clipId = `ceg-markets-hex-clip-${m.key}`;
+              const scrimId = `ceg-markets-hex-scrim-${m.key}`;
               return (
                 <a
                   key={m.key}
                   href="/markets"
                   className="ceg-markets-diagram-node"
-                  style={{ left: `${x}%`, top: `${y}%`, "--ceg-reveal-delay": `${0.16 + i * 0.09}s` }}
+                  style={{ "--ceg-node-x": `${x}%`, "--ceg-node-y": `${y}%`, "--ceg-reveal-delay": `${0.16 + i * 0.09}s` }}
                 >
                   <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                     <defs>
                       <clipPath id={clipId}><path d={HEX_PATH} /></clipPath>
+                      {/* Bottom scrim — invisible on desktop (the hover
+                          state already lightens the tint and reveals the
+                          detail line), faded in at mobile widths only (see
+                          .ceg-markets-diagram-hex-scrim in styles.css),
+                          where the name sits permanently over the photo
+                          with no hover to rely on. */}
+                      <linearGradient id={scrimId} x1="0" y1="0" x2="0" y2="100" gradientUnits="userSpaceOnUse">
+                        <stop offset="0" stopColor="#000" stopOpacity="0" />
+                        <stop offset="0.55" stopColor="#000" stopOpacity="0" />
+                        <stop offset="1" stopColor="#000" stopOpacity="0.55" />
+                      </linearGradient>
                     </defs>
                     <image href={MARKET_HEX_PHOTOS[m.key]} width="100" height="100" preserveAspectRatio="xMidYMid slice" clipPath={`url(#${clipId})`} />
                     <rect className="ceg-markets-diagram-hex-tint" width="100" height="100" fill={m.color} clipPath={`url(#${clipId})`} />
+                    <rect className="ceg-markets-diagram-hex-scrim" width="100" height="100" fill={`url(#${scrimId})`} clipPath={`url(#${clipId})`} />
                     <path className="ceg-markets-diagram-hex-outline" d={HEX_PATH} fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
                   </svg>
                   <div className="ceg-markets-diagram-node-body">
