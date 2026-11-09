@@ -1460,9 +1460,37 @@ const MOBILE_MENU_EXTRA_TRAILING = [
   { key: "safety", label: "Safety", href: "/safety-quality" },
 ];
 
+// Exit-animation duration for the panel/backdrop — kept in JS so the
+// unmount timer can't drift out of sync with the CSS (see ceg-drawer-out /
+// ceg-mobile-fade-out in styles.css).
+const MOBILE_MENU_EXIT_MS = 320;
+
 function MobileMenu({ open, onClose, data }) {
   const [openSection, setOpenSection] = useState(null);
-  if (!open) return null;
+  // `mounted` keeps the panel in the DOM through its closing animation;
+  // `closing` flips on the exit-animation CSS classes. Without this, the
+  // old `if (!open) return null` unmounted instantly on close — the open
+  // animation was smooth but closing just snapped away.
+  const [mounted, setMounted] = useState(open);
+  const [closing, setClosing] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      setMounted(true);
+      setClosing(false);
+      return;
+    }
+    if (!mounted) return;
+    setClosing(true);
+    const t = setTimeout(() => {
+      setMounted(false);
+      setClosing(false);
+      setOpenSection(null);
+    }, MOBILE_MENU_EXIT_MS);
+    return () => clearTimeout(t);
+  }, [open]);
+
+  if (!mounted) return null;
 
   const items = [{ key: "home", label: "Home", href: "/" }];
   Object.entries(data.NAV).forEach(([k, item]) => {
@@ -1475,8 +1503,8 @@ function MobileMenu({ open, onClose, data }) {
 
   return (
     <>
-      <div className="ceg-mobile-backdrop" onClick={onClose} aria-hidden="true" />
-      <div className="ceg-mobile" role="dialog" aria-modal="true">
+      <div className={`ceg-mobile-backdrop ${closing ? "is-closing" : ""}`} onClick={onClose} aria-hidden="true" />
+      <div className={`ceg-mobile ${closing ? "is-closing" : ""}`} role="dialog" aria-modal="true">
       <div className="ceg-mobile-head">
         <img src="/assets/logo-c-left.png" alt="Coastal Engineering Group" className="ceg-mobile-logo"/>
         <button className="ceg-mobile-close" onClick={onClose} aria-label="Close">
@@ -1496,13 +1524,21 @@ function MobileMenu({ open, onClose, data }) {
               </div>
             );
           }
+          const isOpen = openSection === k;
           return (
-            <div key={k} className={`ceg-mobile-section ${openSection === k ? "is-open" : ""}`}>
-              <button className="ceg-mobile-section-h" onClick={() => setOpenSection(openSection === k ? null : k)}>
+            <div key={k} className={`ceg-mobile-section ${isOpen ? "is-open" : ""}`}>
+              <button
+                className="ceg-mobile-section-h"
+                onClick={() => setOpenSection(isOpen ? null : k)}
+                aria-expanded={isOpen}
+              >
                 <span>{item.label}</span>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.5"/></svg>
               </button>
-              {openSection === k && (
+              {/* Always mounted (not conditional on isOpen) so the
+                  grid-template-rows transition below has something to
+                  animate between 0fr and 1fr instead of popping in/out. */}
+              <div className="ceg-mobile-submenu">
                 <ul>
                   {item.items.map((entry) => {
                     const label = typeof entry === "string" ? entry : entry.label;
@@ -1510,7 +1546,7 @@ function MobileMenu({ open, onClose, data }) {
                     return <li key={label}><a href={href} onClick={onClose}>{label}</a></li>;
                   })}
                 </ul>
-              )}
+              </div>
             </div>
           );
         })}
