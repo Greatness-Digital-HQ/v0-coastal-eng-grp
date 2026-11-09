@@ -6075,6 +6075,20 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
      be true). */
   transition: transform .4s cubic-bezier(.22,1,.36,1);
 }
+/* Each node's radial position lives in --ceg-node-x/-y (set inline in the
+   JSX) rather than directly on left/top, and is only consumed here, behind
+   the same min-width this diagram's radial layout applies at. Below that
+   width the mobile media query drops this to a static grid instead, where
+   left/top must come out entirely — if the JSX set left/top directly,
+   position:relative (needed there so the hex svg's absolute children stay
+   contained to their own tile) would still apply them as a visual offset,
+   since unlike position:static, position:relative does NOT ignore
+   top/left. Keeping them out of reach of the mobile layout entirely, until
+   this query re-introduces them, sidesteps that rather than fighting the
+   cascade with !important. */
+@media (min-width: 721px) {
+  .ceg-markets-diagram-node { left: var(--ceg-node-x, 50%); top: var(--ceg-node-y, 50%); }
+}
 /* Entrance animation — hexagons bloom outward from the center on scroll-in,
    staggered via the --ceg-reveal-delay custom property set inline in the
    JSX. This is a CSS *animation*, not a *transition*: an element's
@@ -6127,6 +6141,11 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 .ceg-markets-diagram-hex-tint,
 .ceg-markets-diagram-hex-outline { transition: opacity .18s ease-out, stroke .18s ease-out, stroke-width .18s ease-out; }
 .ceg-markets-diagram-hex-tint { opacity: 0.62; }
+/* Hidden on desktop — the hover state already lightens the tint and
+   reveals the detail line, so a permanent scrim would just dull the
+   photo. Faded in below 720px (no hover to rely on there) by the mobile
+   media query further down this file. */
+.ceg-markets-diagram-hex-scrim { opacity: 0; }
 
 .ceg-markets-diagram-center-label {
   position: relative; z-index: 2; max-width: 62%;
@@ -6212,38 +6231,60 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
 }
 
 /* Below 720px the radial layout gets too cramped to read — collapse it
-   into a plain stacked grid instead of hiding the markets content. The
-   center hex is dropped here (it just repeated the "Markets Served by
-   Coastal" heading above it once stacked) in favor of the head-link. The
-   photo hex becomes a flat color-coded card so the detail copy stays the
-   focus at this width. */
+   into a 2-column grid of the same rounded hex photo tiles instead of
+   either hiding the hex treatment or flattening everything into plain
+   stacked color cards. The center hex and connecting spokes are dropped
+   (the center hex just repeated the "Markets Served by Coastal" heading
+   above it once there's no radial layout to anchor, and the spokes have
+   nothing left to connect) in favor of the head-link already shown here.
+   The long detail paragraph is dropped too — there's no hover to reveal
+   it at this width, and cramming it into a ~160px tile reads worse than
+   leaving it to the "View All Markets" link and the /markets page. A
+   bottom scrim (see .ceg-markets-diagram-hex-scrim) keeps the name
+   legible over the photo without needing the hover-triggered tint change
+   the desktop view relies on. */
 @media (max-width: 720px) {
   .ceg-markets-diagram-head-link { display: inline-flex; }
   .ceg-markets-diagram {
     max-width: none; aspect-ratio: auto; background-image: none;
-    display: grid; grid-template-columns: 1fr; gap: 12px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
   }
   .ceg-markets-diagram-spoke { display: none; }
   .ceg-markets-diagram-center { display: none; }
   .ceg-markets-diagram-node {
-    position: static; transform: none; opacity: 1;
-    width: 100%; aspect-ratio: auto;
-    border-radius: 8px;
-    flex-direction: row; align-items: center; justify-content: flex-start; gap: 14px;
-    padding: 16px 20px; text-align: left;
-    background: var(--brand, #13386a); border: 1px solid var(--rule, #e0d9cb);
+    /* relative, not static — the hex svg and arrow inside each tile are
+       position:absolute and need THIS tile as their containing block, not
+       the whole grid. A static ancestor doesn't provide one, so they'd
+       escape up to .ceg-markets-diagram and every tile's hex would
+       overlap full-bleed across the entire grid instead of staying in
+       its own square. */
+    position: relative; top: auto; left: auto; transform: none; opacity: 1;
+    width: 100%; aspect-ratio: 1 / 1;
   }
+  /* Guards against a lingering :hover state some touch browsers apply
+     after a tap — without this it would inherit the desktop hover rule's
+     translate(-50%,-50%) scale(1.06), which assumes the absolute
+     positioning this breakpoint turns off. */
   .ceg-markets-diagram-node:hover { transform: none; }
-  .ceg-markets-diagram-hex { display: none; }
-  .ceg-markets-diagram-node-body { align-items: flex-start; gap: 3px; }
-  .ceg-markets-diagram-node-index { display: none; }
-  .ceg-markets-diagram-node-name { color: #fff; text-shadow: none; }
-  /* Detail text has no hover to reveal it on touch, so show it outright
-     here — same as the original stacked mobile list. */
-  .ceg-markets-diagram-node-detail {
-    max-height: none; opacity: 1; margin-top: 2px; color: rgba(255, 255, 255, 0.82);
+  .ceg-markets-diagram-node:active { transform: scale(0.97); }
+  .ceg-markets-diagram-hex-tint { opacity: 0.42; }
+  .ceg-markets-diagram-hex-scrim { opacity: 1; }
+  .ceg-markets-diagram-node-body {
+    align-items: flex-start; justify-content: flex-end; gap: 2px;
+    padding: 14% 14% 16%;
   }
-  .ceg-markets-diagram-node-arrow { display: none; }
+  .ceg-markets-diagram-node-index { font-size: 10px; }
+  .ceg-markets-diagram-node-name { font-size: 14.5px; line-height: 1.15; }
+  .ceg-markets-diagram-node:hover .ceg-markets-diagram-node-name { transform: none; }
+  /* No hover at this width — the detail line stays with the desktop
+     hover reveal and the /markets page, not crammed into the tile. */
+  .ceg-markets-diagram-node-detail { display: none; }
+  /* Always-visible tap affordance, top-right, instead of the desktop
+     hover-reveal arrow bottom-center (nothing to hover on a touchscreen). */
+  .ceg-markets-diagram-node-arrow {
+    top: 10%; left: auto; right: 10%; bottom: auto; transform: none;
+    width: 22px; height: 22px; opacity: 1; background: rgba(255, 255, 255, 0.22);
+  }
 }
 
 /* ─── Integrated delivery — Inspect. Engineer. Build. Maintain. ────────────── */
