@@ -1660,15 +1660,25 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   from { transform: translateX(100%); opacity: 0.6; }
   to   { transform: translateX(0);    opacity: 1; }
 }
+/* Mirror of ceg-drawer-in, played on close (see .ceg-mobile.is-closing) —
+   a faster, sharper ease-in so the panel feels dismissed, not just
+   reversed-in-slow-motion. Duration must match MOBILE_MENU_EXIT_MS in
+   components.jsx so the unmount timer and the animation finish together. */
+@keyframes ceg-drawer-out {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(100%); opacity: 0.6; }
+}
 
 /* Backdrop */
 .ceg-mobile-backdrop {
   position: fixed; inset: 0; z-index: 199;
   background: rgba(6, 14, 26, 0.6);
   backdrop-filter: blur(2px);
-  animation: fadeIn 0.2s ease;
+  animation: fadeIn 0.25s ease both;
 }
+.ceg-mobile-backdrop.is-closing { animation: fadeOut 0.3s ease both; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
 
 /* Flyout panel */
 .ceg-mobile {
@@ -1680,7 +1690,10 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   display: flex;
   flex-direction: column;
   box-shadow: -20px 0 60px rgba(6, 14, 26, 0.35);
-  animation: ceg-drawer-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: ceg-drawer-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ceg-mobile.is-closing {
+  animation: ceg-drawer-out 0.32s cubic-bezier(0.4, 0, 1, 1) both;
 }
 
 /* Header row: logo + close */
@@ -1700,14 +1713,31 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   width: 40px; height: 40px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
-  transition: background 0.2s;
+  transition: background 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.ceg-mobile-close:hover { background: rgba(255, 255, 255, 0.16); }
+.ceg-mobile-close:hover { background: rgba(255, 255, 255, 0.16); transform: rotate(90deg); }
 .ceg-mobile-close svg { color: #fff; }
 
 /* Nav body — large, editorial link list instead of a small uppercase list */
 .ceg-mobile-body { flex: 1; overflow-y: auto; padding: 12px 0; }
-.ceg-mobile-section { border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.ceg-mobile-section {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+/* Accent bar that slides in on hover/open, instead of a flat color swap
+   alone — gives the row somewhere for the eye to track the hover from. */
+.ceg-mobile-section::before {
+  content: "";
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: #7fb0e6;
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ceg-mobile-section:hover::before,
+.ceg-mobile-section.is-open::before { transform: scaleY(1); }
+
 .ceg-mobile-section-h {
   display: flex; justify-content: space-between; align-items: center; width: 100%;
   padding: 22px 28px;
@@ -1716,29 +1746,52 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   font-weight: 800;
   letter-spacing: -0.01em;
   color: #fff;
-  transition: color 0.2s, background 0.2s;
+  transition: color 0.25s ease, background 0.25s ease, padding-left 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.ceg-mobile-section-h:hover { color: #7fb0e6; background: rgba(255, 255, 255, 0.03); }
-.ceg-mobile-section-h svg { width: 16px; height: 16px; color: rgba(255, 255, 255, 0.5); transition: transform 0.25s; flex-shrink: 0; }
+.ceg-mobile-section-h:hover,
+.ceg-mobile-section-link:hover .ceg-mobile-section-h { color: #7fb0e6; background: rgba(255, 255, 255, 0.04); padding-left: 34px; }
+.ceg-mobile-section-h svg {
+  width: 16px; height: 16px; color: rgba(255, 255, 255, 0.5); flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.25s ease;
+}
+.ceg-mobile-section-h:hover svg { color: #7fb0e6; transform: translateY(1px); }
 .ceg-mobile-section.is-open .ceg-mobile-section-h svg { transform: rotate(180deg); }
 .ceg-mobile-section.is-open .ceg-mobile-section-h { color: #7fb0e6; }
+/* Direct-link rows (no accordion) get the same arrow nudge on hover. */
+.ceg-mobile-section-link:hover .ceg-mobile-section-h svg { transform: translateX(3px); }
 
-/* Sub-links */
-.ceg-mobile-section ul {
+/* Submenu accordion — always mounted in the DOM (see components.jsx) and
+   animated via the grid-template-rows 0fr→1fr trick, so opening/closing
+   smoothly grows/shrinks the height instead of popping the <ul> in and out. */
+.ceg-mobile-submenu {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ceg-mobile-section.is-open .ceg-mobile-submenu { grid-template-rows: 1fr; }
+.ceg-mobile-submenu > ul {
+  overflow: hidden;
+  min-height: 0;
   padding: 2px 0 18px 0;
   display: flex; flex-direction: column; gap: 0;
   background: rgba(255, 255, 255, 0.02);
+  /* Fades in alongside the height grow; closing it skips the fade (snappy
+     collapse reads better than a lingering fade-out on tap-to-close). */
+  opacity: 0;
+  transition: opacity 0.3s ease 0.05s;
 }
-.ceg-mobile-section ul li a {
+.ceg-mobile-section.is-open .ceg-mobile-submenu > ul { opacity: 1; }
+
+.ceg-mobile-submenu li a {
   display: block;
   padding: 12px 28px 12px 36px;
   font-family: var(--font-inter, "Inter", system-ui, sans-serif);
   font-size: 15px;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.6);
-  transition: color 0.15s, padding-left 0.15s;
+  transition: color 0.2s ease, padding-left 0.2s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease;
 }
-.ceg-mobile-section ul li a:hover { color: #fff; padding-left: 40px; }
+.ceg-mobile-submenu li a:hover { color: #fff; padding-left: 42px; background: rgba(255, 255, 255, 0.04); }
 
 /* Footer: phone + CTA */
 .ceg-mobile-foot {
