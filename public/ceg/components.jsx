@@ -2028,7 +2028,7 @@ function NarrativeIntro({ data }) {
               );
             })}
 
-            <a href="/markets" className="ceg-markets-diagram-center" style={{ transitionDelay: "0.05s" }}>
+            <a href="/markets" className="ceg-markets-diagram-center" style={{ "--ceg-reveal-delay": "0.05s" }}>
               <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                 <defs>
                   <linearGradient id="ceg-markets-center-grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
@@ -2058,7 +2058,7 @@ function NarrativeIntro({ data }) {
                   key={m.key}
                   href="/markets"
                   className="ceg-markets-diagram-node"
-                  style={{ left: `${x}%`, top: `${y}%`, transitionDelay: `${0.16 + i * 0.09}s` }}
+                  style={{ left: `${x}%`, top: `${y}%`, "--ceg-reveal-delay": `${0.16 + i * 0.09}s` }}
                 >
                   <svg className="ceg-markets-diagram-hex" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                     <defs>
