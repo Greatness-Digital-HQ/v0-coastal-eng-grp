@@ -606,8 +606,23 @@ ul { list-style: none; padding: 0; margin: 0; }
 }
 
 @media (max-width: 860px) {
-  .hero-stats { padding-top: 120px; min-height: 0; }
-  .hero-stats .ceg-hero-stats-center { padding-bottom: 56px; }
+  /* padding-top still clears the transparent nav bar + the black "Looking
+     for a career" strip above it (together ~133px tall on a phone), with
+     ~25px of breathing room to spare. padding-bottom was 90px here AND
+     .ceg-hero-stats-center below added its own 56px on top of that —
+     that stacked, redundant bottom space (together with the narrow text
+     column fixed below) is most of why the hero ran taller than the
+     screen itself; trimmed both so the hero lands closer to filling most,
+     not all, of the viewport. */
+  .hero-stats { padding-top: 100px; padding-bottom: 36px; min-height: 0; }
+  /* max-width: 65% (set above for the wide desktop left-aligned column)
+     was still in effect here — on a narrow phone screen it squeezed the
+     headline/lede into a column barely a third of the viewport, forcing
+     many short wrapped lines (inflating the hero's height) and leaving a
+     wide, unused gap down the right side that read as oversized padding
+     around the text. Letting it use the full container width lets the
+     same copy wrap into far fewer, wider lines instead. */
+  .hero-stats .ceg-hero-stats-center { max-width: 100%; padding-bottom: 40px; }
   .hero-stats .ceg-hero-stats-bar-row { grid-template-columns: repeat(3, 1fr); }
   .hero-stats .ceg-hero-stat + .ceg-hero-stat:nth-child(4) { border-left: none; }
   .hero-stats .ceg-hero-stat:nth-child(n+4) { border-top: 1px solid rgba(255,255,255,0.18); }
