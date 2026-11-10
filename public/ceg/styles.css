@@ -6270,11 +6270,22 @@ a.ceg-contact-info-val:hover { color: var(--brand); }
   .ceg-markets-diagram-hex-tint { opacity: 0.42; }
   .ceg-markets-diagram-hex-scrim { opacity: 1; }
   .ceg-markets-diagram-node-body {
-    align-items: flex-start; justify-content: flex-end; gap: 2px;
-    padding: 14% 14% 16%;
+    align-items: center; justify-content: flex-end; gap: 2px;
+    padding: 14% 14% 16%; text-align: center;
   }
   .ceg-markets-diagram-node-index { font-size: 10px; }
-  .ceg-markets-diagram-node-name { font-size: 14.5px; line-height: 1.15; }
+  /* The hex tapers to a narrow point at the bottom, where this
+     bottom-anchored text sits — a short two-word name (e.g. "Federal &
+     Defense") is narrow enough to fit the padded box on one line but
+     still wider than the hex is at that height, so it ran past the
+     silhouette's edge. Capping the width forces every name to wrap onto
+     two lines the same way the naturally-longer ones already did.
+     110px is deliberately between the widest line that must still fit
+     on one line ("Ports, Harbors &" at ~107px) and the narrowest
+     single-line name that must be forced to wrap ("Federal & Defense"
+     at ~118px) — measured directly against the rendered font rather
+     than guessed, since a few px either way flips one of those cases. */
+  .ceg-markets-diagram-node-name { font-size: 14.5px; line-height: 1.15; max-width: 110px; }
   .ceg-markets-diagram-node:hover .ceg-markets-diagram-node-name { transform: none; }
   /* No hover at this width — the detail line stays with the desktop
      hover reveal and the /markets page, not crammed into the tile. */
